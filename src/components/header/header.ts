@@ -23,6 +23,9 @@ export class Header {
 
     header.appendChild(headerBrand);
     headerBrand.classList.add('header__brand');
+    headerBrand.addEventListener('click', (event: {}) => {
+      window.location.href = '/';
+    });
     headerBrand.appendChild(headerBrandLogo);
     headerBrandLogo.classList.add('header__brand__logo');
     headerBrandLogo.src = 'header-sale-bag.svg';
@@ -37,6 +40,9 @@ export class Header {
 
     header.appendChild(headerCart);
     headerCart.classList.add('header__cart');
+    headerCart.addEventListener('click', (event: {}) => {
+      window.location.href = '/cart';
+    })
     headerCart.appendChild(headerCartImage);
     headerCartImage.classList.add('header__cart__image');
     headerCartImage.src = 'header-cart.svg';

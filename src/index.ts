@@ -1,7 +1,7 @@
 import './global.scss';
 import { Cart } from './pages/cart/cart';
 import { MainPage } from './pages/main/main';
-import { NotFound } from './pages/not-found/not-found';
+import { NotFound } from './pages/not-found/not-found'
 import { Product } from './pages/product-details/product';
 const path: string= window.location.pathname;
 

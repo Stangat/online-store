@@ -1,0 +1,42 @@
+.filters-container {
+  width: 25%;
+}
+.filters-container-reset-button {
+  background-color: #dc092e;
+  padding-left: 2%;
+  padding-right: 2%;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+.filters-container-category-list {
+    height: 10rem;
+    overflow: hidden;
+    overflow-y: auto;
+    box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 5%), 0 4px 8px 0 rgb(35 31 32 / 10%);
+    border-radius: 10px;
+    padding: 2%;
+}
+.filters-container-category-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.filters-container-brand-list {
+    height: 10rem;
+    overflow: hidden;
+    overflow-y: auto;
+    box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 5%), 0 4px 8px 0 rgb(35 31 32 / 10%);
+    border-radius: 10px;
+    padding: 2%;
+}
+.filters-container-brand-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+

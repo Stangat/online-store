@@ -1,10 +1,25 @@
 import './global.scss';
-import { Footer } from './modules/store-page/components/footer/footer';
-import { Header } from './modules/store-page/components/header/header';
-import { Main } from './modules/store-page/components/main/main';
-import { Card } from './modules/store-page/components/cards/cards';
+import { Cart } from './pages/cart/cart';
+import { MainPage } from './pages/main/main';
+import { NotFound } from './pages/NotFound/NotFound';
+import { Product } from './pages/product-details/product';
+const path: string= window.location.pathname;
 
-new Header().create();
-new Main().create();
-new Footer().create();
-new Card().createCatalog();
+const cart = new Cart();
+const main = new MainPage();
+const notFound = new NotFound();
+const product = new Product();
+switch (true) {
+  case path === '/cart':
+    cart.execute();
+    break;
+  case path === '/':
+    main.execute();
+    break;
+  case path.startsWith('/product/'):
+    const productId = path.split('/')[2]
+    product.execute(+productId);
+    break;
+  default:
+    notFound.execute();
+}

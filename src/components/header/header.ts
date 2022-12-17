@@ -1,6 +1,6 @@
 import './header.scss';
-import '../../../../assets/header-cart.svg';
-import '../../../../assets/header-sale-bag.svg';
+import '../../assets/header-cart.svg';
+import '../../assets/header-sale-bag.svg';
 
 export class Header {
   create() {

@@ -1,6 +1,7 @@
-import { onlineStoreData } from '../../../../data/data';
+
 import { CardsId } from './cardsIdEnum';
 import './cards.scss';
+import { onlineStoreData } from '../../../data/data';
 
 class Card {
   createCatalog(): void {

@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const pages = ["cart", "main"];
 module.exports = {
   mode: 'development',
   entry: './src/index.ts',
@@ -9,6 +9,7 @@ module.exports = {
     filename: 'bundle.js',
     clean: true,
     assetModuleFilename: '[name][ext]',
+    publicPath: '/',
   },
   devtool: 'source-map',
   devServer: {
@@ -59,5 +60,5 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, 'src', 'index.html'),
     }),
-  ],
+  ]
 };

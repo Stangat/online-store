@@ -1,3 +1,4 @@
+import '../../../assets/404.png';
 export class NotFoundMainBlock {
     create() {
         const main: HTMLElement | null = document.querySelector('main');

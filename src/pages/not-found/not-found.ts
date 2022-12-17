@@ -2,7 +2,6 @@ import { Footer } from '../../components/footer/footer';
 import { Header } from '../../components/header/header';
 import { Main } from '../../components/main/main';
 import { IComponent } from '../../interfaces/index';
-import '../../assets/404.png';
 import './not-found.scss';
 import { NotFoundMainBlock } from './not-found-main-block/not-found-main-block';
 

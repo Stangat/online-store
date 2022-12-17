@@ -1,4 +1,4 @@
-import { onlineStoreData } from '../../../../data/data';
+import { onlineStoreData } from '../../../data/data';
 import { CardsId } from './cardsIdEnum';
 import './cards.scss';
 

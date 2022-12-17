@@ -1,6 +1,6 @@
 import './header.scss';
-import '../../assets/header-cart.svg'
-import '../../assets/header-sale-bag.svg'
+import '../../../../assets/header-cart.svg';
+import '../../../../assets/header-sale-bag.svg';
 
 export class Header {
   create() {
@@ -12,7 +12,7 @@ export class Header {
     const headerBrandName: HTMLElement | null = document.createElement('h2');
 
     const headerPrice: HTMLDivElement | null = document.createElement('div');
-    const headerPriceTotal: HTMLSpanElement | null  =document.createElement('span')
+    const headerPriceTotal: HTMLSpanElement | null = document.createElement('span');
 
     const headerCart: HTMLDivElement | null = document.createElement('div');
     const headerCartImage: HTMLImageElement | null = document.createElement('img');
@@ -25,23 +25,23 @@ export class Header {
     headerBrand.classList.add('header__brand');
     headerBrand.appendChild(headerBrandLogo);
     headerBrandLogo.classList.add('header__brand__logo');
-    headerBrandLogo.src = 'header-sale-bag.svg'
+    headerBrandLogo.src = 'header-sale-bag.svg';
     headerBrand.appendChild(headerBrandName);
     headerBrandName.classList.add('header__brand__name');
     headerBrandName.innerText = 'Online Store';
 
     header.appendChild(headerPrice);
     headerPrice.classList.add('header__price');
-    headerPrice.appendChild(headerPriceTotal)
-    headerPriceTotal.innerText = 'Total Price: 0$'
+    headerPrice.appendChild(headerPriceTotal);
+    headerPriceTotal.innerText = 'Total Price: 0$';
 
     header.appendChild(headerCart);
     headerCart.classList.add('header__cart');
-    headerCart.appendChild(headerCartImage)
+    headerCart.appendChild(headerCartImage);
     headerCartImage.classList.add('header__cart__image');
-    headerCartImage.src = 'header-cart.svg'
-    headerCart.appendChild(headerCartTotal)
+    headerCartImage.src = 'header-cart.svg';
+    headerCart.appendChild(headerCartTotal);
     headerCartTotal.classList.add('header__cart__total');
-    headerCartTotal.innerText = '0'
+    headerCartTotal.innerText = '0';
   }
 }

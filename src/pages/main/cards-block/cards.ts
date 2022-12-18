@@ -7,17 +7,17 @@ class CardsBlock {
   createSortPanel(): void {
     const products: HTMLDivElement | null = document.querySelector('.products');
     const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
-    const searchPanel = document.createElement('div');
-    searchPanel.className = 'sort-panel';
-    products?.prepend(searchPanel);
+    const sortPanel = document.createElement('div');
+    sortPanel.className = 'sort-panel';
+    products?.prepend(sortPanel);
 
-    const searchOptions = document.createElement('select');
-    searchOptions.className = 'selector';
-    searchPanel.append(searchOptions);
+    const sortOptions = document.createElement('select');
+    sortOptions.className = 'selector';
+    sortPanel.append(sortOptions);
 
     const defaultOption = document.createElement('option');
     defaultOption.className = 'selector__option selector__option_default';
-    searchOptions.append(defaultOption);
+    sortOptions.append(defaultOption);
     defaultOption.value = 'sort-title';
     defaultOption.setAttribute('disabled', '');
     defaultOption.setAttribute('selected', '');
@@ -25,48 +25,48 @@ class CardsBlock {
 
     const optionOne = document.createElement('option');
     optionOne.className = 'selector__option';
-    searchOptions.append(optionOne);
+    sortOptions.append(optionOne);
     optionOne.value = 'price-ASC';
     optionOne.textContent = 'sort by price (asc)';
 
     const optionTwo = document.createElement('option');
     optionTwo.className = 'selector__option';
-    searchOptions.append(optionTwo);
+    sortOptions.append(optionTwo);
     optionTwo.value = 'price-DESC';
     optionTwo.textContent = 'sort by price (desc)';
 
     const optionThree = document.createElement('option');
     optionThree.className = 'selector__option';
-    searchOptions.append(optionThree);
+    sortOptions.append(optionThree);
     optionThree.value = 'category-ASC';
     optionThree.textContent = 'sort by category (asc)';
 
     const optionFour = document.createElement('option');
     optionFour.className = 'selector__option';
-    searchOptions.append(optionFour);
+    sortOptions.append(optionFour);
     optionFour.value = 'category-DESC';
     optionFour.textContent = 'sort by category (desc)';
 
     const optionFive = document.createElement('option');
     optionFive.className = 'selector__option';
-    searchOptions.append(optionFive);
+    sortOptions.append(optionFive);
     optionFive.value = 'discount-ASC';
     optionFive.textContent = 'sort by discount (asc)';
 
     const optionSix = document.createElement('option');
     optionSix.className = 'selector__option';
-    searchOptions.append(optionSix);
+    sortOptions.append(optionSix);
     optionSix.value = 'discount-DESC';
     optionSix.textContent = 'sort by discount (desc)';
 
     const stats = document.createElement('div');
     stats.className = 'stats';
     stats.textContent = `Found: ${productsContainer?.children.length}`;
-    searchPanel.append(stats);
+    sortPanel.append(stats);
 
     const searchBar = document.createElement('div');
     searchBar.className = 'search-bar';
-    searchPanel.append(searchBar);
+    sortPanel.append(searchBar);
     const searchInput = document.createElement('input');
     searchInput.className = 'search-bar__input';
     searchInput.type = 'search';
@@ -75,7 +75,7 @@ class CardsBlock {
 
     const viewMode = document.createElement('div');
     viewMode.className = 'view-mode';
-    searchPanel.append(viewMode);
+    sortPanel.append(viewMode);
 
     const smallView = document.createElement('span');
     smallView.className = 'material-icons view-mode_small';
@@ -101,7 +101,6 @@ class CardsBlock {
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';
     products.append(productsContainer);
-
 
     for (let i = 0; i < NUMBER_OF_CARDS; i++) {
       const item = document.createElement('div');
@@ -209,6 +208,10 @@ class CardsBlock {
       itemButtons.append(detailsButton);
     }
     this.createSortPanel();
+  }
+  clearCatalog(): void {
+    const products: HTMLDivElement | null = document.querySelector('.products');
+    products?.remove();
   }
 }
 

@@ -42,7 +42,7 @@ export class Header {
     headerCart.classList.add('header__cart');
     headerCart.addEventListener('click', (event: {}) => {
       window.location.href = '/cart';
-    })
+    });
     headerCart.appendChild(headerCartImage);
     headerCartImage.classList.add('header__cart__image');
     headerCartImage.src = 'header-cart.svg';

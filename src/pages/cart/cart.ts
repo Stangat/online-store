@@ -5,7 +5,7 @@ import { IComponent } from '../../interfaces/index';
 
 export class Cart implements IComponent {
   execute() {
-    const root: HTMLElement | null  = document.getElementById('root');
+    const root: HTMLElement | null = document.getElementById('root');
     if (root) {
       new Header().create();
       new Main().create();

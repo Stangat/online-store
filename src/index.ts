@@ -1,14 +1,19 @@
 import './global.scss';
 import { Cart } from './pages/cart/cart';
+import { CardsSort } from './pages/main/cards-block/sort';
 import { MainPage } from './pages/main/main';
-import { NotFound } from './pages/not-found/not-found'
+import { NotFound } from './pages/not-found/not-found';
 import { Product } from './pages/product-details/product';
-const path: string= window.location.pathname;
+const path: string = window.location.pathname;
+const queryPath: string = window.location.search;
 
 const cart = new Cart();
 const main = new MainPage();
 const notFound = new NotFound();
 const product = new Product();
+
+const cardsSort = new CardsSort();
+
 switch (true) {
   case path === '/cart':
     cart.execute();
@@ -17,8 +22,11 @@ switch (true) {
     main.execute();
     break;
   case path.startsWith('/product/'):
-    const productId = path.split('/')[2]
+    const productId = path.split('/')[2];
     product.execute(+productId);
+    break;
+  case queryPath === '?sort=price-ASC':
+    cardsSort.sort();
     break;
   default:
     notFound.execute();

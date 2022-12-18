@@ -11,7 +11,7 @@ export class NotFound implements IComponent {
     if (root) {
       new Header().create();
       new Main().create();
-      new NotFoundMainBlock().create()
+      new NotFoundMainBlock().create();
       new Footer().create();
     }
   }

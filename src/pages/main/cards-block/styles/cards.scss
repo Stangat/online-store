@@ -1,4 +1,7 @@
-@import './constants.scss';
+@import './constants';
+.products {
+  max-width: 74%;
+}
 
 .products-container {
   display: flex;
@@ -8,7 +11,6 @@
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
   font-weight: 400;
-  width: 74%;
 }
 
 .item {
@@ -94,7 +96,7 @@
   }
 }
 
-.material-icons {
+.item-rating__text {
   font-size: 18px;
   color: $ratingColor;
 }

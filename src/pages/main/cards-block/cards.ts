@@ -1,12 +1,96 @@
-
 import { CardsId } from './cardsIdEnum';
-import './cards.scss';
+import './styles/cards.scss';
+import './styles/sort-panel.scss';
 import { onlineStoreData } from '../../../data/data';
 
-class Card {
+class CardsBlock {
+  createSortPanel(): void {
+    const products: HTMLDivElement | null = document.querySelector('.products');
+    const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
+    const searchPanel = document.createElement('div');
+    searchPanel.className = 'sort-panel';
+    products?.prepend(searchPanel);
+
+    const searchOptions = document.createElement('select');
+    searchOptions.className = 'selector';
+    searchPanel.append(searchOptions);
+
+    const defaultOption = document.createElement('option');
+    defaultOption.className = 'selector__option selector__option_default';
+    searchOptions.append(defaultOption);
+    defaultOption.value = 'sort-title';
+    defaultOption.setAttribute('disabled', '');
+    defaultOption.setAttribute('selected', '');
+    defaultOption.textContent = 'Sort options:';
+
+    const optionOne = document.createElement('option');
+    optionOne.className = 'selector__option';
+    searchOptions.append(optionOne);
+    optionOne.value = 'price-ASC';
+    optionOne.textContent = 'sort by price (asc)';
+
+    const optionTwo = document.createElement('option');
+    optionTwo.className = 'selector__option';
+    searchOptions.append(optionTwo);
+    optionTwo.value = 'price-DESC';
+    optionTwo.textContent = 'sort by price (desc)';
+
+    const optionThree = document.createElement('option');
+    optionThree.className = 'selector__option';
+    searchOptions.append(optionThree);
+    optionThree.value = 'category-ASC';
+    optionThree.textContent = 'sort by category (asc)';
+
+    const optionFour = document.createElement('option');
+    optionFour.className = 'selector__option';
+    searchOptions.append(optionFour);
+    optionFour.value = 'category-DESC';
+    optionFour.textContent = 'sort by category (desc)';
+
+    const optionFive = document.createElement('option');
+    optionFive.className = 'selector__option';
+    searchOptions.append(optionFive);
+    optionFive.value = 'discount-ASC';
+    optionFive.textContent = 'sort by discount (asc)';
+
+    const optionSix = document.createElement('option');
+    optionSix.className = 'selector__option';
+    searchOptions.append(optionSix);
+    optionSix.value = 'discount-DESC';
+    optionSix.textContent = 'sort by discount (desc)';
+
+    const stats = document.createElement('div');
+    stats.className = 'stats';
+    stats.textContent = `Found: ${productsContainer?.children.length}`;
+    searchPanel.append(stats);
+
+    const searchBar = document.createElement('div');
+    searchBar.className = 'search-bar';
+    searchPanel.append(searchBar);
+    const searchInput = document.createElement('input');
+    searchInput.className = 'search-bar__input';
+    searchInput.type = 'search';
+    searchInput.placeholder = 'Search product';
+    searchBar.append(searchInput);
+
+    const viewMode = document.createElement('div');
+    viewMode.className = 'view-mode';
+    searchPanel.append(viewMode);
+
+    const smallView = document.createElement('span');
+    smallView.className = 'material-icons view-mode_small';
+    smallView.textContent = 'view_comfy';
+    viewMode.append(smallView);
+
+    const bigView = document.createElement('span');
+    bigView.className = 'material-icons view-mode_big';
+    bigView.textContent = 'view_module';
+    viewMode.append(bigView);
+  }
+
   createCatalog(): void {
     const products = document.createElement('div');
-    products.className = 'products-container';
+    products.className = 'products';
     const main = document.querySelector('.main');
     const NUMBER_OF_CARDS = 100;
     const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
@@ -14,10 +98,15 @@ class Card {
       main.append(products);
     }
 
+    const productsContainer = document.createElement('div');
+    productsContainer.className = 'products-container';
+    products.append(productsContainer);
+
+
     for (let i = 0; i < NUMBER_OF_CARDS; i++) {
       const item = document.createElement('div');
       item.className = 'item';
-      products.append(item);
+      productsContainer.append(item);
 
       const itemWrapper = document.createElement('div');
       itemWrapper.className = 'item__wrapper';
@@ -119,7 +208,8 @@ class Card {
       detailsButton.textContent = 'Details';
       itemButtons.append(detailsButton);
     }
+    this.createSortPanel();
   }
 }
 
-export { Card };
+export { CardsBlock };

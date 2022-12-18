@@ -1,3 +1,3 @@
 export interface IComponent {
-    execute:(...args: number[]) => void
+  execute: (...args: number[]) => void;
 }

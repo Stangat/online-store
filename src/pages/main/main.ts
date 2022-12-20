@@ -4,7 +4,7 @@ import { Main } from '../../components/main/main';
 import { IComponent } from '../../interfaces/index';
 import { CardsBlock } from './cards-block/cards';
 import { UrlPath } from './url';
-import { Filters } from './filters-block/filters';
+import { Filters } from './filters-block/filters'
 import './main.scss';
 import { CardsSort } from './cards-block/sort';
 

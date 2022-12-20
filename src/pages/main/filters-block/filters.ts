@@ -131,6 +131,14 @@ export class Filters {
       let slide1 = that.getNearest(pricesArray, +slides[0].value);
       let slide2 = that.getNearest(pricesArray, +slides[1].value);
 
+      const items = document.querySelectorAll('.item');
+      const itemsArray = Array.from(items);
+      for (let i = 0; i < itemsArray.length; i++) {
+        if (+itemsArray[i].attributes[1].value < slide1 || +itemsArray[i].attributes[1].value > slide2) {
+          itemsArray[i].remove();
+        }
+      }
+
       // Neither slider will clip the other, so make sure we determine which is larger
       if (slide1 > slide2) {
         let tmp = slide2;
@@ -189,13 +197,20 @@ export class Filters {
       let slide1 = that.getNearest(stocksArray, +slides[0].value);
       let slide2 = that.getNearest(stocksArray, +slides[1].value);
       // Neither slider will clip the other, so make sure we determine which is larger
+      const items = document.querySelectorAll('.item');
+      const itemsArray = Array.from(items);
+      for (let i = 0; i < itemsArray.length; i++) {
+        if (+itemsArray[i].attributes[2].value < slide1 || +itemsArray[i].attributes[2].value > slide2) {
+          itemsArray[i].remove();
+        }
+      }
       if (slide1 > slide2) {
         let tmp = slide2;
         slide2 = slide1;
         slide1 = tmp;
       }
       let displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
-      displayElement.innerHTML = '€' + slide1 + ' - €' + slide2;
+      displayElement.innerHTML = slide1 + ' - ' + slide2;
     }
 
     function stock() {

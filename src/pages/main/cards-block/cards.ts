@@ -105,6 +105,9 @@ class CardsBlock {
     for (let i = 0; i < NUMBER_OF_CARDS; i++) {
       const item = document.createElement('div');
       item.className = 'item';
+
+      item.setAttribute('data-price', `${onlineStoreData.products[i].price}`)
+      item.setAttribute('data-stock', `${onlineStoreData.products[i].stock}`)
       productsContainer.append(item);
 
       const itemWrapper = document.createElement('div');

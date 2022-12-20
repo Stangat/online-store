@@ -1,11 +1,15 @@
-import { onlineStoreData } from '../../../data/data';
+import { brands, categories, pricesArray, stocksArray } from './constants';
 import './filters.scss';
 
-const categories = new Set(onlineStoreData.products.map((product) => product.category));
-const brands = new Set(onlineStoreData.products.map((product) => product.brand));
-
 export class Filters {
+  getNearest = (arr: number[], num: number) => {
+    const arr2 = arr.map((val) => Math.abs(val - num));
+    const min = Math.min(...arr2);
+    const index = arr2.indexOf(min);
+    return arr[index];
+  };
   create(): void {
+    const that = this;
     const main: HTMLElement | null = document.querySelector('.main');
 
     const blockFilters: HTMLDivElement | null = document.createElement('div');
@@ -93,18 +97,141 @@ export class Filters {
       listFilterBrand.appendChild(containerOneCheckboxBrand);
     });
 
-    const priceFilters: HTMLDivElement | null = document.createElement('div');
-    priceFilters.className = 'filters-container-price';
-    blockFilters.appendChild(priceFilters);
-    const nameFilterPrice: HTMLElement | null = document.createElement('h3');
-    nameFilterPrice.innerText = 'Price';
-    priceFilters.appendChild(nameFilterPrice);
+    const sliderPrice = document.createElement('div');
+    sliderPrice.className = 'slider';
+    blockFilters.appendChild(sliderPrice);
+    const nameSliderPrice: HTMLElement | null = document.createElement('h3');
+    nameSliderPrice.innerText = 'Price';
+    sliderPrice.appendChild(nameSliderPrice);
+    const rangeSliderPrice = document.createElement('div');
+    rangeSliderPrice.className = 'range-slider price';
+    sliderPrice.appendChild(rangeSliderPrice);
+    const spanSliderPrice = document.createElement('span');
+    spanSliderPrice.className = 'rangeValues';
+    rangeSliderPrice.appendChild(spanSliderPrice);
 
-    const stockFilters: HTMLDivElement | null = document.createElement('div');
-    stockFilters.className = 'filters-container-stock';
-    blockFilters.appendChild(stockFilters);
-    const nameFilterStock: HTMLElement | null = document.createElement('h3');
-    nameFilterStock.innerText = 'Stock';
-    stockFilters.appendChild(nameFilterStock);
+    const inputSliderPriceMin: HTMLInputElement | null = document.createElement('input');
+    inputSliderPriceMin.setAttribute('value', `${pricesArray[0]}`);
+    inputSliderPriceMin.type = 'range';
+    inputSliderPriceMin.value = `${pricesArray[0]}`;
+    inputSliderPriceMin.min = `${pricesArray[0]}`;
+    inputSliderPriceMin.max = `${pricesArray[pricesArray.length - 1]}`;
+    inputSliderPriceMin.step = '1';
+    rangeSliderPrice.appendChild(inputSliderPriceMin);
+    const inputSliderPriceMax: HTMLInputElement | null = document.createElement('input');
+    inputSliderPriceMax.setAttribute('value', `${pricesArray[pricesArray.length - 1]}`);
+    inputSliderPriceMax.type = 'range';
+    inputSliderPriceMax.max = `${pricesArray[pricesArray.length - 1]}`;
+    inputSliderPriceMax.min = `${pricesArray[0]}`;
+    inputSliderPriceMax.value = `${pricesArray[pricesArray.length - 1]}`;
+    rangeSliderPrice.appendChild(inputSliderPriceMax);
+
+    function getValsPrice() {
+      let slides = rangeSliderPrice.getElementsByTagName('input');
+      let slide1 = that.getNearest(pricesArray, +slides[0].value);
+      let slide2 = that.getNearest(pricesArray, +slides[1].value);
+
+      const items = document.querySelectorAll('.item');
+      const itemsArray = Array.from(items);
+      for (let i = 0; i < itemsArray.length; i++) {
+        if (+itemsArray[i].attributes[1].value < slide1 || +itemsArray[i].attributes[1].value > slide2) {
+          itemsArray[i].remove();
+        }
+      }
+
+      // Neither slider will clip the other, so make sure we determine which is larger
+      if (slide1 > slide2) {
+        let tmp = slide2;
+        slide2 = slide1;
+        slide1 = tmp;
+      }
+      let displayElement = rangeSliderPrice.getElementsByClassName('rangeValues')[0];
+      displayElement.innerHTML = '€' + slide1 + ' - €' + slide2;
+    }
+
+    function price() {
+      // Initialize Sliders
+      let sliderSections = document.getElementsByClassName('price');
+      for (let x = 0; x < sliderSections.length; x++) {
+        let sliders: any = sliderSections[x].getElementsByTagName('input');
+        for (let y = 0; y < sliders.length; y++) {
+          if (sliders[y].type === 'range') {
+            sliders[y].oninput = getValsPrice;
+            sliders[y].oninput();
+          }
+        }
+      }
+    }
+    getValsPrice();
+
+    const sliderStock = document.createElement('div');
+    sliderStock.className = 'slider';
+    blockFilters.appendChild(sliderStock);
+    const nameSliderStock: HTMLElement | null = document.createElement('h3');
+    nameSliderStock.innerText = 'Stock';
+    sliderStock.appendChild(nameSliderStock);
+    const rangeSliderStock = document.createElement('div');
+    rangeSliderStock.className = 'range-slider stock';
+    sliderStock.appendChild(rangeSliderStock);
+    const spanSliderStock = document.createElement('span');
+    spanSliderStock.className = 'rangeValues';
+    rangeSliderStock.appendChild(spanSliderStock);
+
+    const inputSliderStockMin: HTMLInputElement | null = document.createElement('input');
+    inputSliderStockMin.setAttribute('value', `${stocksArray[0]}`);
+    inputSliderStockMin.type = 'range';
+    inputSliderStockMin.min = `${stocksArray[0]}`;
+    inputSliderStockMin.max = `${stocksArray[stocksArray.length - 1]}`;
+    inputSliderStockMin.step = '1';
+    rangeSliderStock.appendChild(inputSliderStockMin);
+    const inputSliderStockMax: HTMLInputElement | null = document.createElement('input');
+    inputSliderStockMax.type = 'range';
+    inputSliderStockMax.max = `${stocksArray[stocksArray.length - 1]}`;
+    inputSliderStockMax.min = `${stocksArray[0]}`;
+    inputSliderStockMax.value = `${stocksArray[stocksArray.length - 1]}`;
+    inputSliderStockMax.step = '1';
+    rangeSliderStock.appendChild(inputSliderStockMax);
+
+    function getValsStock() {
+      let slides = rangeSliderStock.getElementsByTagName('input');
+      let slide1 = that.getNearest(stocksArray, +slides[0].value);
+      let slide2 = that.getNearest(stocksArray, +slides[1].value);
+      // Neither slider will clip the other, so make sure we determine which is larger
+      const items = document.querySelectorAll('.item');
+      const itemsArray = Array.from(items);
+      for (let i = 0; i < itemsArray.length; i++) {
+        if (+itemsArray[i].attributes[2].value < slide1 || +itemsArray[i].attributes[2].value > slide2) {
+            itemsArray[i].remove();
+        }
+      }
+      if (slide1 > slide2) {
+        let tmp = slide2;
+        slide2 = slide1;
+        slide1 = tmp;
+      }
+      let displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
+      displayElement.innerHTML = slide1 + ' - ' + slide2;
+    }
+
+    function stock() {
+      // Initialize Sliders
+      let sliderSections = document.getElementsByClassName('stock');
+      for (let x = 0; x < sliderSections.length; x++) {
+        let sliders: any = sliderSections[x].getElementsByTagName('input');
+        for (let y = 0; y < sliders.length; y++) {
+          if (sliders[y].type === 'range') {
+            sliders[y].oninput = getValsStock;
+            // Manually trigger event first time to display values
+            sliders[y].oninput();
+          }
+        }
+      }
+    }
+    getValsStock();
+
+    window.addEventListener('load', function () {
+      price();
+      stock();
+    });
   }
 }

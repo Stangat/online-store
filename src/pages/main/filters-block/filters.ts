@@ -201,7 +201,7 @@ export class Filters {
       const itemsArray = Array.from(items);
       for (let i = 0; i < itemsArray.length; i++) {
         if (+itemsArray[i].attributes[2].value < slide1 || +itemsArray[i].attributes[2].value > slide2) {
-          itemsArray[i].remove();
+            itemsArray[i].remove();
         }
       }
       if (slide1 > slide2) {

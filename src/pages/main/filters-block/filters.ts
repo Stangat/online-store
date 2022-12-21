@@ -81,15 +81,42 @@ export class Filters {
     blockFilters.className = 'filters-container';
     main?.appendChild(blockFilters);
 
+    const buttonsFilter: HTMLDivElement | null = document.createElement('div');
+    buttonsFilter.className = 'filters-container-buttons';
+    blockFilters.appendChild(buttonsFilter);
+
     const resetFilters: HTMLDivElement | null = document.createElement('div');
     resetFilters.className = 'filters-container-reset';
     blockFilters.appendChild(resetFilters);
     const resetFiltersButton: HTMLButtonElement | null = document.createElement('button');
     resetFiltersButton.className = 'filters-container-reset-button';
-    resetFilters.appendChild(resetFiltersButton);
+    buttonsFilter.appendChild(resetFiltersButton);
     resetFiltersButton.innerHTML = 'Reset Filters';
     resetFiltersButton.addEventListener('click', (event) => {
       console.log(event);
+    });
+
+    const copyFilters: HTMLDivElement | null = document.createElement('div');
+    copyFilters.className = 'filters-container-copy';
+    blockFilters.appendChild(copyFilters);
+    const copyFiltersButton: HTMLButtonElement | null = document.createElement('button');
+    copyFiltersButton.className = 'filters-container-reset-button';
+    buttonsFilter.appendChild(copyFiltersButton);
+    copyFiltersButton.innerHTML = 'Copy!';
+    copyFiltersButton.addEventListener('click', () => {
+      copyFiltersButton.innerText = 'Copied';
+      setTimeout(() => {
+        copyFiltersButton.innerText = 'Copy!';
+      }, 1000);
+      const url = window.location.href;
+      navigator.clipboard
+        .writeText(url)
+        .then(() => {
+          console.log('Text copied to clipboard');
+        })
+        .catch((err) => {
+          console.error('Error in copying text: ', err);
+        });
     });
 
     const categoryFilters: HTMLDivElement | null = document.createElement('div');

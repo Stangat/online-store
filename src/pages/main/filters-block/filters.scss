@@ -1,6 +1,16 @@
 .filters-container {
   width: 25%;
 }
+.filters-container-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+.filters-container-category-list:hover {
+  box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
+}
+.filters-container-brand-list:hover {
+  box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
+}
 .filters-container-reset-button {
   margin-top: 15px;
   background-color: #dc092e;

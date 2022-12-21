@@ -20,7 +20,6 @@ class CardsBlock {
     sortOptions.append(defaultOption);
     defaultOption.value = 'sort-title';
     defaultOption.setAttribute('disabled', '');
-    defaultOption.setAttribute('selected', '');
     defaultOption.textContent = 'Sort options:';
 
     const optionOne = document.createElement('option');
@@ -38,14 +37,14 @@ class CardsBlock {
     const optionThree = document.createElement('option');
     optionThree.className = 'selector__option';
     sortOptions.append(optionThree);
-    optionThree.value = 'category-ASC';
-    optionThree.textContent = 'sort by category (asc)';
+    optionThree.value = 'rating-ASC';
+    optionThree.textContent = 'sort by rating (asc)';
 
     const optionFour = document.createElement('option');
     optionFour.className = 'selector__option';
     sortOptions.append(optionFour);
-    optionFour.value = 'category-DESC';
-    optionFour.textContent = 'sort by category (desc)';
+    optionFour.value = 'rating-DESC';
+    optionFour.textContent = 'sort by rating (desc)';
 
     const optionFive = document.createElement('option');
     optionFive.className = 'selector__option';
@@ -92,16 +91,25 @@ class CardsBlock {
     const products = document.createElement('div');
     products.className = 'products';
     const main = document.querySelector('.main');
-    const NUMBER_OF_CARDS = 100;
-    const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
     if (main) {
       main.append(products);
     }
+    this.updateCatalog();
+  }
 
+  clearCatalog(): void {
+    const products: HTMLDivElement | null = document.querySelector('.products-container');
+    products?.remove();
+  }
+
+  updateCatalog(): void {
+    this.clearCatalog();
+    const NUMBER_OF_CARDS = 100;
+    const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
+    const products = document.querySelector('.products');
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';
-    products.append(productsContainer);
-
+    products?.append(productsContainer);
     for (let i = 0; i < NUMBER_OF_CARDS; i++) {
       const item = document.createElement('div');
       item.className = 'item';
@@ -207,11 +215,6 @@ class CardsBlock {
       detailsButton.textContent = 'Details';
       itemButtons.append(detailsButton);
     }
-    this.createSortPanel();
-  }
-  clearCatalog(): void {
-    const products: HTMLDivElement | null = document.querySelector('.products');
-    products?.remove();
   }
 }
 

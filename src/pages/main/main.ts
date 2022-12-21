@@ -16,6 +16,7 @@ export class MainPage implements IComponent {
       new Main().create();
       new Filters().create();
       new CardsBlock().createCatalog();
+      new CardsBlock().createSortPanel();
       new UrlPath().setQuery();
       new CardsSort().sort();
       new Footer().create();

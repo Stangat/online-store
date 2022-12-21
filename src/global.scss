@@ -5,7 +5,16 @@
 body {
   margin: 0;
 }
-
+a {
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: #77051a;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}
 button {
   transition: 0.2s;
   &:hover {

@@ -17,7 +17,13 @@
   justify-content: space-between;
   cursor: pointer;
 }
-.header__cart{
+.header__brand__name:hover {
+  color: #77051a;
+}
+.header__brand__name:active {
+  transform: translateY(1px);
+}
+.header__cart {
   cursor: pointer;
 }
 .header__price {

@@ -104,21 +104,20 @@ class CardsBlock {
 
   updateCatalog(): void {
     this.clearCatalog();
-    const NUMBER_OF_CARDS = 100;
     const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
     const products = document.querySelector('.products');
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';
     products?.append(productsContainer);
 
-    for (let i = 0; i < NUMBER_OF_CARDS; i++) {
+    for (let i = 0; i < onlineStoreData.products.length; i += 1) {
       const item = document.createElement('div');
       item.className = 'item';
 
-      item.setAttribute('data-price', `${onlineStoreData.products[i].price}`)
-      item.setAttribute('data-stock', `${onlineStoreData.products[i].stock}`)
-      item.setAttribute('data-category', `${onlineStoreData.products[i].category}`)
-      item.setAttribute('data-brand', `${onlineStoreData.products[i].brand}`)
+      item.setAttribute('data-price', `${onlineStoreData.products[i].price}`);
+      item.setAttribute('data-stock', `${onlineStoreData.products[i].stock}`);
+      item.setAttribute('data-category', `${onlineStoreData.products[i].category}`);
+      item.setAttribute('data-brand', `${onlineStoreData.products[i].brand}`);
       productsContainer.append(item);
 
       const itemWrapper = document.createElement('div');

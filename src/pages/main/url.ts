@@ -2,6 +2,7 @@
 
 class UrlPath {
   params: URLSearchParams;
+
   constructor() {
     this.params = new URLSearchParams(window.location.search);
   }
@@ -10,9 +11,6 @@ class UrlPath {
 
     if (sortOptions) {
       sortOptions.addEventListener('change', (): void => {
-        if (this.params.has('sort')) {
-          this.params.delete('sort');
-        }
         this.params.set('sort', sortOptions.selectedOptions[0].value);
         window.history.pushState({}, '', `?${this.params.toString()}`);
       });

@@ -132,10 +132,12 @@ export class Filters {
       let slide2 = that.getNearest(pricesArray, +slides[1].value);
 
       const items = document.querySelectorAll('.item');
-      const itemsArray = Array.from(items);
+      const itemsArray:any= Array.from(items);
       for (let i = 0; i < itemsArray.length; i++) {
         if (+itemsArray[i].attributes[1].value < slide1 || +itemsArray[i].attributes[1].value > slide2) {
-          itemsArray[i].remove();
+          itemsArray[i].style.display = 'none';
+        } else {
+            itemsArray[i].style.display = 'block';
         }
       }
 
@@ -198,10 +200,12 @@ export class Filters {
       let slide2 = that.getNearest(stocksArray, +slides[1].value);
       // Neither slider will clip the other, so make sure we determine which is larger
       const items = document.querySelectorAll('.item');
-      const itemsArray = Array.from(items);
+      const itemsArray:any = Array.from(items);
       for (let i = 0; i < itemsArray.length; i++) {
         if (+itemsArray[i].attributes[2].value < slide1 || +itemsArray[i].attributes[2].value > slide2) {
-            itemsArray[i].remove();
+            itemsArray[i].style.display = 'none';
+        } else {
+            itemsArray[i].style.display = 'block';
         }
       }
       if (slide1 > slide2) {

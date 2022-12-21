@@ -1,13 +1,78 @@
 import { brands, categories, pricesArray, stocksArray } from './constants';
 import './filters.scss';
 
+type TargetWithId = Event['target'] & { id?: string };
+
 export class Filters {
+  selectedFilters: Array<string> = [];
+  selectedFiltersBrand: Array<string> = [];
+
   getNearest = (arr: number[], num: number) => {
     const arr2 = arr.map((val) => Math.abs(val - num));
     const min = Math.min(...arr2);
     const index = arr2.indexOf(min);
     return arr[index];
   };
+
+  isTargetWithId(target: TargetWithId): asserts target is TargetWithId {
+    if (target.id === undefined) {
+      throw new Error('id is udefined');
+    }
+  }
+
+  addIfNotExists<T>(array: T[], item: T): void {
+    const index = array.indexOf(item);
+    if (index === -1) {
+      array.push(item);
+    } else {
+      array.splice(index, 1);
+    }
+  }
+
+  eventHandler(target: Event['target'] | null) {
+    if (!target) {
+      return;
+    }
+    this.isTargetWithId(target);
+    const category = target.id;
+    this.addIfNotExists(this.selectedFilters, category);
+    const checkboxItems = Array.from(document.querySelectorAll('.item'));
+    const containerItem = document.querySelector('.products-container');
+    checkboxItems.forEach((item) => {
+      const height = containerItem?.clientHeight;
+      if (item instanceof HTMLElement)
+        if (this.selectedFilters.includes(item.attributes[3].value)) {
+          item.style.display = 'block';
+        } else if (this.selectedFilters.length === 0) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+    });
+  }
+  eventHandlerBrand(target: Event['target'] | null) {
+    if (!target) {
+      return;
+    }
+    this.isTargetWithId(target);
+    const brand = target.id;
+    this.addIfNotExists(this.selectedFiltersBrand, brand);
+    const checkboxItems = Array.from(document.querySelectorAll('.item'));
+    const containerItem = document.querySelector('.products-container');
+
+    checkboxItems.forEach((item) => {
+      const height = containerItem?.clientHeight;
+      if (item instanceof HTMLElement)
+        if (this.selectedFiltersBrand.includes(item.attributes[4].value)) {
+          item.style.display = 'block';
+        } else if (this.selectedFiltersBrand.length === 0) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+    });
+  }
+
   create(): void {
     const that = this;
     const main: HTMLElement | null = document.querySelector('.main');
@@ -60,6 +125,7 @@ export class Filters {
       containerOneCheckbox.appendChild(formCheckboxCategory);
       containerOneCheckbox.appendChild(spanCategory);
       listFilterCategory.appendChild(containerOneCheckbox);
+      checkboxCategory.addEventListener('change', (event) => this.eventHandler(event.target));
     });
 
     const brandFilters: HTMLDivElement | null = document.createElement('div');
@@ -95,6 +161,7 @@ export class Filters {
       containerOneCheckboxBrand.appendChild(formCheckboxBrand);
       containerOneCheckboxBrand.appendChild(spanBrand);
       listFilterBrand.appendChild(containerOneCheckboxBrand);
+      checkboxBrand.addEventListener('change', (event) => this.eventHandlerBrand(event.target));
     });
 
     const sliderPrice = document.createElement('div');
@@ -132,12 +199,12 @@ export class Filters {
       let slide2 = that.getNearest(pricesArray, +slides[1].value);
 
       const items = document.querySelectorAll('.item');
-      const itemsArray:any= Array.from(items);
+      const itemsArray: any = Array.from(items);
       for (let i = 0; i < itemsArray.length; i++) {
         if (+itemsArray[i].attributes[1].value < slide1 || +itemsArray[i].attributes[1].value > slide2) {
           itemsArray[i].style.display = 'none';
         } else {
-            itemsArray[i].style.display = 'block';
+          itemsArray[i].style.display = 'block';
         }
       }
 
@@ -200,12 +267,12 @@ export class Filters {
       let slide2 = that.getNearest(stocksArray, +slides[1].value);
       // Neither slider will clip the other, so make sure we determine which is larger
       const items = document.querySelectorAll('.item');
-      const itemsArray:any = Array.from(items);
+      const itemsArray: any = Array.from(items);
       for (let i = 0; i < itemsArray.length; i++) {
         if (+itemsArray[i].attributes[2].value < slide1 || +itemsArray[i].attributes[2].value > slide2) {
-            itemsArray[i].style.display = 'none';
+          itemsArray[i].style.display = 'none';
         } else {
-            itemsArray[i].style.display = 'block';
+          itemsArray[i].style.display = 'block';
         }
       }
       if (slide1 > slide2) {

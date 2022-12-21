@@ -1,12 +1,19 @@
 import { brands, categories, pricesArray, stocksArray } from './constants';
 import './filters.scss';
+import { UrlSearch } from './urlSearch';
 
 type TargetWithId = Event['target'] & { id?: string };
 
 export class Filters {
+  
+  constructor(private readonly urlSearchService: UrlSearch) {
+   this.selectedFilters = this.urlSearchService.getAll('category')[0]?.split('&') || []
+   this.selectedFiltersBrand = this.urlSearchService.getAll('stock')[0]?.split('&') || []
+  }  
+  
   selectedFilters: Array<string> = [];
   selectedFiltersBrand: Array<string> = [];
-
+  
   getNearest = (arr: number[], num: number) => {
     const arr2 = arr.map((val) => Math.abs(val - num));
     const min = Math.min(...arr2);
@@ -20,12 +27,15 @@ export class Filters {
     }
   }
 
-  addIfNotExists<T>(array: T[], item: T): void {
+  addIfNotExists(array: string[], item: string): void {
     const index = array.indexOf(item);
+    this.urlSearchService.getAll('category')
     if (index === -1) {
       array.push(item);
+      this.urlSearchService.setParam('category', array.join('&'))
     } else {
       array.splice(index, 1);
+      this.urlSearchService.setParam('category', array.join('&'))
     }
   }
 
@@ -35,7 +45,7 @@ export class Filters {
     }
     this.isTargetWithId(target);
     const category = target.id;
-    this.addIfNotExists(this.selectedFilters, category);
+    this.addIfNotExists(this.selectedFilters, category || '');
     const checkboxItems = Array.from(document.querySelectorAll('.item'));
     const containerItem = document.querySelector('.products-container');
     checkboxItems.forEach((item) => {
@@ -56,7 +66,7 @@ export class Filters {
     }
     this.isTargetWithId(target);
     const brand = target.id;
-    this.addIfNotExists(this.selectedFiltersBrand, brand);
+    this.addIfNotExists(this.selectedFiltersBrand, brand || '');
     const checkboxItems = Array.from(document.querySelectorAll('.item'));
     const containerItem = document.querySelector('.products-container');
 
@@ -153,6 +163,7 @@ export class Filters {
       containerOneCheckbox.appendChild(spanCategory);
       listFilterCategory.appendChild(containerOneCheckbox);
       checkboxCategory.addEventListener('change', (event) => this.eventHandler(event.target));
+      checkboxCategory.checked = this.selectedFilters.includes(element)
     });
 
     const brandFilters: HTMLDivElement | null = document.createElement('div');

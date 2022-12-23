@@ -15,8 +15,9 @@ export class Header {
     const headerPriceTotal: HTMLSpanElement | null = document.createElement('span');
 
     const headerCart: HTMLDivElement | null = document.createElement('div');
-    const headerCartImage: HTMLImageElement | null = document.createElement('img');
-    const headerCartTotal: HTMLSpanElement | null = document.createElement('span');
+    //const headerCartImage: HTMLImageElement | null = document.createElement('img');
+    const headerCartBlock: HTMLDivElement | null = document.createElement('div');
+    const headerCartTotal: HTMLSpanElement | null = document.createElement('div');
 
     body.appendChild(header);
     header.classList.add('header');
@@ -43,10 +44,12 @@ export class Header {
     headerCart.addEventListener('click', (event: {}) => {
       window.location.href = '/cart';
     });
-    headerCart.appendChild(headerCartImage);
+   /*  headerCart.appendChild(headerCartImage);
     headerCartImage.classList.add('header__cart__image');
-    headerCartImage.src = 'header-cart.svg';
-    headerCart.appendChild(headerCartTotal);
+    headerCartImage.src = 'header-cart.svg';  */
+    headerCart.appendChild(headerCartBlock);
+    headerCartBlock.classList.add('header__cart__block');
+    headerCartBlock.appendChild(headerCartTotal);
     headerCartTotal.classList.add('header__cart__total');
     headerCartTotal.innerText = '0';
   }

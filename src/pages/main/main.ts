@@ -7,18 +7,24 @@ import { UrlPath } from './url';
 import { Filters } from './filters-block/filters'
 import './main.scss';
 import { CardsSort } from './cards-block/sort';
+import { UrlSearch } from './filters-block/urlSearch';
+import { onlineStoreData } from '../../data/data';
 
 export class MainPage implements IComponent {
   execute() {
     const root: HTMLElement | null = document.getElementById('root');
+    const main = new Main()
+    const urlSearch = new UrlSearch()
+    const cardBlock = new CardsBlock()
+    const filters = new Filters(urlSearch, cardBlock, [cardBlock])
     if (root) {
       new Header().create();
-      new Main().create();
-      new Filters().create();
-      new CardsBlock().createCatalog();
-      new CardsBlock().createSortPanel();
+      main.create();
+      filters.create();
+      cardBlock.createCatalog(filters.products);
+      cardBlock.createSortPanel();
       new UrlPath().setQuery();
-      new CardsSort().sort();
+      new CardsSort(filters).sort();
       new Footer().create();
     }
   }

@@ -1,7 +1,12 @@
-import { onlineStoreData } from '../../../data/data';
+import { Filters } from '../filters-block/filters';
 import { CardsBlock } from './cards';
 
 class CardsSort extends CardsBlock {
+  constructor(filters: Filters) {
+    super()
+    this.filters = filters
+  }
+  filters: Filters
   sort(): void {
     const sortOptions: HTMLSelectElement | null = document.querySelector('.selector');
 
@@ -29,22 +34,22 @@ class CardsSort extends CardsBlock {
     const sortOptions: HTMLSelectElement | null = document.querySelector('.selector');
     if (sortOptions) {
       switch (true) {
-        case window.location.search === '?sort=price-ASC':
+        case window.location.search.includes('sort=price-ASC'):
           sortOptions.options[1].setAttribute('selected', '');
           break;
-        case window.location.search === '?sort=price-DESC':
+        case window.location.search.includes('sort=price-DESC'):
           sortOptions.options[2].setAttribute('selected', '');
           break;
-        case window.location.search === '?sort=rating-ASC':
+        case window.location.search.includes('sort=rating-ASC'):
           sortOptions.options[3].setAttribute('selected', '');
           break;
-        case window.location.search === '?sort=rating-DESC':
+        case window.location.search.includes('sort=rating-DESC'):
           sortOptions.options[4].setAttribute('selected', '');
           break;
-        case window.location.search === '?sort=discount-ASC':
+        case window.location.search.includes('sort=discount-ASC'):
           sortOptions.options[5].setAttribute('selected', '');
           break;
-        case window.location.search === '?sort=discount-DESC':
+        case window.location.search.includes('sort=discount-DESC'):
           sortOptions.options[6].setAttribute('selected', '');
           break;
       }
@@ -52,44 +57,44 @@ class CardsSort extends CardsBlock {
   }
 
   sortByPriceAsc(): void {
-    if (window.location.search === '?sort=price-ASC') {
-      onlineStoreData.products.sort((a, b) => a.price - b.price);
-      super.updateCatalog();
+    if (window.location.search.includes('sort=price-ASC')) {
+      this.filters.products.sort((a, b) => a.price - b.price);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByPriceDesc(): void {
-    if (window.location.search === '?sort=price-DESC') {
-      onlineStoreData.products.sort((a, b) => b.price - a.price);
-      super.updateCatalog();
+    if (window.location.search.includes('sort=price-DESC')) {
+      this.filters.products.sort((a, b) => b.price - a.price);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByDiscountAsc(): void {
-    if (window.location.search === '?sort=discount-ASC') {
-      onlineStoreData.products.sort((a, b) => a.discountPercentage - b.discountPercentage);
-      super.updateCatalog();
+    if (window.location.search.includes('sort=discount-ASC')) {
+      this.filters.products.sort((a, b) => a.discountPercentage - b.discountPercentage);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByDiscountDesc(): void {
-    if (window.location.search === '?sort=discount-DESC') {
-      onlineStoreData.products.sort((a, b) => b.discountPercentage - a.discountPercentage);
-      super.updateCatalog();
+    if (window.location.search.includes('sort=discount-DESC')) {
+      this.filters.products.sort((a, b) => b.discountPercentage - a.discountPercentage);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByRatingAsc(): void {
-    if (window.location.search === '?sort=rating-ASC') {
-      onlineStoreData.products.sort((a, b) => a.rating - b.rating);
-      super.updateCatalog();
+    if (window.location.search.includes('sort=rating-ASC')) {
+      this.filters.products.sort((a, b) => a.rating - b.rating);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByRatingDesc(): void {
-    if (window.location.search === '?sort=rating-DESC') {
-      onlineStoreData.products.sort((a, b) => b.rating - a.rating);
-      super.updateCatalog();
+    if (window.location.search.includes('sort=rating-DESC')) {
+      this.filters.products.sort((a, b) => b.rating - a.rating);
+      super.updateCatalog(this.filters.products);
     }
   }
 }

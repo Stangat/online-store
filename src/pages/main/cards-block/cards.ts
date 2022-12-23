@@ -1,9 +1,24 @@
 import { CardsId } from './cardsIdEnum';
 import './styles/cards.scss';
 import './styles/sort-panel.scss';
-import { onlineStoreData } from '../../../data/data';
+import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
+import { UrlSearch } from '../filters-block/urlSearch';
 
 class CardsBlock {
+  constructor() {}
+  notify(products: typeof onlineStoreDataMock.products) {
+    this.updateCatalog(products)
+    this.productsCount = +products.length
+    this.updateFounded(+products.length)
+  }
+  productsCount: number = 0
+  updateFounded(count: number) {
+    const stats = document.querySelector('.stats');
+    if(stats) {
+      stats.innerHTML = `Found: ${count}`;
+    }
+  }
+
   createSortPanel(): void {
     const products: HTMLDivElement | null = document.querySelector('.products');
     const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
@@ -60,7 +75,7 @@ class CardsBlock {
 
     const stats = document.createElement('div');
     stats.className = 'stats';
-    stats.textContent = `Found: ${productsContainer?.children.length}`;
+    stats.textContent = `Found: ${this.productsCount}`;
     sortPanel.append(stats);
 
     const searchBar = document.createElement('div');
@@ -87,14 +102,14 @@ class CardsBlock {
     viewMode.append(bigView);
   }
 
-  createCatalog(): void {
+  createCatalog(productsDate: typeof onlineStoreDataMock.products): void {
     const products = document.createElement('div');
     products.className = 'products';
     const main = document.querySelector('.main');
     if (main) {
       main.append(products);
     }
-    this.updateCatalog();
+    this.updateCatalog(productsDate);
   }
 
   clearCatalog(): void {
@@ -102,7 +117,7 @@ class CardsBlock {
     products?.remove();
   }
 
-  updateCatalog(): void {
+  updateCatalog(productsDate: typeof onlineStoreDataMock.products): void {
     this.clearCatalog();
     const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
     const products = document.querySelector('.products');
@@ -110,14 +125,14 @@ class CardsBlock {
     productsContainer.className = 'products-container';
     products?.append(productsContainer);
 
-    for (let i = 0; i < onlineStoreData.products.length; i += 1) {
+    for (let i = 0; i < productsDate.length; i += 1) {
       const item = document.createElement('div');
       item.className = 'item';
 
-      item.setAttribute('data-price', `${onlineStoreData.products[i].price}`);
-      item.setAttribute('data-stock', `${onlineStoreData.products[i].stock}`);
-      item.setAttribute('data-category', `${onlineStoreData.products[i].category}`);
-      item.setAttribute('data-brand', `${onlineStoreData.products[i].brand}`);
+      item.setAttribute('data-price', `${productsDate[i].price}`);
+      item.setAttribute('data-stock', `${productsDate[i].stock}`);
+      item.setAttribute('data-category', `${productsDate[i].category}`);
+      item.setAttribute('data-brand', `${productsDate[i].brand}`);
       productsContainer.append(item);
 
       const itemWrapper = document.createElement('div');
@@ -127,7 +142,7 @@ class CardsBlock {
       const itemImage = document.createElement('div');
       itemImage.className = 'item-image';
       itemWrapper.append(itemImage);
-      itemImage.style.backgroundImage = `url(${onlineStoreData.products[i].thumbnail})`;
+      itemImage.style.backgroundImage = `url(${productsDate[i].thumbnail})`;
 
       const itemDetailsContainer = document.createElement('div');
       itemDetailsContainer.className = 'item-details-container';
@@ -145,20 +160,20 @@ class CardsBlock {
       itemRatingParagraph.append(ratingText);
       const ratingValue = document.createElement('span');
       ratingValue.className = 'item-rating__value';
-      ratingValue.textContent = `${onlineStoreData.products[i].rating}`;
+      ratingValue.textContent = `${productsDate[i].rating}`;
       itemRatingParagraph.append(ratingValue);
 
       const itemTitle = document.createElement('div');
       itemTitle.className = 'item-title';
       itemDetailsContainer.append(itemTitle);
-      itemTitle.textContent = `${onlineStoreData.products[i].title}`;
+      itemTitle.textContent = `${productsDate[i].title}`;
 
       if (
         itemTitle.textContent.length <= NUMBER_OF_CHARACTERS_IN_TITLE &&
-        onlineStoreData.products[i].id !== CardsId.id13 &&
-        onlineStoreData.products[i].id !== CardsId.id23 &&
-        onlineStoreData.products[i].id !== CardsId.id28 &&
-        onlineStoreData.products[i].id !== CardsId.id63
+        productsDate[i].id !== CardsId.id13 &&
+        productsDate[i].id !== CardsId.id23 &&
+        productsDate[i].id !== CardsId.id28 &&
+        productsDate[i].id !== CardsId.id63
       ) {
         itemTitle.style.marginBottom = '25px';
       }
@@ -175,7 +190,7 @@ class CardsBlock {
       itemPriceParagraph.append(priceText);
       const priceValue = document.createElement('span');
       priceValue.className = 'item-price__value';
-      priceValue.textContent = `${onlineStoreData.products[i].price} €`;
+      priceValue.textContent = `${productsDate[i].price} €`;
       itemPriceParagraph.append(priceValue);
 
       const itemDiscount = document.createElement('div');
@@ -190,7 +205,7 @@ class CardsBlock {
       itemDiscountParagraph.append(discountText);
       const discountValue = document.createElement('span');
       discountValue.className = 'item-discount__value';
-      discountValue.textContent = `${onlineStoreData.products[i].discountPercentage} %`;
+      discountValue.textContent = `${productsDate[i].discountPercentage} %`;
       itemDiscountParagraph.append(discountValue);
 
       const itemStock = document.createElement('div');
@@ -205,7 +220,7 @@ class CardsBlock {
       itemStockParagraph.append(stockText);
       const stockValue = document.createElement('span');
       stockValue.className = 'item-stock__value';
-      stockValue.textContent = `${onlineStoreData.products[i].stock}`;
+      stockValue.textContent = `${productsDate[i].stock}`;
       itemStockParagraph.append(stockValue);
 
       const itemButtons = document.createElement('div');

@@ -8,7 +8,6 @@ import { Filters } from './filters-block/filters'
 import './main.scss';
 import { CardsSort } from './cards-block/sort';
 import { UrlSearch } from './filters-block/urlSearch';
-import { onlineStoreData } from '../../data/data';
 
 export class MainPage implements IComponent {
   execute() {
@@ -23,6 +22,7 @@ export class MainPage implements IComponent {
       filters.create();
       cardBlock.createCatalog(filters.products);
       cardBlock.createSortPanel();
+      
       new UrlPath().setQuery();
       new CardsSort(filters).sort();
       new Footer().create();

@@ -2,19 +2,18 @@ import { CardsId } from './cardsIdEnum';
 import './styles/cards.scss';
 import './styles/sort-panel.scss';
 import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
-import { UrlSearch } from '../filters-block/urlSearch';
 
 class CardsBlock {
   constructor() {}
   notify(products: typeof onlineStoreDataMock.products) {
-    this.updateCatalog(products)
-    this.productsCount = +products.length
-    this.updateFounded(+products.length)
+    this.updateCatalog(products);
+    this.productsCount = +products.length;
+    this.updateFounded(+products.length);
   }
-  productsCount: number = 0
+  productsCount: number = 0;
   updateFounded(count: number) {
     const stats = document.querySelector('.stats');
-    if(stats) {
+    if (stats) {
       stats.innerHTML = `Found: ${count}`;
     }
   }
@@ -128,7 +127,7 @@ class CardsBlock {
     for (let i = 0; i < productsDate.length; i += 1) {
       const item = document.createElement('div');
       item.className = 'item';
-
+      productsDate[i].id;
       item.setAttribute('data-price', `${productsDate[i].price}`);
       item.setAttribute('data-stock', `${productsDate[i].stock}`);
       item.setAttribute('data-category', `${productsDate[i].category}`);
@@ -233,7 +232,13 @@ class CardsBlock {
       const detailsButton = document.createElement('button');
       detailsButton.className = 'button button_details';
       detailsButton.textContent = 'Details';
+
       itemButtons.append(detailsButton);
+
+      detailsButton.addEventListener('click', (event) => {
+        const itemId = productsDate[i].id;
+        window.location.href = '/product/' + `${itemId}`;
+      });
     }
   }
 }

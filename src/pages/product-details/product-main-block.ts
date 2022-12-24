@@ -1,4 +1,5 @@
 import { onlineStoreData } from '../../data/data';
+
 import './product.scss';
 export class ProductMain {
   create(id: number): void {

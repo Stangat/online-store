@@ -1,5 +1,4 @@
 import './header.scss';
-import '../../assets/icon-shop.png'
 export class Header {
   create() {
     const body: HTMLBodyElement | null = document.getElementsByTagName('body')[0];
@@ -25,9 +24,7 @@ export class Header {
     headerBrand.addEventListener('click', (event: {}) => {
       window.location.href = '/';
     });
-    headerBrand.appendChild(headerBrandLogo);
-    headerBrandLogo.classList.add('header__brand__logo');
-    headerBrandLogo.src = 'icon-shop.png';
+
     headerBrand.appendChild(headerBrandName);
     headerBrandName.classList.add('header__brand__name');
     headerBrandName.innerText = 'Online Store';

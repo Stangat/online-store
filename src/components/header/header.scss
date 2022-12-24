@@ -18,16 +18,24 @@
   cursor: pointer;
   color: #dc092e;
 }
+.header__brand__name {
+  background: url('../../assets/icon-shop.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
+  padding-left: 33px;
+}
 .header__brand__name:hover {
   color: #77051a;
+  background: url('../../assets/icon-shop-hover.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left;
 }
 .header__brand__name:active {
   transform: translateY(1px);
 }
-.header__brand__logo {
-  width: 32px;
-  height: 33px;
-}
+
 .header__cart {
   cursor: pointer;
   width: 44px;

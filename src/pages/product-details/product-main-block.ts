@@ -61,7 +61,7 @@ export class ProductMain {
     productData.appendChild(productPhotos);
     const button = document.createElement('button');
     button.className = 'btnRight';
-    button.innerText = 'Next';
+    button.innerText = 'NEXT';
     productPhotos.appendChild(button)
     let slides = document.querySelectorAll('.product-photos img');
     let i = 0;

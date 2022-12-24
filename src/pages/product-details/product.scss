@@ -40,11 +40,11 @@
   justify-content: space-around;
 }
 
-img {
+.product-photos img {
   display: none;
 }
 
-.block {
+.product-photos .block {
   display: block;
   object-fit: cover;
   max-height: 27vh;

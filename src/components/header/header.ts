@@ -1,7 +1,5 @@
 import './header.scss';
-import '../../assets/header-cart.svg';
-import '../../assets/header-sale-bag.svg';
-
+import '../../assets/icon-shop.png'
 export class Header {
   create() {
     const body: HTMLBodyElement | null = document.getElementsByTagName('body')[0];
@@ -29,7 +27,7 @@ export class Header {
     });
     headerBrand.appendChild(headerBrandLogo);
     headerBrandLogo.classList.add('header__brand__logo');
-    headerBrandLogo.src = 'header-sale-bag.svg';
+    headerBrandLogo.src = 'icon-shop.png';
     headerBrand.appendChild(headerBrandName);
     headerBrandName.classList.add('header__brand__name');
     headerBrandName.innerText = 'Online Store';
@@ -44,9 +42,7 @@ export class Header {
     headerCart.addEventListener('click', (event: {}) => {
       window.location.href = '/cart';
     });
-   /*  headerCart.appendChild(headerCartImage);
-    headerCartImage.classList.add('header__cart__image');
-    headerCartImage.src = 'header-cart.svg';  */
+
     headerCart.appendChild(headerCartBlock);
     headerCartBlock.classList.add('header__cart__block');
     headerCartBlock.appendChild(headerCartTotal);

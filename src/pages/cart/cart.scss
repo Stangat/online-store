@@ -1,0 +1,31 @@
+.parent-div-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.main-cart-empty {
+  padding: 2%;
+  font-size: 28px;
+  font-weight: 600;
+}
+.pulse {
+    padding: 10px;
+    background-color: #dc092e;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 1.0em;
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 green;
+    }
+    75% {
+        box-shadow: 0 0 0 16px transparent;
+    }
+}

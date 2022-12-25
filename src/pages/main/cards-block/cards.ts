@@ -2,20 +2,26 @@ import { CardsId } from './cardsIdEnum';
 import './styles/cards.scss';
 import './styles/sort-panel.scss';
 import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
-import { UrlSearch } from '../filters-block/urlSearch';
 
 class CardsBlock {
   constructor() {}
   notify(products: typeof onlineStoreDataMock.products) {
-    this.updateCatalog(products)
-    this.productsCount = +products.length
-    this.updateFounded(+products.length)
+    this.updateCatalog(products);
+    this.productsCount = +products.length;
+    this.updateFounded(+products.length);
   }
-  productsCount: number = 0
+  productsCount: number = 0;
   updateFounded(count: number) {
     const stats = document.querySelector('.stats');
-    if(stats) {
+    if (stats) {
       stats.innerHTML = `Found: ${count}`;
+    }
+    if (count === 0) {
+      const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
+      if (productsContainer) {
+        productsContainer.innerHTML = 'Unfortunately, no such products were found, try again.';
+        productsContainer.className = 'products-container-empty';
+      }
     }
   }
 
@@ -128,7 +134,7 @@ class CardsBlock {
     for (let i = 0; i < productsDate.length; i += 1) {
       const item = document.createElement('div');
       item.className = 'item';
-
+      productsDate[i].id;
       item.setAttribute('data-price', `${productsDate[i].price}`);
       item.setAttribute('data-stock', `${productsDate[i].stock}`);
       item.setAttribute('data-category', `${productsDate[i].category}`);
@@ -228,12 +234,56 @@ class CardsBlock {
       itemWrapper.append(itemButtons);
       const addToCartButton = document.createElement('button');
       addToCartButton.className = 'button button_add';
-      addToCartButton.textContent = 'Add to cart';
+
+      const storageProduct = localStorage.getItem('product-cart')
+      let productStorage = storageProduct && JSON.parse(storageProduct) || [];
+      const isProductInCart = productStorage.find((prod: any) => prod.id === productsDate[i].id)
+      addToCartButton.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
+      
       itemButtons.append(addToCartButton);
       const detailsButton = document.createElement('button');
       detailsButton.className = 'button button_details';
       detailsButton.textContent = 'Details';
+
       itemButtons.append(detailsButton);
+
+      detailsButton.addEventListener('click', (event) => {
+        const itemId = productsDate[i].id;
+        window.location.href = '/product/' + `${itemId}`;
+      });
+      
+      addToCartButton?.addEventListener('click', (event) => {
+        const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
+        const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
+        let product = productsDate[i];
+        if (headerPrice) {
+          if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
+            let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+            const isProductExist = productStorage.find((prod: any) => prod.id === product.id);
+            if (isProductExist) {
+              productStorage = productStorage.filter((item: any) => item.id !== product.id);
+              addToCartButton.innerText = 'Add to cart';
+            } else {
+              productStorage.push(product);
+              addToCartButton.innerText = 'Drop from cart';
+            }
+            localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
+            const result = productStorage.reduce((a: any, b: any) => a + b.price, 0);
+            localStorage.setItem('result', `${result}`);
+            headerPrice.innerText = `Total Price: ${result}€`;
+          } else {
+            localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+            headerPrice.innerText = `Total Price: ${product.price}€`;
+            addToCartButton.innerText = 'Drop from cart';
+          }
+        }
+        if (headerCount) {
+          const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+          localStorage.getItem('product-cart');
+          localStorage.setItem('storage-length', `${productStorage.length}`);
+          headerCount.innerText = `${productStorage.length}`;
+        }
+      });
     }
   }
 }

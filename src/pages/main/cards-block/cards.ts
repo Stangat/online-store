@@ -5,11 +5,13 @@ import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
 
 class CardsBlock {
   constructor() {}
+
   notify(products: typeof onlineStoreDataMock.products) {
     this.updateCatalog(products);
     this.productsCount = +products.length;
     this.updateFounded(+products.length);
   }
+
   productsCount: number = 0;
   updateFounded(count: number) {
     const stats = document.querySelector('.stats');
@@ -89,7 +91,7 @@ class CardsBlock {
     sortPanel.append(searchBar);
     const searchInput = document.createElement('input');
     searchInput.className = 'search-bar__input';
-    searchInput.type = 'search';
+    searchInput.type = 'text';
     searchInput.placeholder = 'Search product';
     searchBar.append(searchInput);
 

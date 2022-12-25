@@ -2,19 +2,20 @@ import { CardsId } from './cardsIdEnum';
 import './styles/cards.scss';
 import './styles/sort-panel.scss';
 import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
-import { UrlSearch } from '../filters-block/urlSearch';
 
 class CardsBlock {
   constructor() {}
+
   notify(products: typeof onlineStoreDataMock.products) {
-    this.updateCatalog(products)
-    this.productsCount = +products.length
-    this.updateFounded(+products.length)
+    this.updateCatalog(products);
+    this.productsCount = +products.length;
+    this.updateFounded(+products.length);
   }
-  productsCount: number = 0
+
+  productsCount: number = 0;
   updateFounded(count: number) {
     const stats = document.querySelector('.stats');
-    if(stats) {
+    if (stats) {
       stats.innerHTML = `Found: ${count}`;
     }
   }
@@ -83,7 +84,7 @@ class CardsBlock {
     sortPanel.append(searchBar);
     const searchInput = document.createElement('input');
     searchInput.className = 'search-bar__input';
-    searchInput.type = 'search';
+    searchInput.type = 'text';
     searchInput.placeholder = 'Search product';
     searchBar.append(searchInput);
 

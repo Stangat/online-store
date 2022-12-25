@@ -273,6 +273,7 @@ class CardsBlock {
             headerPrice.innerText = `Total Price: ${result}€`;
           } else {
             localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+            headerPrice.innerText = `Total Price: ${product.price}€`;
             addToCartButton.innerText = 'Drop from cart';
           }
         }

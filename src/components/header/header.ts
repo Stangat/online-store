@@ -1,7 +1,4 @@
 import './header.scss';
-import '../../assets/header-cart.svg';
-import '../../assets/header-sale-bag.svg';
-
 export class Header {
   create() {
     const body: HTMLBodyElement | null = document.getElementsByTagName('body')[0];
@@ -27,9 +24,7 @@ export class Header {
     headerBrand.addEventListener('click', (event: {}) => {
       window.location.href = '/';
     });
-    headerBrand.appendChild(headerBrandLogo);
-    headerBrandLogo.classList.add('header__brand__logo');
-    headerBrandLogo.src = 'header-sale-bag.svg';
+
     headerBrand.appendChild(headerBrandName);
     headerBrandName.classList.add('header__brand__name');
     headerBrandName.innerText = 'Online Store';
@@ -37,20 +32,23 @@ export class Header {
     header.appendChild(headerPrice);
     headerPrice.classList.add('header__price');
     headerPrice.appendChild(headerPriceTotal);
-    headerPriceTotal.innerText = 'Total Price: 0$';
+
+    const storagePrice = localStorage.getItem('result')
+    headerPriceTotal.innerText = `Total Price: ${storagePrice || 0}€`;
 
     header.appendChild(headerCart);
     headerCart.classList.add('header__cart');
     headerCart.addEventListener('click', (event: {}) => {
       window.location.href = '/cart';
     });
-   /*  headerCart.appendChild(headerCartImage);
-    headerCartImage.classList.add('header__cart__image');
-    headerCartImage.src = 'header-cart.svg';  */
+
     headerCart.appendChild(headerCartBlock);
     headerCartBlock.classList.add('header__cart__block');
     headerCartBlock.appendChild(headerCartTotal);
     headerCartTotal.classList.add('header__cart__total');
-    headerCartTotal.innerText = '0';
+
+    const storageLength = localStorage.getItem('storage-length')
+    headerCartTotal.innerText = `${storageLength || 0}`;
+
   }
 }

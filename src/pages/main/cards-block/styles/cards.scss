@@ -100,3 +100,14 @@
   font-size: 18px;
   color: $ratingColor;
 }
+
+.products-container-empty {
+  padding: 20%;
+  margin: 5%;
+  color: #dc092e;
+  background: url('../../../../assets/no-product.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  font-size: 25px;
+  font-weight: 600;
+}

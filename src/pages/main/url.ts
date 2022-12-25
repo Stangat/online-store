@@ -1,5 +1,6 @@
 import { UrlSearch } from './filters-block/urlSearch';
 
+
 class UrlPath extends UrlSearch {
   params: URLSearchParams;
 

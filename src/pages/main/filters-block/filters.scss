@@ -110,14 +110,24 @@ input[type=checkbox]:before {
   font-size: 20px;
   margin-bottom: 20px;
 }
-
+@keyframes pulse {
+  from{
+    box-shadow:
+    0 0 25px #77051a,
+    0 0 50px #dc092e;
+  }
+}
 input[type='range'] {
   -webkit-appearance: none;
   border: 1px solid white;
   width: 24%;
   position: absolute;
   left: 22px;
+  &:focus {
+    animation: pulse 0.5s ease-in-out;
+  }
 }
+
 
 input[type='range']::-webkit-slider-runnable-track {
   width: 25%;

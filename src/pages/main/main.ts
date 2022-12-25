@@ -11,6 +11,7 @@ import { UrlSearch } from './filters-block/urlSearch';
 import { onlineStoreData } from '../../data/data';
 import { Search } from './cards-block/search';
 
+
 export class MainPage implements IComponent {
   execute() {
     const root: HTMLElement | null = document.getElementById('root');
@@ -24,6 +25,7 @@ export class MainPage implements IComponent {
       filters.create();
       cardBlock.createCatalog(filters.products);
       cardBlock.createSortPanel();
+      
       new UrlPath().setQuery();
       new CardsSort(filters).sort();
       new Search().findItems();

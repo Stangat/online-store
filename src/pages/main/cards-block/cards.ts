@@ -20,7 +20,7 @@ class CardsBlock {
       const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
       if (productsContainer) {
         productsContainer.innerHTML = 'Unfortunately, no such products were found, try again.';
-        productsContainer.className = 'products-container-empty'
+        productsContainer.className = 'products-container-empty';
       }
     }
   }
@@ -234,7 +234,12 @@ class CardsBlock {
       itemWrapper.append(itemButtons);
       const addToCartButton = document.createElement('button');
       addToCartButton.className = 'button button_add';
-      addToCartButton.textContent = 'Add to cart';
+
+      const storageProduct = localStorage.getItem('product-cart')
+      let productStorage = storageProduct && JSON.parse(storageProduct) || [];
+      const isProductInCart = productStorage.find((prod: any) => prod.id === productsDate[i].id)
+      addToCartButton.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
+      
       itemButtons.append(addToCartButton);
       const detailsButton = document.createElement('button');
       detailsButton.className = 'button button_details';
@@ -245,6 +250,38 @@ class CardsBlock {
       detailsButton.addEventListener('click', (event) => {
         const itemId = productsDate[i].id;
         window.location.href = '/product/' + `${itemId}`;
+      });
+      
+      addToCartButton?.addEventListener('click', (event) => {
+        const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
+        const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
+        let product = productsDate[i];
+        if (headerPrice) {
+          if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
+            let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+            const isProductExist = productStorage.find((prod: any) => prod.id === product.id);
+            if (isProductExist) {
+              productStorage = productStorage.filter((item: any) => item.id !== product.id);
+              addToCartButton.innerText = 'Add to cart';
+            } else {
+              productStorage.push(product);
+              addToCartButton.innerText = 'Drop from cart';
+            }
+            localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
+            const result = productStorage.reduce((a: any, b: any) => a + b.price, 0);
+            localStorage.setItem('result', `${result}`);
+            headerPrice.innerText = `Total Price: ${result}€`;
+          } else {
+            localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+            addToCartButton.innerText = 'Drop from cart';
+          }
+        }
+        if (headerCount) {
+          const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+          localStorage.getItem('product-cart');
+          localStorage.setItem('storage-length', `${productStorage.length}`);
+          headerCount.innerText = `${productStorage.length}`;
+        }
       });
     }
   }

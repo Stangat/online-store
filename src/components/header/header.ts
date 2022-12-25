@@ -32,7 +32,9 @@ export class Header {
     header.appendChild(headerPrice);
     headerPrice.classList.add('header__price');
     headerPrice.appendChild(headerPriceTotal);
-    headerPriceTotal.innerText = 'Total Price: 0$';
+
+    const storagePrice = localStorage.getItem('result')
+    headerPriceTotal.innerText = `Total Price: ${storagePrice || 0}€`;
 
     header.appendChild(headerCart);
     headerCart.classList.add('header__cart');
@@ -44,6 +46,9 @@ export class Header {
     headerCartBlock.classList.add('header__cart__block');
     headerCartBlock.appendChild(headerCartTotal);
     headerCartTotal.classList.add('header__cart__total');
-    headerCartTotal.innerText = '0';
+
+    const storageLength = localStorage.getItem('storage-length')
+    headerCartTotal.innerText = `${storageLength || 0}`;
+
   }
 }

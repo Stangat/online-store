@@ -23,7 +23,7 @@ export class MainPage implements IComponent {
       filters.create();
       cardBlock.createCatalog(filters.products);
       cardBlock.createSortPanel();
-      new UrlPath(UrlSearch).setQuery();
+      new UrlPath(urlSearch).setQuery();
       new CardsSort(filters).sort();
       new Search().findItems();
       new Footer().create();

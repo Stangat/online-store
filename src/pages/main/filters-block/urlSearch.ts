@@ -44,9 +44,6 @@ export class UrlSearch {
   }
 
   getAll(name: string) {
-    /* for (const name of this.params.keys()) {
-        console.log(name);
-    } */
     return this.params.getAll(name);
   }
 

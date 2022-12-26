@@ -37,6 +37,24 @@ export class Filters {
     } 
     filteredProducts = filteredProducts.filter(item => this.priceRange[0] <= item.price && this.priceRange[1] >= item.price)
     filteredProducts = filteredProducts.filter(item => this.stockRange[0] <= item.stock && this.stockRange[1] >= item.stock)
+    if (window.location.search.includes('sort=price-ASC')) {
+      filteredProducts.sort((a, b) => a.price - b.price);
+    }
+    if (window.location.search.includes('sort=price-DESC')) {
+      filteredProducts.sort((a, b) => b.price - a.price);
+    }
+    if (window.location.search.includes('sort=discount-ASC')) {
+      filteredProducts.sort((a, b) => a.discountPercentage - b.discountPercentage);
+    }
+    if (window.location.search.includes('sort=discount-DESC')) {
+      filteredProducts.sort((a, b) => b.discountPercentage - a.discountPercentage);
+    }
+    if (window.location.search.includes('sort=rating-ASC')) {
+      filteredProducts.sort((a, b) => a.rating - b.rating);
+    }
+    if (window.location.search.includes('sort=rating-DESC')) {
+      filteredProducts.sort((a, b) => b.rating - a.rating);
+    }
     return filteredProducts
   }
   get selectedFilters() {
@@ -58,7 +76,7 @@ export class Filters {
     this._selectedFiltersBrand = value
     this.urlSearchService.setParam('brand', value.join('&'))
     this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
+    // this.subscribers.forEach(item => item.notify(this.products))
   }
 
   get priceRange() {
@@ -68,7 +86,7 @@ export class Filters {
   set priceRange(value: [number, number]) {
     this._priceRange = value
     this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
+    // this.subscribers.forEach(item => item.notify(this.products))
     if((value[0] === pricesArray[0]) && (value[1] === pricesArray[pricesArray.length -1])) {
       return
     }
@@ -82,7 +100,7 @@ export class Filters {
   set stockRange(value: [number, number]) {
     this._stockRange = value
     this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
+    // this.subscribers.forEach(item => item.notify(this.products))
     if((value[0] === stocksArray[0]) && (value[1] === stocksArray[stocksArray.length -1])) {
       return
     }
@@ -145,7 +163,8 @@ export class Filters {
   create(): void {
     const that = this;
     const main: HTMLElement | null = document.querySelector('.main');
-
+    this.products = this.filterProducts()
+    this.subscribers.forEach(item => item.notify(this.products))
     const blockFilters: HTMLDivElement | null = document.createElement('div');
     blockFilters.className = 'filters-container';
     main?.appendChild(blockFilters);

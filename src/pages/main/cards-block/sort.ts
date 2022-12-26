@@ -40,13 +40,12 @@ class CardsSort extends CardsBlock {
 
   sort(): void {
     this.handleSelectedAttribute();
-    this.sortByPriceAsc();
-    this.sortByPriceDesc();
-    this.sortByRatingAsc();
-    this.sortByRatingDesc();
-    this.sortByDiscountAsc();
-    this.sortByDiscountDesc();
-
+    // this.sortByPriceAsc();
+    // this.sortByPriceDesc();
+    // this.sortByRatingAsc();
+    // this.sortByRatingDesc();
+    // this.sortByDiscountAsc();
+    // this.sortByDiscountDesc();
     if (this.sortOptions) {
       this.sortOptions.addEventListener('change', (): void => {
         this.sortByPriceAsc();
@@ -87,7 +86,7 @@ class CardsSort extends CardsBlock {
   sortByPriceAsc(): void {
     if (window.location.search.includes('sort=price-ASC')) {
       if (this.searchInput) {
-        if (this.searchInput.value) {
+        if (this.searchInput!.value) {
           const products = this.getItems();
           if (products) {
             products.sort((a, b) => a.price - b.price);
@@ -95,7 +94,7 @@ class CardsSort extends CardsBlock {
           }
         } else {
           this.filters.products.sort((a, b) => a.price - b.price);
-          super.updateCatalog(this.filters.products);
+          super.notify(this.filters.products);
         }
       }
     }

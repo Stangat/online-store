@@ -7,6 +7,7 @@ class CardsBlock {
   constructor() {}
 
   notify(products: typeof onlineStoreDataMock.products) {
+    console.log(products)
     this.updateCatalog(products);
     this.productsCount = +products.length;
     this.updateFounded(+products.length);
@@ -18,13 +19,13 @@ class CardsBlock {
     if (stats) {
       stats.innerHTML = `Found: ${count}`;
     }
-    if (count === 0) {
+/*     if (count === 0) {
       const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
       if (productsContainer) {
         productsContainer.innerHTML = 'Unfortunately, no such products were found, try again.';
         productsContainer.className = 'products-container-empty';
       }
-    }
+    } */
   }
 
   createSortPanel(): void {

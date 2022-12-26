@@ -76,7 +76,7 @@ export class Filters {
     this._selectedFiltersBrand = value
     this.urlSearchService.setParam('brand', value.join('&'))
     this.products = this.filterProducts()
-    // this.subscribers.forEach(item => item.notify(this.products))
+    this.subscribers.forEach(item => item.notify(this.products))
   }
 
   get priceRange() {
@@ -86,7 +86,7 @@ export class Filters {
   set priceRange(value: [number, number]) {
     this._priceRange = value
     this.products = this.filterProducts()
-    // this.subscribers.forEach(item => item.notify(this.products))
+    this.subscribers.forEach(item => item.notify(this.products))
     if((value[0] === pricesArray[0]) && (value[1] === pricesArray[pricesArray.length -1])) {
       return
     }
@@ -100,7 +100,7 @@ export class Filters {
   set stockRange(value: [number, number]) {
     this._stockRange = value
     this.products = this.filterProducts()
-    // this.subscribers.forEach(item => item.notify(this.products))
+    this.subscribers.forEach(item => item.notify(this.products))
     if((value[0] === stocksArray[0]) && (value[1] === stocksArray[stocksArray.length -1])) {
       return
     }

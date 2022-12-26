@@ -121,11 +121,6 @@ class CardsBlock {
     this.updateCatalog(productsDate);
   }
 
-  clearCatalog(): void {
-    const products: HTMLDivElement | null = document.querySelector('.products-container');
-    products?.remove();
-  }
-
   updateCatalog(productsDate: typeof onlineStoreDataMock.products): void {
     this.clearCatalog();
     const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
@@ -133,6 +128,7 @@ class CardsBlock {
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';
     products?.append(productsContainer);
+    console.log(productsDate);
 
     for (let i = 0; i < productsDate.length; i += 1) {
       const item = document.createElement('div');
@@ -238,11 +234,11 @@ class CardsBlock {
       const addToCartButton = document.createElement('button');
       addToCartButton.className = 'button button_add';
 
-      const storageProduct = localStorage.getItem('product-cart')
-      let productStorage = storageProduct && JSON.parse(storageProduct) || [];
-      const isProductInCart = productStorage.find((prod: any) => prod.id === productsDate[i].id)
+      const storageProduct = localStorage.getItem('product-cart');
+      let productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
+      const isProductInCart = productStorage.find((prod: any) => prod.id === productsDate[i].id);
       addToCartButton.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
-      
+
       itemButtons.append(addToCartButton);
       const detailsButton = document.createElement('button');
       detailsButton.className = 'button button_details';
@@ -254,7 +250,7 @@ class CardsBlock {
         const itemId = productsDate[i].id;
         window.location.href = '/product/' + `${itemId}`;
       });
-      
+
       addToCartButton?.addEventListener('click', (event) => {
         const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
         const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
@@ -288,6 +284,11 @@ class CardsBlock {
         }
       });
     }
+  }
+
+  clearCatalog(): void {
+    const products: HTMLDivElement | null = document.querySelector('.products-container');
+    products?.remove();
   }
 }
 

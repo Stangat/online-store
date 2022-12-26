@@ -13,7 +13,7 @@ export class CartMain {
     emptyCartButton.innerText = 'Back to goods';
     const productsSelect = localStorage.getItem('product-cart');
     let arrayProductsSelect = (productsSelect && JSON.parse(productsSelect)) || [];
-    console.log(arrayProductsSelect?.length);
+
     if (arrayProductsSelect?.length === 0) {
       parentDivCart?.appendChild(emptyCart);
       parentDivCart?.appendChild(emptyCartButton);
@@ -21,6 +21,6 @@ export class CartMain {
         window.location.href = '/';
       });
     }
-    console.log(arrayProductsSelect);
+
   }
 }

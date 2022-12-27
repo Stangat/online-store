@@ -1,8 +1,15 @@
 import { onlineStoreData } from '../../../data/data';
 import { IProductData } from '../../../interfaces/index';
+import { Filters } from '../filters-block/filters';
 import { CardsBlock } from './cards';
 
 export class Search extends CardsBlock {
+  filters: Filters;
+
+  constructor(filters: Filters) {
+    super();
+    this.filters = filters;
+  }
   findItems(): void {
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
 
@@ -10,7 +17,7 @@ export class Search extends CardsBlock {
       searchInput.addEventListener('keyup', () => {
         const selectedData: IProductData[] = [];
         const searchValue = searchInput.value.toUpperCase();
-        onlineStoreData.products.forEach((product) => {
+        this.filters.products.forEach((product) => {
           const title = product.title;
           const description = product.description;
           const price = product.price.toString();
@@ -94,7 +101,7 @@ export class Search extends CardsBlock {
     if (searchInput) {
       const selectedData: IProductData[] = [];
       const searchValue = searchInput.value.toUpperCase();
-      onlineStoreData.products.forEach((product) => {
+      this.filters.products.forEach((product) => {
         const title = product.title;
         const description = product.description;
         const price = product.price.toString();

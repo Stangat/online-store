@@ -7,7 +7,7 @@ class CardsBlock {
   constructor() {}
 
   notify(products: typeof onlineStoreDataMock.products) {
-    console.log(products)
+    //console.log(products);
     this.updateCatalog(products);
     this.productsCount = +products.length;
     this.updateFounded(+products.length);
@@ -19,13 +19,17 @@ class CardsBlock {
     if (stats) {
       stats.innerHTML = `Found: ${count}`;
     }
-/*     if (count === 0) {
+       if (count === 0) {
       const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
       if (productsContainer) {
         productsContainer.innerHTML = 'Unfortunately, no such products were found, try again.';
-        productsContainer.className = 'products-container-empty';
+        productsContainer.style.padding = '20%'
+        productsContainer.style.margin = '5%'
+        productsContainer.style.color = '#dc092e'
+        productsContainer.style.fontSize = '25px'
+        productsContainer.style.fontWeight = '600'
       }
-    } */
+    } 
   }
 
   createSortPanel(): void {
@@ -128,7 +132,7 @@ class CardsBlock {
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';
     products?.append(productsContainer);
-    console.log(productsDate);
+    //console.log(productsDate);
 
     for (let i = 0; i < productsDate.length; i += 1) {
       const item = document.createElement('div');

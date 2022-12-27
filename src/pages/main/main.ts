@@ -25,7 +25,7 @@ export class MainPage implements IComponent {
       cardBlock.createSortPanel();
       new UrlPath(urlSearch).setQuery();
       new CardsSort(filters).sort();
-      new Search().findItems();
+      new Search(filters).findItems();
       new Footer().create();
     }
   }

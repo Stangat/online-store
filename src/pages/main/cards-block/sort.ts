@@ -15,29 +15,6 @@ class CardsSort extends CardsBlock {
     this.sortOptions = document.querySelector('.selector');
   }
 
-  getItems(): IProductData[] | undefined {
-    const itemsContainer = document.querySelector('.products-container');
-    const itemTitlesArr: string[] = [];
-
-    if (itemsContainer) {
-      const items = itemsContainer.childNodes;
-      const itemsArr = [...items] as HTMLElement[];
-      itemsArr?.forEach((item) => {
-        const itemTitle = item.children[0].children[1].children[1].textContent;
-        if (itemTitle) {
-          itemTitlesArr.push(itemTitle);
-        }
-      });
-      const selectedData: IProductData[] = [];
-      onlineStoreData.products.forEach((product) => {
-        if (itemTitlesArr?.includes(product.title)) {
-          selectedData.push(product);
-        }
-      });
-      return selectedData;
-    }
-  }
-
   sort(): void {
     this.handleSelectedAttribute();
     // this.sortByPriceAsc();

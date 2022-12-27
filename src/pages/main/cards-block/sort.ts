@@ -85,103 +85,43 @@ class CardsSort extends CardsBlock {
 
   sortByPriceAsc(): void {
     if (window.location.search.includes('sort=price-ASC')) {
-      if (this.searchInput) {
-        if (this.searchInput!.value) {
-          const products = this.getItems();
-          if (products) {
-            products.sort((a, b) => a.price - b.price);
-            super.updateCatalog(products);
-          }
-        } else {
-          this.filters.products.sort((a, b) => a.price - b.price);
-          super.notify(this.filters.products);
-        }
-      }
+      this.filters.products.sort((a, b) => a.price - b.price);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByPriceDesc(): void {
     if (window.location.search.includes('sort=price-DESC')) {
-      if (this.searchInput) {
-        if (this.searchInput.value) {
-          const products = this.getItems();
-          if (products) {
-            products.sort((a, b) => b.price - a.price);
-            super.updateCatalog(products);
-          }
-        } else {
-          this.filters.products.sort((a, b) => b.price - a.price);
-          super.updateCatalog(this.filters.products);
-        }
-      }
+      this.filters.products.sort((a, b) => b.price - a.price);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByDiscountAsc(): void {
     if (window.location.search.includes('sort=discount-ASC')) {
-      if (this.searchInput) {
-        if (this.searchInput.value) {
-          const products = this.getItems();
-          if (products) {
-            products.sort((a, b) => a.discountPercentage - b.discountPercentage);
-            super.updateCatalog(products);
-          }
-        } else {
-          this.filters.products.sort((a, b) => a.discountPercentage - b.discountPercentage);
-          super.updateCatalog(this.filters.products);
-        }
-      }
+      this.filters.products.sort((a, b) => a.discountPercentage - b.discountPercentage);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByDiscountDesc(): void {
     if (window.location.search.includes('sort=discount-DESC')) {
-      if (this.searchInput) {
-        if (this.searchInput.value) {
-          const products = this.getItems();
-          if (products) {
-            products.sort((a, b) => b.discountPercentage - a.discountPercentage);
-            super.updateCatalog(products);
-          }
-        } else {
-          this.filters.products.sort((a, b) => b.discountPercentage - a.discountPercentage);
-          super.updateCatalog(this.filters.products);
-        }
-      }
+      this.filters.products.sort((a, b) => b.discountPercentage - a.discountPercentage);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByRatingAsc(): void {
     if (window.location.search.includes('sort=rating-ASC')) {
-      if (this.searchInput) {
-        if (this.searchInput.value) {
-          const products = this.getItems();
-          if (products) {
-            products.sort((a, b) => a.rating - b.rating);
-            super.updateCatalog(products);
-          }
-        } else {
-          this.filters.products.sort((a, b) => a.rating - b.rating);
-          super.updateCatalog(this.filters.products);
-        }
-      }
+      this.filters.products.sort((a, b) => a.rating - b.rating);
+      super.updateCatalog(this.filters.products);
     }
   }
 
   sortByRatingDesc(): void {
     if (window.location.search.includes('sort=rating-DESC')) {
-      if (this.searchInput) {
-        if (this.searchInput.value) {
-          const products = this.getItems();
-          if (products) {
-            products.sort((a, b) => b.rating - a.rating);
-            super.updateCatalog(products);
-          }
-        } else {
-          this.filters.products.sort((a, b) => b.rating - a.rating);
-          super.updateCatalog(this.filters.products);
-        }
-      }
+      this.filters.products.sort((a, b) => b.rating - a.rating);
+      super.updateCatalog(this.filters.products);
     }
   }
 }

@@ -47,24 +47,7 @@ export class Filters {
     filteredProducts = filteredProducts.filter(
       (item) => this.stockRange[0] <= item.stock && this.stockRange[1] >= item.stock
     );
-    if (window.location.search.includes('sort=price-ASC')) {
-      filteredProducts.sort((a, b) => a.price - b.price);
-    }
-    if (window.location.search.includes('sort=price-DESC')) {
-      filteredProducts.sort((a, b) => b.price - a.price);
-    }
-    if (window.location.search.includes('sort=discount-ASC')) {
-      filteredProducts.sort((a, b) => a.discountPercentage - b.discountPercentage);
-    }
-    if (window.location.search.includes('sort=discount-DESC')) {
-      filteredProducts.sort((a, b) => b.discountPercentage - a.discountPercentage);
-    }
-    if (window.location.search.includes('sort=rating-ASC')) {
-      filteredProducts.sort((a, b) => a.rating - b.rating);
-    }
-    if (window.location.search.includes('sort=rating-DESC')) {
-      filteredProducts.sort((a, b) => b.rating - a.rating);
-    }
+    this.applySort(filteredProducts);
     return filteredProducts;
   }
 
@@ -89,7 +72,7 @@ export class Filters {
     }
   }
 
-  retainLastSearchAfterPageRefresh(): void {
+  includeSearch(): void {
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
 
     if (searchInput) {
@@ -132,7 +115,7 @@ export class Filters {
     this.products = this.filterProducts();
     this.subscribers.forEach((item) => item.notify(this.products));
     if (window.location.search.includes('search')) {
-      this.retainLastSearchAfterPageRefresh();
+      this.includeSearch();
     }
   }
 
@@ -146,7 +129,7 @@ export class Filters {
     this.products = this.filterProducts();
     this.subscribers.forEach((item) => item.notify(this.products));
     if (window.location.search.includes('search')) {
-      this.retainLastSearchAfterPageRefresh();
+      this.includeSearch();
     }
   }
 
@@ -163,7 +146,7 @@ export class Filters {
     }
     this.urlSearchService.setParam('price', value.join('&'));
     if (window.location.search.includes('search')) {
-      this.retainLastSearchAfterPageRefresh();
+      this.includeSearch();
     }
   }
 
@@ -180,7 +163,7 @@ export class Filters {
     }
     this.urlSearchService.setParam('stock', value.join('&'));
     if (window.location.search.includes('search')) {
-      this.retainLastSearchAfterPageRefresh();
+      this.includeSearch();
     }
   }
 

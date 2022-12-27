@@ -1,42 +1,52 @@
 import { onlineStoreData } from '../../../data/data';
+import { IProductData } from '../../../interfaces/index';
 import { CardsBlock } from '../cards-block/cards';
 import { brands, categories, pricesArray, stocksArray } from './constants';
 import './filters.scss';
 import { UrlSearch } from './urlSearch';
 
-type TargetWithId = Event['target'] & { id?: string, checked?: boolean };
+type TargetWithId = Event['target'] & { id?: string; checked?: boolean };
 
 export class Filters {
-  
   constructor(
     private readonly urlSearchService: UrlSearch,
     private readonly cardBlock: CardsBlock,
-    private readonly subscribers: Array<{notify: (prod: any)=> void}> = [],
-    ) { 
-   this.selectedFilters = this.urlSearchService.getAll('category')[0]?.split('&') || []
-   this.selectedFiltersBrand = this.urlSearchService.getAll('brand')[0]?.split('&') || []
-   this.priceRange = [+this.urlSearchService.getAll('price')[0]?.split('&')[0] || pricesArray[0], +this.urlSearchService.getAll('price')[0]?.split('&')[1] || pricesArray[pricesArray.length - 1]]
-   this.stockRange = [+this.urlSearchService.getAll('stock')[0]?.split('&')[0] || stocksArray[0], +this.urlSearchService.getAll('stock')[0]?.split('&')[1] || stocksArray[stocksArray.length - 1]]
-  }  
+    private readonly subscribers: Array<{ notify: (prod: any) => void }> = []
+  ) {
+    this.selectedFilters = this.urlSearchService.getAll('category')[0]?.split('&') || [];
+    this.selectedFiltersBrand = this.urlSearchService.getAll('brand')[0]?.split('&') || [];
+    this.priceRange = [
+      +this.urlSearchService.getAll('price')[0]?.split('&')[0] || pricesArray[0],
+      +this.urlSearchService.getAll('price')[0]?.split('&')[1] || pricesArray[pricesArray.length - 1],
+    ];
+    this.stockRange = [
+      +this.urlSearchService.getAll('stock')[0]?.split('&')[0] || stocksArray[0],
+      +this.urlSearchService.getAll('stock')[0]?.split('&')[1] || stocksArray[stocksArray.length - 1],
+    ];
+  }
 
   private _selectedFilters: Array<string> = [];
   private _selectedFiltersBrand: Array<string> = [];
-  private _priceRange: [number, number] = [0, 0]
-  private _stockRange: [number, number] = [0, 0]
-  products: any[] = []
+  private _priceRange: [number, number] = [0, 0];
+  private _stockRange: [number, number] = [0, 0];
+  products: any[] = [];
 
   filterProducts(): typeof onlineStoreData.products {
-    let filteredProducts: typeof onlineStoreData.products = []
-    if(this.selectedFilters.length) {
-      filteredProducts = onlineStoreData.products.filter(item => this.selectedFilters.includes(item.category))
+    let filteredProducts: typeof onlineStoreData.products = [];
+    if (this.selectedFilters.length) {
+      filteredProducts = onlineStoreData.products.filter((item) => this.selectedFilters.includes(item.category));
     } else {
-      filteredProducts = onlineStoreData.products
+      filteredProducts = onlineStoreData.products;
     }
-    if(this.selectedFiltersBrand.length) {
-      filteredProducts = filteredProducts.filter(item => this.selectedFiltersBrand.includes(item.brand))
-    } 
-    filteredProducts = filteredProducts.filter(item => this.priceRange[0] <= item.price && this.priceRange[1] >= item.price)
-    filteredProducts = filteredProducts.filter(item => this.stockRange[0] <= item.stock && this.stockRange[1] >= item.stock)
+    if (this.selectedFiltersBrand.length) {
+      filteredProducts = filteredProducts.filter((item) => this.selectedFiltersBrand.includes(item.brand));
+    }
+    filteredProducts = filteredProducts.filter(
+      (item) => this.priceRange[0] <= item.price && this.priceRange[1] >= item.price
+    );
+    filteredProducts = filteredProducts.filter(
+      (item) => this.stockRange[0] <= item.stock && this.stockRange[1] >= item.stock
+    );
     if (window.location.search.includes('sort=price-ASC')) {
       filteredProducts.sort((a, b) => a.price - b.price);
     }
@@ -55,59 +65,125 @@ export class Filters {
     if (window.location.search.includes('sort=rating-DESC')) {
       filteredProducts.sort((a, b) => b.rating - a.rating);
     }
-    return filteredProducts
+    return filteredProducts;
   }
+
+  applySort(data: IProductData[]) {
+    if (window.location.search.includes('sort=price-ASC')) {
+      data.sort((a, b) => a.price - b.price);
+    }
+    if (window.location.search.includes('sort=price-DESC')) {
+      data.sort((a, b) => b.price - a.price);
+    }
+    if (window.location.search.includes('sort=discount-ASC')) {
+      data.sort((a, b) => a.discountPercentage - b.discountPercentage);
+    }
+    if (window.location.search.includes('sort=discount-DESC')) {
+      data.sort((a, b) => b.discountPercentage - a.discountPercentage);
+    }
+    if (window.location.search.includes('sort=rating-ASC')) {
+      data.sort((a, b) => a.rating - b.rating);
+    }
+    if (window.location.search.includes('sort=rating-DESC')) {
+      data.sort((a, b) => b.rating - a.rating);
+    }
+  }
+
+  retainLastSearchAfterPageRefresh(): void {
+    const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
+
+    if (searchInput) {
+      const selectedData: IProductData[] = [];
+      const searchValue = searchInput.value.toUpperCase();
+      this.products.forEach((product) => {
+        const title = product.title;
+        const description = product.description;
+        const price = product.price.toString();
+        const discount = product.discountPercentage.toString();
+        const rating = product.rating.toString();
+        const stock = product.stock.toString();
+        const brand = product.brand;
+        const category = product.category;
+        if (
+          title.toUpperCase().indexOf(searchValue) > -1 ||
+          description.toUpperCase().indexOf(searchValue) > -1 ||
+          price.toUpperCase().indexOf(searchValue) > -1 ||
+          discount.toUpperCase().indexOf(searchValue) > -1 ||
+          rating.toUpperCase().indexOf(searchValue) > -1 ||
+          stock.toUpperCase().indexOf(searchValue) > -1 ||
+          brand.toUpperCase().indexOf(searchValue) > -1 ||
+          category.toUpperCase().indexOf(searchValue) > -1
+        ) {
+          selectedData.push(product);
+        }
+      });
+      this.applySort(selectedData);
+      this.cardBlock.notify(selectedData);
+    }
+  }
+
   get selectedFilters() {
-    return this._selectedFilters
+    return this._selectedFilters;
   }
 
   set selectedFilters(value: string[]) {
-    this._selectedFilters = value
-    this.urlSearchService.setParam('category', value.join('&'))
-    this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
+    this._selectedFilters = value;
+    this.urlSearchService.setParam('category', value.join('&'));
+    this.products = this.filterProducts();
+    this.subscribers.forEach((item) => item.notify(this.products));
+    if (window.location.search.includes('search')) {
+      this.retainLastSearchAfterPageRefresh();
+    }
   }
 
   get selectedFiltersBrand() {
-    return this._selectedFiltersBrand
+    return this._selectedFiltersBrand;
   }
 
   set selectedFiltersBrand(value: string[]) {
-    this._selectedFiltersBrand = value
-    this.urlSearchService.setParam('brand', value.join('&'))
-    this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
+    this._selectedFiltersBrand = value;
+    this.urlSearchService.setParam('brand', value.join('&'));
+    this.products = this.filterProducts();
+    this.subscribers.forEach((item) => item.notify(this.products));
+    if (window.location.search.includes('search')) {
+      this.retainLastSearchAfterPageRefresh();
+    }
   }
 
   get priceRange() {
-    return this._priceRange
+    return this._priceRange;
   }
 
   set priceRange(value: [number, number]) {
-    this._priceRange = value
-    this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
-    if((value[0] === pricesArray[0]) && (value[1] === pricesArray[pricesArray.length -1])) {
-      return
+    this._priceRange = value;
+    this.products = this.filterProducts();
+    this.subscribers.forEach((item) => item.notify(this.products));
+    if (value[0] === pricesArray[0] && value[1] === pricesArray[pricesArray.length - 1]) {
+      return;
     }
-    this.urlSearchService.setParam('price', value.join('&'))
+    this.urlSearchService.setParam('price', value.join('&'));
+    if (window.location.search.includes('search')) {
+      this.retainLastSearchAfterPageRefresh();
+    }
   }
 
   get stockRange() {
-    return this._stockRange
+    return this._stockRange;
   }
 
   set stockRange(value: [number, number]) {
-    this._stockRange = value
-    this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
-    if((value[0] === stocksArray[0]) && (value[1] === stocksArray[stocksArray.length -1])) {
-      return
+    this._stockRange = value;
+    this.products = this.filterProducts();
+    this.subscribers.forEach((item) => item.notify(this.products));
+    if (value[0] === stocksArray[0] && value[1] === stocksArray[stocksArray.length - 1]) {
+      return;
     }
-    this.urlSearchService.setParam('stock', value.join('&'))
+    this.urlSearchService.setParam('stock', value.join('&'));
+    if (window.location.search.includes('search')) {
+      this.retainLastSearchAfterPageRefresh();
+    }
   }
 
-  
   getNearest = (arr: number[], num: number) => {
     const arr2 = arr.map((val) => Math.abs(val - num));
     const min = Math.min(...arr2);
@@ -127,10 +203,10 @@ export class Filters {
     }
     this.isTargetWithId(target);
     const category = target.id;
-    if(target.checked && category) {
-      this.selectedFilters = [...this.selectedFilters, category]
-    } else if(category) {
-      this.selectedFilters = this.selectedFilters.filter(item => item != category)
+    if (target.checked && category) {
+      this.selectedFilters = [...this.selectedFilters, category];
+    } else if (category) {
+      this.selectedFilters = this.selectedFilters.filter((item) => item != category);
     }
   }
   eventHandlerBrand(target: Event['target'] | null) {
@@ -139,10 +215,10 @@ export class Filters {
     }
     this.isTargetWithId(target);
     const brand = target.id;
-    if(target.checked && brand) {
-      this.selectedFiltersBrand = [...this.selectedFiltersBrand, brand]
-    } else if(brand) {
-      this.selectedFiltersBrand = this.selectedFiltersBrand.filter(item => item != brand)
+    if (target.checked && brand) {
+      this.selectedFiltersBrand = [...this.selectedFiltersBrand, brand];
+    } else if (brand) {
+      this.selectedFiltersBrand = this.selectedFiltersBrand.filter((item) => item != brand);
     }
     const checkboxItems = Array.from(document.querySelectorAll('.item'));
     const containerItem = document.querySelector('.products-container');
@@ -163,8 +239,8 @@ export class Filters {
   create(): void {
     const that = this;
     const main: HTMLElement | null = document.querySelector('.main');
-    this.products = this.filterProducts()
-    this.subscribers.forEach(item => item.notify(this.products))
+    this.products = this.filterProducts();
+    this.subscribers.forEach((item) => item.notify(this.products));
     const blockFilters: HTMLDivElement | null = document.createElement('div');
     blockFilters.className = 'filters-container';
     main?.appendChild(blockFilters);
@@ -181,7 +257,7 @@ export class Filters {
     buttonsFilter.appendChild(resetFiltersButton);
     resetFiltersButton.innerHTML = 'Reset Filters';
     resetFiltersButton.addEventListener('click', (event) => {
-      window.location.search  = ''
+      window.location.search = '';
     });
 
     const copyFilters: HTMLDivElement | null = document.createElement('div');
@@ -241,7 +317,7 @@ export class Filters {
       containerOneCheckbox.appendChild(spanCategory);
       listFilterCategory.appendChild(containerOneCheckbox);
       checkboxCategory.addEventListener('change', (event) => this.eventHandler(event.target));
-      checkboxCategory.checked = this.selectedFilters.includes(element)
+      checkboxCategory.checked = this.selectedFilters.includes(element);
     });
 
     const brandFilters: HTMLDivElement | null = document.createElement('div');
@@ -278,7 +354,7 @@ export class Filters {
       containerOneCheckboxBrand.appendChild(spanBrand);
       listFilterBrand.appendChild(containerOneCheckboxBrand);
       checkboxBrand.addEventListener('change', (event) => this.eventHandlerBrand(event.target));
-      checkboxBrand.checked = this.selectedFiltersBrand.includes(element)
+      checkboxBrand.checked = this.selectedFiltersBrand.includes(element);
     });
 
     const sliderPrice = document.createElement('div');
@@ -302,7 +378,7 @@ export class Filters {
     inputSliderPriceMin.value = `${that.priceRange[0]}`;
     // inputSliderPriceMin.step = '1';
     rangeSliderPrice.appendChild(inputSliderPriceMin);
-    
+
     const inputSliderPriceMax: HTMLInputElement | null = document.createElement('input');
     inputSliderPriceMax.setAttribute('value', `${that.priceRange[1]}`);
     inputSliderPriceMax.type = 'range';
@@ -312,8 +388,11 @@ export class Filters {
     rangeSliderPrice.appendChild(inputSliderPriceMax);
     function getValsPrice() {
       let slides = rangeSliderPrice.getElementsByTagName('input');
-    
-      that.priceRange = [that.getNearest(pricesArray, +slides[0].value), that.getNearest(pricesArray, +slides[1].value)]
+
+      that.priceRange = [
+        that.getNearest(pricesArray, +slides[0].value),
+        that.getNearest(pricesArray, +slides[1].value),
+      ];
 
       // Neither slider will clip the other, so make sure we determine which is larger
       /* if (slide1 > slide2) {
@@ -370,13 +449,16 @@ export class Filters {
 
     function getValsStock() {
       let slides = rangeSliderStock.getElementsByTagName('input');
-      that.stockRange = [that.getNearest(stocksArray, +slides[0].value), that.getNearest(stocksArray, +slides[1].value)]
+      that.stockRange = [
+        that.getNearest(stocksArray, +slides[0].value),
+        that.getNearest(stocksArray, +slides[1].value),
+      ];
 
       /* if (slide1 > slide2) {
         let tmp = slide2;
         slide2 = slide1;
         slide1 = tmp;
-      } */ 
+      } */
       let displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
       displayElement.innerHTML = that.stockRange[0] + ' - ' + that.stockRange[1];
     }
@@ -397,9 +479,9 @@ export class Filters {
     }
     getValsStock();
 
-    window.addEventListener('load', function () {
-      price();
-      stock();
-    });
+    // window.addEventListener('load', function () {
+    price();
+    stock();
+    // });
   }
 }

@@ -1,6 +1,6 @@
 @import './constants';
 .products {
-  max-width: 74%;
+  width: 74%;
 }
 
 .products-container {
@@ -15,6 +15,17 @@
 
 .item {
   flex-basis: 250px;
+  box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 5%), 0 4px 8px 0 rgb(35 31 32 / 10%);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
+  }
+}
+
+.item_small {
+  flex-basis: 150px;
   box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 5%), 0 4px 8px 0 rgb(35 31 32 / 10%);
   border-radius: 10px;
   cursor: pointer;

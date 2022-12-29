@@ -268,11 +268,12 @@ class CardsBlock {
               addToCartButton.innerText = 'Drop from cart';
             }
             localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-            const result = productStorage.reduce((a: any, b: any) => a + b.price, 0);
+            const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
             localStorage.setItem('result', `${result}`);
             headerPrice.innerText = `Total Price: ${result}€`;
           } else {
             localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+            localStorage.setItem('result', `${product.price}`);
             headerPrice.innerText = `Total Price: ${product.price}€`;
             addToCartButton.innerText = 'Drop from cart';
           }

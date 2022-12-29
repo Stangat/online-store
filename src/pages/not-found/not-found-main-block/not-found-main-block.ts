@@ -1,6 +1,6 @@
 import '../../../assets/404.png';
 export class NotFoundMainBlock {
-  create() {
+  create():void {
     const main: HTMLElement | null = document.querySelector('main');
     main?.classList.add('main__notfound');
 
@@ -15,7 +15,7 @@ export class NotFoundMainBlock {
     mainNotfoundButton.type = 'button';
     mainNotfoundButton.innerHTML = 'Go Back';
     mainNotfoundDescription?.appendChild(mainNotfoundButton);
-    mainNotfoundButton.addEventListener('click', (event: {}) => {
+    mainNotfoundButton.addEventListener('click', () => {
       window.location.href = '/';
     });
 

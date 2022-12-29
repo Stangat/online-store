@@ -290,7 +290,7 @@ export class Filters {
       const labelCategory = document.createElement('label');
       labelCategory.className = 'filters-container-category-label';
       labelCategory.innerText = `${element}`;
-
+      //console.log(element)
       const spanCategory = document.createElement('span');
       spanCategory.className = 'filters-container-category-span';
       spanCategory.innerText = '(5/5)';

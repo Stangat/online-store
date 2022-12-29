@@ -1,7 +1,7 @@
 import './footer.scss';
 
 export class Footer {
-  create() {
+  create(): void {
     const body: HTMLBodyElement | null = document.getElementsByTagName('body')[0];
     const footer: HTMLElement | null = document.createElement('footer');
 
@@ -23,11 +23,11 @@ export class Footer {
     footerAutors.classList.add('footer__autors');
     footerAutors.appendChild(footerAutorsOne);
     footerAutorsOne.classList.add('footer__autors__one');
-    footerAutorsOne.setAttribute('href', 'https://github.com/Stangat')
+    footerAutorsOne.setAttribute('href', 'https://github.com/Stangat');
     footerAutorsOne.innerText = 'Stanislav Gatilov';
     footerAutors.appendChild(footerAutorsTwo);
     footerAutorsTwo.classList.add('footer__autor');
-    footerAutorsTwo.setAttribute('href', 'https://github.com/MarinaZai')
+    footerAutorsTwo.setAttribute('href', 'https://github.com/MarinaZai');
     footerAutorsTwo.innerText = 'Marina Zaitseva';
 
     footer.appendChild(footerYear);

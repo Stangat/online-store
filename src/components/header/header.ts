@@ -1,27 +1,25 @@
 import './header.scss';
 export class Header {
-  create() {
+  create(): void {
     const body: HTMLBodyElement | null = document.getElementsByTagName('body')[0];
     const header: HTMLElement | null = document.createElement('header');
 
     const headerBrand: HTMLDivElement | null = document.createElement('div');
-    const headerBrandLogo: HTMLImageElement | null = document.createElement('img');
     const headerBrandName: HTMLElement | null = document.createElement('h2');
 
     const headerPrice: HTMLDivElement | null = document.createElement('div');
     const headerPriceTotal: HTMLSpanElement | null = document.createElement('span');
 
     const headerCart: HTMLDivElement | null = document.createElement('div');
-    //const headerCartImage: HTMLImageElement | null = document.createElement('img');
     const headerCartBlock: HTMLDivElement | null = document.createElement('div');
-    const headerCartTotal: HTMLSpanElement | null = document.createElement('div');
+    const headerCartTotal: HTMLDivElement | null = document.createElement('div');
 
     body.appendChild(header);
     header.classList.add('header');
 
     header.appendChild(headerBrand);
     headerBrand.classList.add('header__brand');
-    headerBrand.addEventListener('click', (event: {}) => {
+    headerBrand.addEventListener('click', () => {
       window.location.href = '/';
     });
 
@@ -33,12 +31,12 @@ export class Header {
     headerPrice.classList.add('header__price');
     headerPrice.appendChild(headerPriceTotal);
 
-    const storagePrice = localStorage.getItem('result')
+    const storagePrice = localStorage.getItem('result');
     headerPriceTotal.innerText = `Total Price: ${storagePrice || 0}€`;
 
     header.appendChild(headerCart);
     headerCart.classList.add('header__cart');
-    headerCart.addEventListener('click', (event: {}) => {
+    headerCart.addEventListener('click', () => {
       window.location.href = '/cart';
     });
 
@@ -47,8 +45,7 @@ export class Header {
     headerCartBlock.appendChild(headerCartTotal);
     headerCartTotal.classList.add('header__cart__total');
 
-    const storageLength = localStorage.getItem('storage-length')
+    const storageLength = localStorage.getItem('storage-length');
     headerCartTotal.innerText = `${storageLength || 0}`;
-
   }
 }

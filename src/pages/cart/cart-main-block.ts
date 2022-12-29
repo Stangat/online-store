@@ -19,16 +19,160 @@ export class CartMain {
       parentDivCart?.appendChild(emptyCartButton);
       emptyCartButton.addEventListener('click', () => {
         window.location.href = '/';
-      })
+      });
     } else {
-      console.log(arrayProductsSelect)
-      const productsInCart = document.createElement('div')
-      productsInCart.className = ('products-in-cart')
-      const summary = document.createElement('div')
-      summary.className = ('summary')
-      parentDivCart.appendChild(productsInCart)
-      parentDivCart.appendChild(summary)
-    }
+      console.log(arrayProductsSelect);
+      const summaryProducts = localStorage.getItem('storage-length');
+      const summaryTotal = localStorage.getItem('result');
+      const productsInCart = document.createElement('div');
+      productsInCart.className = 'products-in-cart';
+      const summary = document.createElement('div');
+      summary.className = 'summary';
+      parentDivCart.appendChild(productsInCart);
 
+      parentDivCart.appendChild(summary);
+      const summaryName = document.createElement('h2');
+      summaryName.innerText = 'Summary';
+      summary.appendChild(summaryName);
+      const totalProducts = document.createElement('div');
+      totalProducts.className = 'total-products';
+      const spanTotalProducts = document.createElement('span');
+      spanTotalProducts.innerText = `Products: ${summaryProducts}`;
+      summary.appendChild(totalProducts);
+      totalProducts.appendChild(spanTotalProducts);
+      const totalPrice = document.createElement('div');
+      totalPrice.className = 'total-price';
+      const spanTotalPrice = document.createElement('span');
+      spanTotalPrice.innerText = `Total: € ${summaryTotal}`;
+      summary.appendChild(totalPrice);
+      totalPrice.appendChild(spanTotalPrice);
+      const promoCode = document.createElement('div');
+      promoCode.className = 'promo-code';
+      summary.appendChild(promoCode);
+      const inputSeachPromocod = document.createElement('input');
+      inputSeachPromocod.className = 'input-search-promocod';
+      inputSeachPromocod.type = 'search';
+      inputSeachPromocod.placeholder = 'Enter promo code';
+      promoCode.appendChild(inputSeachPromocod);
+      const promoHint = document.createElement('span');
+      promoHint.className = 'promo-hint';
+      promoHint.innerText = 'Promo for test: "RS", "EPM"';
+      summary.appendChild(promoHint);
+      const buttonBuy = document.createElement('button');
+      buttonBuy.className = 'button-buy';
+      buttonBuy.innerText = 'BUY NOW';
+      summary.appendChild(buttonBuy);
+
+      const titleAndPageControl = document.createElement('div');
+      titleAndPageControl.className = 'title-and-page-control';
+      productsInCart.appendChild(titleAndPageControl);
+      const titleAndPageControlName = document.createElement('h2');
+      titleAndPageControlName.innerText = 'Products in cart';
+      titleAndPageControl.appendChild(titleAndPageControlName);
+
+      const pageControl = document.createElement('div');
+      pageControl.className = 'page-control';
+      titleAndPageControl.appendChild(pageControl);
+      const limitPage = document.createElement('div');
+      limitPage.className = 'limit-page';
+      limitPage.innerText = 'ITEMS: ';
+      pageControl.appendChild(limitPage);
+      const inputLimitPage = document.createElement('input');
+      inputLimitPage.type = 'text';
+      limitPage.appendChild(inputLimitPage);
+
+      const pageNumbers = document.createElement('div');
+      pageNumbers.className = 'page-numbers';
+      pageNumbers.innerText = 'PAGE: ';
+      pageControl.appendChild(pageNumbers);
+      const buttonPagePrev = document.createElement('button');
+      buttonPagePrev.className = 'button-page';
+      buttonPagePrev.innerText = '<';
+      pageNumbers.appendChild(buttonPagePrev);
+      const spanPageNumbers = document.createElement('span');
+      spanPageNumbers.innerText = '1'; ///ТУТ МЕНЯЕТСЯ СТРАНИЦА
+      pageNumbers.appendChild(spanPageNumbers);
+      const buttonPageNext = document.createElement('button');
+      buttonPageNext.className = 'button-page';
+      buttonPageNext.innerText = '>';
+      pageNumbers.appendChild(buttonPageNext);
+
+      const prodItems = document.createElement('div');
+      prodItems.className = 'prod-items';
+      //prodItems.innerText = 'prodItems';
+      productsInCart.appendChild(prodItems);
+
+      let itemNumberStart = 0;
+      arrayProductsSelect.forEach((product: any) => {
+        ++itemNumberStart;
+        console.log(product);
+        const productItemBlock = document.createElement('div');
+        productItemBlock.className = 'product-item-block';
+        prodItems.appendChild(productItemBlock);
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        productItemBlock.appendChild(cartItem);
+        const itemNumber = document.createElement('div');
+        itemNumber.className = 'item-n';
+        itemNumber.innerText = `${itemNumberStart}`;
+        cartItem.appendChild(itemNumber);
+        const itemInfo = document.createElement('div');
+        itemInfo.className = 'item-info';
+        cartItem.appendChild(itemInfo);
+        const imgItem = document.createElement('img');
+        imgItem.src = `${product.thumbnail}`;
+        itemInfo.appendChild(imgItem);
+        const itemDetailProd = document.createElement('div');
+        itemDetailProd.className = 'item-detail-p';
+        itemInfo.appendChild(itemDetailProd);
+        const productTitle = document.createElement('div');
+        productTitle.className = 'product-title-cart';
+        itemDetailProd.appendChild(productTitle);
+        const nameProd = document.createElement('h3');
+        nameProd.innerText = `${product.title}`;
+        productTitle.appendChild(nameProd);
+        const productDescription = document.createElement('div');
+        productDescription.className = 'product-description';
+        productDescription.innerText = `${product.description}`;
+        itemDetailProd.appendChild(productDescription)
+        const productOther = document.createElement('div')
+        productOther.className = 'product-other'
+        itemDetailProd.appendChild(productOther)
+        const productRaiting = document.createElement('div')
+        productRaiting.className = 'product-other-one-block'
+        productRaiting.innerText = `Rating: ${product.rating}`
+        const productDiscount = document.createElement('div')
+        productDiscount.className = 'product-other-one-block'
+        productDiscount.innerText = `Discount: ${product.discountPercentage}`
+        productOther.appendChild(productRaiting)
+        productOther.appendChild(productDiscount)
+
+        const numberControl = document.createElement('div');
+        numberControl.className = 'number-control';
+        cartItem.appendChild(numberControl);
+        const stockControl = document.createElement('div')
+        stockControl.className ='stock-control'
+        stockControl.innerText = `Stock: ${product.stock}`
+        numberControl.appendChild(stockControl)
+        const incDecControl = document.createElement('div')
+        incDecControl.className = 'incDec-control'
+        numberControl.appendChild(incDecControl)
+        const buttonPlus = document.createElement('button')
+        buttonPlus.className = 'button-stock'
+        buttonPlus.innerText = '+'
+        incDecControl.appendChild(buttonPlus)
+        const spanStockCount = document.createElement('span')
+        spanStockCount.innerText = '1' //ПОДСТАВЛЯТЬ ДИНАМИЧЕСКИ
+        incDecControl.appendChild(spanStockCount)
+        const buttonMinus = document.createElement('button')
+        buttonMinus.className = 'button-stock'
+        buttonMinus.innerText = '-'
+        incDecControl.appendChild(buttonMinus)
+        const amountControl = document.createElement('div')
+        amountControl.className = 'amount-control'
+        amountControl.innerText = `€ ${product.price}`
+        numberControl.appendChild(amountControl)
+      });
+    }
   }
 }

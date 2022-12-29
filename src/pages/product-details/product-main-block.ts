@@ -242,8 +242,6 @@ export class ProductMain {
         localStorage.setItem('storage-length', `${productStorage.length}`);
         headerCount.innerText = `${productStorage.length}`;
       }
-
-      
     });
 
     addBlock.appendChild(buttonBuy);

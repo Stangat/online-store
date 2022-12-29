@@ -33,7 +33,6 @@ class CardsBlock {
 
   createSortPanel(): void {
     const products: HTMLDivElement | null = document.querySelector('.products');
-    const productsContainer: HTMLDivElement | null = document.querySelector('.products-container');
     const sortPanel = document.createElement('div');
     sortPanel.className = 'sort-panel';
     products?.prepend(sortPanel);

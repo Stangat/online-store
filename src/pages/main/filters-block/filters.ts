@@ -233,8 +233,8 @@ export class Filters {
     blockFilters.appendChild(buttonsFilter);
 
     const resetFilters: HTMLDivElement | null = document.createElement('div');
-    resetFilters.className = 'filters-container-reset';
-    blockFilters.appendChild(resetFilters);
+/*     resetFilters.className = 'filters-container-reset';
+    blockFilters.appendChild(resetFilters); */
     const resetFiltersButton: HTMLButtonElement | null = document.createElement('button');
     resetFiltersButton.className = 'filters-container-reset-button';
     buttonsFilter.appendChild(resetFiltersButton);
@@ -244,8 +244,8 @@ export class Filters {
     });
 
     const copyFilters: HTMLDivElement | null = document.createElement('div');
-    copyFilters.className = 'filters-container-copy';
-    blockFilters.appendChild(copyFilters);
+/*     copyFilters.className = 'filters-container-copy';
+    blockFilters.appendChild(copyFilters); */
     const copyFiltersButton: HTMLButtonElement | null = document.createElement('button');
     copyFiltersButton.className = 'filters-container-reset-button';
     buttonsFilter.appendChild(copyFiltersButton);

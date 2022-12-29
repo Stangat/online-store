@@ -3,3 +3,25 @@
     display: flex;
     justify-content: space-between;
 }
+@media screen and (max-width: 630px) {
+    .main {
+      flex-wrap: wrap;
+    }
+    .filters-container {
+        width: 100%;
+    }
+    input[type='range'] {
+        width: 90%;
+    }
+    .sort-panel {
+        padding-top: 15px;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .selector {
+        width: 100%;
+    }
+    .search-bar {
+        width: 100%;
+    }
+  }

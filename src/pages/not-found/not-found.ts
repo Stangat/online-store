@@ -6,7 +6,7 @@ import './not-found.scss';
 import { NotFoundMainBlock } from './not-found-main-block/not-found-main-block';
 
 export class NotFound implements IComponent {
-  execute() {
+  execute():void {
     const root: HTMLElement | null = document.getElementById('root');
     if (root) {
       new Header().create();

@@ -1,6 +1,5 @@
 import './global.scss';
 import { Cart } from './pages/cart/cart';
-import { CardsSort } from './pages/main/cards-block/sort';
 import { MainPage } from './pages/main/main';
 import { NotFound } from './pages/not-found/not-found';
 import { Product } from './pages/product-details/product';

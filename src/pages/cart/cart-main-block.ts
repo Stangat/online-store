@@ -19,7 +19,15 @@ export class CartMain {
       parentDivCart?.appendChild(emptyCartButton);
       emptyCartButton.addEventListener('click', () => {
         window.location.href = '/';
-      });
+      })
+    } else {
+      console.log(arrayProductsSelect)
+      const productsInCart = document.createElement('div')
+      productsInCart.className = ('products-in-cart')
+      const summary = document.createElement('div')
+      summary.className = ('summary')
+      parentDivCart.appendChild(productsInCart)
+      parentDivCart.appendChild(summary)
     }
 
   }

@@ -95,10 +95,11 @@
 .product-item-text {
   padding: 1%;
   margin: 1%;
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
-.product-item-text::first-letter {
-  text-transform: uppercase;
-}
+
 .add-block {
   width: 20%;
   display: flex;

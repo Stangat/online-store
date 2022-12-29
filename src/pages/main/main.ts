@@ -11,7 +11,7 @@ import { UrlSearch } from './filters-block/urlSearch';
 import { Search } from './cards-block/search';
 
 export class MainPage implements IComponent {
-  execute() {
+  execute(): void {
     const root: HTMLElement | null = document.getElementById('root');
     const main = new Main();
     const urlSearch = new UrlSearch();

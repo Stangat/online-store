@@ -2,9 +2,13 @@ import { CardsId } from './cardsIdEnum';
 import './styles/cards.scss';
 import './styles/sort-panel.scss';
 import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
+import { View } from './view';
 
 class CardsBlock {
-  constructor() {}
+  viewMode: View;
+  constructor() {
+    this.viewMode = new View();
+  }
 
   notify(products: typeof onlineStoreDataMock.products) {
     this.updateCatalog(products);
@@ -125,7 +129,7 @@ class CardsBlock {
 
   updateCatalog(productsDate: typeof onlineStoreDataMock.products): void {
     this.clearCatalog();
-    const NUMBER_OF_CHARACTERS_IN_TITLE = 26;
+    const NUMBER_OF_CHARACTERS_IN_TITLE = 22;
     const products = document.querySelector('.products');
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';
@@ -173,15 +177,9 @@ class CardsBlock {
       itemTitle.className = 'item-title';
       itemDetailsContainer.append(itemTitle);
       itemTitle.textContent = `${productsDate[i].title}`;
-
-      if (
-        itemTitle.textContent.length <= NUMBER_OF_CHARACTERS_IN_TITLE &&
-        productsDate[i].id !== CardsId.id13 &&
-        productsDate[i].id !== CardsId.id23 &&
-        productsDate[i].id !== CardsId.id28 &&
-        productsDate[i].id !== CardsId.id63
-      ) {
-        itemTitle.style.marginBottom = '25px';
+      if (itemTitle.textContent.length >= NUMBER_OF_CHARACTERS_IN_TITLE) {
+        const shortenedTitle = itemTitle.textContent.slice(0, NUMBER_OF_CHARACTERS_IN_TITLE);
+        itemTitle.textContent = `${shortenedTitle}...`;
       }
 
       const itemPrice = document.createElement('div');
@@ -211,7 +209,7 @@ class CardsBlock {
       itemDiscountParagraph.append(discountText);
       const discountValue = document.createElement('span');
       discountValue.className = 'item-discount__value';
-      discountValue.textContent = `${productsDate[i].discountPercentage} %`;
+      discountValue.textContent = `-${productsDate[i].discountPercentage} %`;
       itemDiscountParagraph.append(discountValue);
 
       const itemStock = document.createElement('div');
@@ -286,6 +284,7 @@ class CardsBlock {
         }
       });
     }
+    this.viewMode.changeViewMode();
   }
 
   clearCatalog(): void {

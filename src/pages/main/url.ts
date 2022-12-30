@@ -5,6 +5,8 @@ class UrlPath {
   setQuery() {
     const sortOptions: HTMLSelectElement | null = document.querySelector('.selector');
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
+    const smallViewButton = document.querySelector('.view-mode_small');
+    const normalViewButton = document.querySelector('.view-mode_big');
 
     if (sortOptions) {
       sortOptions.addEventListener('change', (): void => {
@@ -14,6 +16,16 @@ class UrlPath {
     if (searchInput) {
       searchInput.addEventListener('keyup', (): void => {
         this.urlSearchService.setParam('search', searchInput.value);
+      });
+    }
+    if (smallViewButton) {
+      smallViewButton.addEventListener('click', (): void => {
+        this.urlSearchService.setParam('small', 'true');
+      });
+    }
+    if (normalViewButton) {
+      normalViewButton.addEventListener('click', (): void => {
+        this.urlSearchService.setParam('small', 'false');
       });
     }
   }

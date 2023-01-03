@@ -1,4 +1,3 @@
-import { CardsId } from './cardsIdEnum';
 import './styles/cards.scss';
 import './styles/sort-panel.scss';
 import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
@@ -129,7 +128,7 @@ class CardsBlock {
 
   updateCatalog(productsDate: typeof onlineStoreDataMock.products): void {
     this.clearCatalog();
-    const NUMBER_OF_CHARACTERS_IN_TITLE = 22;
+    const NUMBER_OF_CHARACTERS_IN_TITLE = 20;
     const products = document.querySelector('.products');
     const productsContainer = document.createElement('div');
     productsContainer.className = 'products-container';

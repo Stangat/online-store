@@ -6,7 +6,7 @@
 .products-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 15px;
   font-family: 'Roboto', sans-serif;
   font-size: 10px;
@@ -19,9 +19,14 @@
   box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 5%), 0 4px 8px 0 rgb(35 31 32 / 10%);
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
   &:hover {
     box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
+  }
+  @media (max-width: 1145px) {
+    flex-basis: 47%;
+  }
+  @media (max-width: 760px) {
+    flex-basis: 250px;
   }
 }
 
@@ -55,10 +60,10 @@
   font-family: 'Montserrat', sans-serif;
   font-size: 1.6em;
   font-weight: 700;
-  transition: 0.2s;
-  &:hover {
-    color: $buttonColor;
-  }
+  // transition: 0.2s;
+  // &:hover {
+  //   color: $buttonColor;
+  // }
 }
 
 .item-discount__value {
@@ -88,8 +93,8 @@
   font-weight: 700;
   font-size: 1.4em;
   cursor: pointer;
-  transition: 0.2s;
   &:hover {
+    transition: 0.2s;
     background-color: $buttonColorHover;
   }
   &:active {
@@ -107,7 +112,6 @@
   box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 5%), 0 4px 8px 0 rgb(35 31 32 / 10%);
   border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
   &:hover {
     box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
   }

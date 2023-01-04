@@ -99,7 +99,6 @@ export class CartMain {
 
       const prodItems = document.createElement('div');
       prodItems.className = 'prod-items';
-      //prodItems.innerText = 'prodItems';
       productsInCart.appendChild(prodItems);
 
       let itemNumberStart = 0;

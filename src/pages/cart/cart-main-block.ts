@@ -1,4 +1,4 @@
-import './cart.scss';
+import '././styles/cart.scss';
 export class CartMain {
   create(): void {
     const main: HTMLElement | null = document.querySelector('.main');

@@ -185,7 +185,9 @@ export class ProductMain {
             buttonAddRemove.innerText = 'Drop from cart';
           }
           localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-          const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
+          const result = productStorage.reduce((acc: any, prod: any) => {
+            acc + prod.price;
+          }, 0);
           localStorage.setItem('result', `${result}`);
           headerPrice.innerText = `Total Price: ${result}€`;
         } else {

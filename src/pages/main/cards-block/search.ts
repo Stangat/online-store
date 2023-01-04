@@ -12,7 +12,6 @@ export class Search extends CardsBlock {
   }
   findItems(): void {
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
-
     if (searchInput) {
       searchInput.addEventListener('keyup', () => {
         const selectedData: IProductData[] = [];
@@ -39,6 +38,9 @@ export class Search extends CardsBlock {
             selectedData.push(product);
           }
         });
+        this.filters.updateCategoriesCounts(selectedData)
+        this.filters.updateBrandsCounts(selectedData)
+  
         this.applySort(selectedData);
         super.notify(selectedData);
         this.setLocalStorage();
@@ -123,6 +125,8 @@ export class Search extends CardsBlock {
           selectedData.push(product);
         }
       });
+      this.filters.updateBrandsCounts(selectedData)
+      this.filters.updateCategoriesCounts(selectedData)
       this.applySort(selectedData);
       super.notify(selectedData);
     }

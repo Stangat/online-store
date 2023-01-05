@@ -258,10 +258,10 @@ class CardsBlock {
             let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
             const isProductExist = productStorage.find((prod: any) => prod.id === product.id);
             if (isProductExist) {
-              productStorage = productStorage.filter((item: any) => item.id !== product.id);
+              productStorage = productStorage.filter((item: any) => item.id !== product.id)
               addToCartButton.innerText = 'Add to cart';
             } else {
-              productStorage.push(product);
+              productStorage.push({ ...product, stockSelect: 1 });
               addToCartButton.innerText = 'Drop from cart';
             }
             localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
@@ -269,7 +269,8 @@ class CardsBlock {
             localStorage.setItem('result', `${result}`);
             headerPrice.innerText = `Total Price: ${result}€`;
           } else {
-            localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+            console.log('first')
+            localStorage.setItem('product-cart', `${JSON.stringify([{ ...product, stockSelect: 1 }])}`);
             localStorage.setItem('result', `${product.price}`);
             headerPrice.innerText = `Total Price: ${product.price}€`;
             addToCartButton.innerText = 'Drop from cart';

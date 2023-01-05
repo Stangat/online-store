@@ -52,6 +52,7 @@ export class CartMain {
       inputSeachPromocod.className = 'input-search-promocod';
       inputSeachPromocod.type = 'search';
       inputSeachPromocod.placeholder = 'Enter promo code';
+
       promoCode.appendChild(inputSeachPromocod);
       const promoHint = document.createElement('span');
       promoHint.className = 'promo-hint';
@@ -131,44 +132,118 @@ export class CartMain {
         const productDescription = document.createElement('div');
         productDescription.className = 'product-description';
         productDescription.innerText = `${product.description}`;
-        itemDetailProd.appendChild(productDescription)
-        const productOther = document.createElement('div')
-        productOther.className = 'product-other'
-        itemDetailProd.appendChild(productOther)
-        const productRaiting = document.createElement('div')
-        productRaiting.className = 'product-other-one-block'
-        productRaiting.innerText = `Rating: ${product.rating}`
-        const productDiscount = document.createElement('div')
-        productDiscount.className = 'product-other-one-block'
-        productDiscount.innerText = `Discount: ${product.discountPercentage}`
-        productOther.appendChild(productRaiting)
-        productOther.appendChild(productDiscount)
+        itemDetailProd.appendChild(productDescription);
+        const productOther = document.createElement('div');
+        productOther.className = 'product-other';
+        itemDetailProd.appendChild(productOther);
+        const productRaiting = document.createElement('div');
+        productRaiting.className = 'product-other-one-block';
+        productRaiting.innerText = `Rating: ${product.rating}`;
+        const productDiscount = document.createElement('div');
+        productDiscount.className = 'product-other-one-block';
+        productDiscount.innerText = `Discount: ${product.discountPercentage}`;
+        productOther.appendChild(productRaiting);
+        productOther.appendChild(productDiscount);
 
         const numberControl = document.createElement('div');
         numberControl.className = 'number-control';
         cartItem.appendChild(numberControl);
-        const stockControl = document.createElement('div')
-        stockControl.className ='stock-control'
-        stockControl.innerText = `Stock: ${product.stock}`
-        numberControl.appendChild(stockControl)
-        const incDecControl = document.createElement('div')
-        incDecControl.className = 'incDec-control'
-        numberControl.appendChild(incDecControl)
-        const buttonPlus = document.createElement('button')
-        buttonPlus.className = 'button-stock'
-        buttonPlus.innerText = '+'
-        incDecControl.appendChild(buttonPlus)
-        const spanStockCount = document.createElement('span')
-        spanStockCount.innerText = '1' //ПОДСТАВЛЯТЬ ДИНАМИЧЕСКИ
-        incDecControl.appendChild(spanStockCount)
-        const buttonMinus = document.createElement('button')
-        buttonMinus.className = 'button-stock'
-        buttonMinus.innerText = '-'
-        incDecControl.appendChild(buttonMinus)
-        const amountControl = document.createElement('div')
-        amountControl.className = 'amount-control'
-        amountControl.innerText = `€ ${product.price}`
-        numberControl.appendChild(amountControl)
+        const stockControl = document.createElement('div');
+        stockControl.className = 'stock-control';
+        stockControl.innerText = `Stock: ${product.stock}`;
+        numberControl.appendChild(stockControl);
+        const incDecControl = document.createElement('div');
+        incDecControl.className = 'incDec-control';
+        numberControl.appendChild(incDecControl);
+        const buttonPlus = document.createElement('button');
+        buttonPlus.className = 'button-stock';
+        buttonPlus.innerText = '+';
+        incDecControl.appendChild(buttonPlus);
+        const spanStockCount = document.createElement('span');
+        spanStockCount.innerText = `${product.stockSelect}`;
+        incDecControl.appendChild(spanStockCount);
+        const buttonMinus = document.createElement('button');
+        buttonMinus.className = 'button-stock';
+        buttonMinus.innerText = '-';
+        incDecControl.appendChild(buttonMinus);
+        const amountControl = document.createElement('div');
+        amountControl.className = 'amount-control';
+        amountControl.innerText = `€ ${product.price}`;
+        numberControl.appendChild(amountControl);
+
+        let countStock: any = spanStockCount.innerText;
+        const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
+        const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
+
+        buttonPlus.addEventListener('click', (event) => {
+          spanStockCount.innerText = `${++countStock}`;
+          const updtedStockSelect = arrayProductsSelect.map((item: any) => {
+            if (item.id === product.id) {
+              item.stockSelect = +spanStockCount.innerText;
+              return item;
+            } else {
+              return item;
+            }
+          });
+          console.log(updtedStockSelect);
+          localStorage.setItem('product-cart', `${JSON.stringify(updtedStockSelect)}`);
+
+          const resultStorage: any = localStorage.getItem('result');
+          const result = +resultStorage + product.price;
+          headerPrice!.innerText = `Total Price: ${result}€`;
+          const resultStorageLength: any = localStorage.getItem('storage-length');
+          const resultLength = +resultStorageLength + 1;
+          headerCount!.innerText = `${resultLength}`;
+          spanTotalProducts.innerText = `Products: ${resultLength}`;
+          spanTotalPrice.innerText = `Total: € ${result}`;
+          localStorage.setItem('result', `${result}`);
+          localStorage.setItem('storage-length', `${resultLength}`);
+          if (+countStock === product.stock) {
+            buttonPlus.disabled = true;
+          }
+        });
+
+        buttonMinus.addEventListener('click', () => {
+          spanStockCount.innerText = `${--countStock}`;
+          let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+          const resultStorage: any = localStorage.getItem('result');
+          const result = +resultStorage - product.price;
+          headerPrice!.innerText = `Total Price: ${result}€`;
+          const resultStorageLength: any = localStorage.getItem('storage-length');
+          const resultLength = +resultStorageLength - 1;
+          headerCount!.innerText = `${resultLength}`;
+          spanTotalProducts.innerText = `Products: ${resultLength}`;
+          spanTotalPrice.innerText = `Total: € ${result}`;
+          localStorage.setItem('result', `${result}`);
+          localStorage.setItem('storage-length', `${resultLength}`);
+          if (+countStock === 0) {
+            productItemBlock.remove();
+            const isProductExist = productStorage.find((prod: any) => prod.id === product?.id);
+            if (isProductExist) {
+              productStorage = productStorage.filter((item: any) => item.id !== product?.id);
+            }
+            localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
+            if (productStorage.length === 0) {
+              productsInCart.remove();
+              summary.remove();
+              parentDivCart?.appendChild(emptyCart);
+              parentDivCart?.appendChild(emptyCartButton);
+              emptyCartButton.addEventListener('click', () => {
+                window.location.href = '/';
+              });
+            }
+          } else {
+            const updtedStockSelect = arrayProductsSelect.map((item: any) => {
+              if (item.id === product.id) {
+                item.stockSelect = +spanStockCount.innerText;
+                return item;
+              } else {
+                return item;
+              }
+            });
+            localStorage.setItem('product-cart', `${JSON.stringify(updtedStockSelect)}`);
+          }
+        });
       });
     }
   }

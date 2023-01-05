@@ -167,10 +167,40 @@ export class ProductMain {
 
     const storageProduct = localStorage.getItem('product-cart');
     let productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
+    const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
+    const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
     const isProductInCart = productStorage.find((prod: any) => prod.id === item?.id);
     buttonAddRemove.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
     buttonAddRemove?.addEventListener('click', () => {
-
+      let product = item
+      if (headerPrice) {
+        if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
+          let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+          const isProductExist = productStorage.find((prod: any) => prod.id === product?.id);
+          if (isProductExist) {
+            productStorage = productStorage.filter((item: any) => item.id !== product?.id);
+            buttonAddRemove.innerText = 'Add to cart';
+          } else {
+            productStorage.push(product);
+            buttonAddRemove.innerText = 'Drop from cart';
+          }
+          localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
+          const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
+          localStorage.setItem('result', `${result}`);
+          headerPrice.innerText = `Total Price: ${result}€`;
+        } else {
+          localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+          localStorage.setItem('result', `${product?.price}`);
+          headerPrice.innerText = `Total Price: ${product?.price}€`;
+          buttonAddRemove.innerText = 'Drop from cart';
+        }
+      }
+      if (headerCount) {
+        const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+        localStorage.getItem('product-cart');
+        localStorage.setItem('storage-length', `${productStorage.length}`);
+        headerCount.innerText = `${productStorage.length}`;
+      }
     });
 
     addBlock.appendChild(buttonAddRemove);
@@ -181,9 +211,35 @@ export class ProductMain {
 
     buttonBuy.addEventListener('click', () => {
       window.location.href = '/cart';
-      
+      let product = item
+      if (headerPrice) {
+        if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
+          let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+          const isProductExist = productStorage.find((prod: any) => prod.id === product?.id);
+          if (isProductExist) {
+            return
+          } else {
+            productStorage.push(product);
+            buttonAddRemove.innerText = 'Drop from cart';
+          }
+          localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
+          const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
+          localStorage.setItem('result', `${result}`);
+          headerPrice.innerText = `Total Price: ${result}€`;
+        } else {
+          localStorage.setItem('product-cart', `${JSON.stringify([product])}`);
+          localStorage.setItem('result', `${product?.price}`);
+          headerPrice.innerText = `Total Price: ${product?.price}€`;
+          buttonAddRemove.innerText = 'Drop from cart';
+        }
+      }
+      if (headerCount) {
+        const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+        localStorage.getItem('product-cart');
+        localStorage.setItem('storage-length', `${productStorage.length}`);
+        headerCount.innerText = `${productStorage.length}`;
+      }
     });
-
 
     addBlock.appendChild(buttonBuy);
   }

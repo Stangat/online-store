@@ -1,4 +1,4 @@
-import './cart.scss';
+import '././styles/cart.scss';
 export class CartMain {
   create(): void {
     const main: HTMLElement | null = document.querySelector('.main');
@@ -21,7 +21,6 @@ export class CartMain {
         window.location.href = '/';
       });
     } else {
-      console.log(arrayProductsSelect);
       const summaryProducts = localStorage.getItem('storage-length');
       const summaryTotal = localStorage.getItem('result');
       const productsInCart = document.createElement('div');

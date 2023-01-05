@@ -13,6 +13,7 @@ export class Form {
 
     const form = document.createElement('form');
     form.className = 'form';
+    form.action = '/';
     modalContainer.append(form);
 
     const personDetails = document.createElement('div');
@@ -32,6 +33,7 @@ export class Form {
     nameInput.className = 'form__input person-name__input';
     nameInput.placeholder = 'Name';
     nameInput.type = 'text';
+    // nameInput.required = true;
     name.append(nameInput);
 
     const phone = document.createElement('div');
@@ -41,6 +43,8 @@ export class Form {
     const phoneInput = document.createElement('input');
     phoneInput.className = 'form__input phone-number__input';
     phoneInput.placeholder = 'Phone number';
+    phoneInput.type = 'text';
+    // phoneInput.required = true;
     phone.append(phoneInput);
 
     const adress = document.createElement('div');
@@ -50,6 +54,8 @@ export class Form {
     const adressInput = document.createElement('input');
     adressInput.className = 'form__input delivery-adress__input';
     adressInput.placeholder = 'Delivery adress';
+    adressInput.type = 'text';
+    // adressInput.required = true;
     adress.append(adressInput);
 
     const email = document.createElement('div');
@@ -80,8 +86,8 @@ export class Form {
     cardData.append(cardNumber);
 
     const cardType = document.createElement('img');
-    cardType.className = 'paying-system';
-    cardType.alt = 'paying system';
+    cardType.className = 'pay-system';
+    cardType.alt = 'pay system';
     cardType.src =
       'https://i.guim.co.uk/img/media/b73cc57cb1d46ae742efd06b6c58805e8600d482/16_0_2443_1466/master/2443.jpg?width=700&quality=85&auto=format&fit=max&s=fb1dca6cdd4589cd9ef2fc941935de71';
     cardNumber.append(cardType);
@@ -90,22 +96,24 @@ export class Form {
     cardNumberInput.className = 'card-data__input card-number__input';
     cardNumberInput.placeholder = 'Card number';
     cardNumberInput.type = 'text';
+    // cardNumberInput.required = true;
     cardNumber.append(cardNumberInput);
 
     const cardOtherData = document.createElement('div');
     cardOtherData.className = 'card-other-data';
     cardData.append(cardOtherData);
 
-    const cardValidData = document.createElement('div');
-    cardValidData.className = 'card-other-data__item valid-item';
-    cardValidData.textContent = 'VALID:';
-    cardOtherData.append(cardValidData);
+    const cardValidDate = document.createElement('div');
+    cardValidDate.className = 'card-other-data__item valid-item';
+    cardValidDate.textContent = 'VALID:';
+    cardOtherData.append(cardValidDate);
 
-    const cardValidDataInput = document.createElement('input');
-    cardValidDataInput.className = 'card-data__input valid-data__input';
-    cardValidDataInput.placeholder = 'Valid thru';
-    cardValidDataInput.type = 'text';
-    cardValidData.append(cardValidDataInput);
+    const cardValidDateInput = document.createElement('input');
+    cardValidDateInput.className = 'card-data__input valid-date__input';
+    cardValidDateInput.placeholder = 'Valid thru';
+    cardValidDateInput.type = 'text';
+    // cardValidDateInput.required = true;
+    cardValidDate.append(cardValidDateInput);
 
     const cardCvvData = document.createElement('div');
     cardCvvData.className = 'card-other-data__item cvv-item';
@@ -116,25 +124,309 @@ export class Form {
     cardCvvDataInput.className = 'card-data__input cvv-data__input';
     cardCvvDataInput.placeholder = 'Code';
     cardCvvDataInput.type = 'text';
+    // cardCvvDataInput.required = true;
     cardCvvData.append(cardCvvDataInput);
 
     const submitButton = document.createElement('button');
     submitButton.className = 'button form__submit-button';
     submitButton.textContent = 'Confirm';
+    submitButton.type = 'submit';
     form.append(submitButton);
+    submitButton.onclick = function () {
+      // setTimeout(() => form.submit(), 9000);
+    };
 
+    this.nameInputValidate();
+    this.phoneInputValidate();
+    this.adressInputValidate();
     this.emailInputvalidate();
+    this.cardNumberInputValidate();
+    this.cardValidDateInputValidate();
+    this.cardCvvValidate();
+    this.submitForm();
   }
+
+  showModal() {
+    const buttonBuy: HTMLButtonElement | null = document.querySelector('.button-buy');
+
+    if (buttonBuy) {
+      buttonBuy.addEventListener('click', () => {
+        this.create();
+      });
+    }
+  }
+
+  nameInputValidate() {
+    const nameInput: HTMLInputElement | null = document.querySelector('.person-name__input');
+    if (nameInput) {
+      nameInput.addEventListener('input', () => {
+        this.removeNonLetters();
+        const nameValue = nameInput.value.trim();
+        const validName = /^[a-zA-Z,.'-\s]{3,}( [a-zA-Z,.'-\s]{3,})+$/;
+        if (nameValue === '') {
+          nameInput.setCustomValidity('Name is required');
+        } else if (!validName.test(nameValue)) {
+          nameInput.setCustomValidity('Input must be in "Name Lastname" format, at least 3 characters each');
+        } else {
+          nameInput.setCustomValidity('');
+        }
+      });
+    }
+  }
+
+  phoneInputValidate() {
+    const phoneInput: HTMLInputElement | null = document.querySelector('.phone-number__input');
+    if (phoneInput) {
+      phoneInput.addEventListener('input', () => {
+        this.removeNonDigit();
+        const phoneValue = phoneInput.value.trim();
+        const validPhone = /^[+][0-9]{9,}$/;
+        if (phoneValue === '') {
+          phoneInput.setCustomValidity('Phone is required');
+        } else if (!validPhone.test(phoneValue)) {
+          phoneInput.setCustomValidity('Input must begin with "+" and contain at least 9 digits without white spaces');
+        } else {
+          phoneInput.setCustomValidity('');
+        }
+      });
+    }
+  }
+
+  adressInputValidate() {
+    const adressInput: HTMLInputElement | null = document.querySelector('.delivery-adress__input');
+    if (adressInput) {
+      adressInput.addEventListener('input', () => {
+        const adressValue = adressInput.value.trim();
+        const validAdress = /^[^\s]{5,}( [^\s]{5,})( [^\s]{5,})+$/;
+        if (adressValue === '') {
+          adressInput.setCustomValidity('Adress is required');
+        } else if (!validAdress.test(adressValue)) {
+          adressInput.setCustomValidity('Input must contain at least 3 words, not less than 5 characters each');
+        } else {
+          adressInput.setCustomValidity('');
+        }
+      });
+    }
+  }
+
   emailInputvalidate() {
     const emailInput: HTMLInputElement | null = document.querySelector('.email__input');
     if (emailInput) {
       emailInput.addEventListener('input', () => {
         if (emailInput.validity.typeMismatch) {
-          emailInput.setCustomValidity('Please, input correct e-mail address!');
+          emailInput.setCustomValidity('Please, input correct e-mail address');
         } else {
           emailInput.setCustomValidity('');
         }
       });
+    }
+  }
+
+  cardNumberInputValidate() {
+    const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
+    if (cardNumberInput) {
+      cardNumberInput.addEventListener('input', () => {
+        this.removeNonDigit();
+        this.removeRedundantDigit();
+        this.addSpaces();
+        this.changePaySystem();
+        let cardNumberValue = cardNumberInput.value;
+        const validCardNumber = /^[0-9\s]{19}$/;
+        if (cardNumberValue === '') {
+          cardNumberInput.setCustomValidity('Card number is required');
+        } else if (!validCardNumber.test(cardNumberValue)) {
+          cardNumberInput.setCustomValidity('Input must contain 16 digits');
+        } else {
+          cardNumberInput.setCustomValidity('');
+        }
+      });
+    }
+  }
+
+  cardValidDateInputValidate() {
+    const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
+    if (cardValidDateInput) {
+      cardValidDateInput.addEventListener('input', () => {
+        this.removeNonDigit();
+        this.removeRedundantDigit();
+        this.addSlash();
+
+        const dateValue = cardValidDateInput.value;
+        const NUMBER_OF_DIGITS = 5;
+        const NUMBER_OF_MOUNTHS = 12;
+        const NON_EXISTENT_MOUNTH = '00';
+        const mounthInput = cardValidDateInput.value.slice(0, 2);
+        if (+mounthInput > NUMBER_OF_MOUNTHS || mounthInput === NON_EXISTENT_MOUNTH) {
+          cardValidDateInput.value = cardValidDateInput.value.slice(0, 2);
+          cardValidDateInput.style.color = 'red';
+        } else {
+          cardValidDateInput.style.color = 'black';
+        }
+        if (dateValue === '') {
+          cardValidDateInput.setCustomValidity('Card validation is required');
+        } else if (dateValue.length !== NUMBER_OF_DIGITS) {
+          cardValidDateInput.setCustomValidity('Please, use correct format "mounth/year"');
+        } else {
+          cardValidDateInput.setCustomValidity('');
+        }
+      });
+    }
+  }
+
+  cardCvvValidate() {
+    const cardCodeInput: HTMLInputElement | null = document.querySelector('.cvv-data__input');
+    if (cardCodeInput) {
+      cardCodeInput.addEventListener('input', () => {
+        this.removeNonDigit();
+        this.removeRedundantDigit();
+        const codeValue = cardCodeInput.value;
+        const NUMBER_OF_DIGITS = 3;
+        if (codeValue === '') {
+          cardCodeInput.setCustomValidity('CVV validation is required');
+        } else if (codeValue.length !== NUMBER_OF_DIGITS) {
+          cardCodeInput.setCustomValidity('Input must contain 3 digits');
+        } else {
+          cardCodeInput.setCustomValidity('');
+        }
+      });
+    }
+  }
+
+  removeNonLetters() {
+    const nameInput: HTMLInputElement | null = document.querySelector('.person-name__input');
+
+    if (nameInput) {
+      nameInput.value = nameInput.value.replace(/\d/g, '');
+    }
+  }
+
+  removeNonDigit() {
+    const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
+    const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
+    const phoneInput: HTMLInputElement | null = document.querySelector('.phone-number__input');
+    const cardCodeInput: HTMLInputElement | null = document.querySelector('.cvv-data__input');
+    const eventTarget = event?.target;
+
+    if (cardNumberInput && cardValidDateInput && phoneInput && cardCodeInput) {
+      if (eventTarget) {
+        if (eventTarget === cardNumberInput) {
+          cardNumberInput.value = cardNumberInput.value.replace(/\D/g, '');
+        }
+        if (eventTarget === cardValidDateInput) {
+          cardValidDateInput.value = cardValidDateInput.value.replace(/\D/g, '');
+        }
+        if (eventTarget === phoneInput) {
+          phoneInput.value = phoneInput.value.replace(/[a-zA-Z]/g, '');
+        }
+        if (eventTarget === cardCodeInput) {
+          cardCodeInput.value = cardCodeInput.value.replace(/\D/g, '');
+        }
+      }
+    }
+  }
+
+  removeRedundantDigit() {
+    const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
+    const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
+    const cardCodeInput: HTMLInputElement | null = document.querySelector('.cvv-data__input');
+    const eventTarget = event?.target;
+
+    if (cardNumberInput && cardValidDateInput && cardCodeInput) {
+      if (eventTarget) {
+        if (eventTarget === cardNumberInput) {
+          cardNumberInput.value = cardNumberInput.value.slice(0, 16);
+        }
+        if (eventTarget === cardValidDateInput) {
+          cardValidDateInput.value = cardValidDateInput.value.slice(0, 4);
+        }
+        if (eventTarget === cardCodeInput) {
+          cardCodeInput.value = cardCodeInput.value.slice(0, 3);
+        }
+      }
+    }
+  }
+
+  addSpaces() {
+    const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
+    const NUMBER_OF_DIGITS = 4;
+    if (cardNumberInput) {
+      let i = NUMBER_OF_DIGITS;
+      while (i < cardNumberInput.value.length) {
+        cardNumberInput.value =
+          cardNumberInput.value.slice(0, i) + ' ' + cardNumberInput.value.slice(i, cardNumberInput.value.length);
+        i += NUMBER_OF_DIGITS + 1;
+      }
+    }
+  }
+
+  changePaySystem() {
+    const paySystem: HTMLImageElement | null = document.querySelector('.pay-system');
+    const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
+    if (cardNumberInput && paySystem) {
+      if (cardNumberInput.value.charAt(0) === '4') {
+        paySystem.src = 'https://cdn.visa.com/v2/assets/images/logos/visa/blue/logo.png';
+      } else if (cardNumberInput.value.charAt(0) === '5') {
+        paySystem.src = 'https://www.mastercard.hu/content/dam/public/mastercardcom/eu/hu/images/mc-logo-52.svg';
+      } else if (cardNumberInput.value.charAt(0) === '6') {
+        paySystem.src = 'https://m.unionpayintl.com/imp_file/global/wap/en/static/images/logo.png';
+      } else {
+        paySystem.src =
+          'https://i.guim.co.uk/img/media/b73cc57cb1d46ae742efd06b6c58805e8600d482/16_0_2443_1466/master/2443.jpg?width=700&quality=85&auto=format&fit=max&s=fb1dca6cdd4589cd9ef2fc941935de71';
+      }
+    }
+  }
+
+  addSlash() {
+    const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
+    const NUMBER_OF_DIGITS = 2;
+    if (cardValidDateInput) {
+      let i = NUMBER_OF_DIGITS;
+      while (i < cardValidDateInput.value.length) {
+        cardValidDateInput.value =
+          cardValidDateInput.value.slice(0, i) +
+          '/' +
+          cardValidDateInput.value.slice(i, cardValidDateInput.value.length);
+        i += NUMBER_OF_DIGITS + 1;
+      }
+    }
+  }
+
+  submitForm() {
+    const form: HTMLFormElement | null = document.querySelector('.form');
+    if (form) {
+      form.addEventListener('submit', handleSubmit);
+      form.addEventListener('submit', () => {
+        hideModal();
+        showMessage();
+      });
+
+      function handleSubmit(event: Event) {
+        if (form) {
+          let submitTimer;
+          event.preventDefault();
+          submitTimer = setTimeout(() => {
+            form.submit();
+          }, 3000);
+        }
+      }
+
+      function hideModal() {
+        const modal = document.querySelector('.modal');
+        modal?.classList.add('hidden');
+      }
+
+      function showMessage() {
+        const main = document.querySelector('.main');
+        if (main) {
+          const overlay = document.createElement('div');
+          overlay.className = 'overlay';
+          main.append(overlay);
+          const message = document.createElement('p');
+          message.className = 'message';
+          message.textContent = 'Thank you for your purchase, you will be back to main page in 3 seconds';
+          overlay?.append(message);
+        }
+      }
     }
   }
 }

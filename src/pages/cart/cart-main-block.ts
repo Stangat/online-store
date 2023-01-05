@@ -21,7 +21,6 @@ export class CartMain {
         window.location.href = '/';
       });
     } else {
-      console.log(arrayProductsSelect);
       const summaryProducts = localStorage.getItem('storage-length');
       const summaryTotal = localStorage.getItem('result');
       const productsInCart = document.createElement('div');
@@ -104,7 +103,6 @@ export class CartMain {
       let itemNumberStart = 0;
       arrayProductsSelect.forEach((product: any) => {
         ++itemNumberStart;
-        console.log(product);
         const productItemBlock = document.createElement('div');
         productItemBlock.className = 'product-item-block';
         prodItems.appendChild(productItemBlock);

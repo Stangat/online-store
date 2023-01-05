@@ -12,7 +12,7 @@ export class Cart implements IComponent {
       new Header().create();
       new Main().create();
       new CartMain().create();
-      new Form().create();
+      new Form().showModal();
       new Footer().create();
     }
   }

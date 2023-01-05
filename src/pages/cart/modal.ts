@@ -33,7 +33,7 @@ export class Form {
     nameInput.className = 'form__input person-name__input';
     nameInput.placeholder = 'Name';
     nameInput.type = 'text';
-    // nameInput.required = true;
+    nameInput.required = true;
     name.append(nameInput);
 
     const phone = document.createElement('div');
@@ -44,7 +44,7 @@ export class Form {
     phoneInput.className = 'form__input phone-number__input';
     phoneInput.placeholder = 'Phone number';
     phoneInput.type = 'text';
-    // phoneInput.required = true;
+    phoneInput.required = true;
     phone.append(phoneInput);
 
     const adress = document.createElement('div');
@@ -55,7 +55,7 @@ export class Form {
     adressInput.className = 'form__input delivery-adress__input';
     adressInput.placeholder = 'Delivery adress';
     adressInput.type = 'text';
-    // adressInput.required = true;
+    adressInput.required = true;
     adress.append(adressInput);
 
     const email = document.createElement('div');
@@ -66,6 +66,7 @@ export class Form {
     emailInput.className = 'form__input email__input';
     emailInput.placeholder = 'E-mail';
     emailInput.type = 'email';
+    emailInput.required = true;
     email.append(emailInput);
 
     const cardDetails = document.createElement('div');
@@ -96,7 +97,7 @@ export class Form {
     cardNumberInput.className = 'card-data__input card-number__input';
     cardNumberInput.placeholder = 'Card number';
     cardNumberInput.type = 'text';
-    // cardNumberInput.required = true;
+    cardNumberInput.required = true;
     cardNumber.append(cardNumberInput);
 
     const cardOtherData = document.createElement('div');
@@ -112,7 +113,7 @@ export class Form {
     cardValidDateInput.className = 'card-data__input valid-date__input';
     cardValidDateInput.placeholder = 'Valid thru';
     cardValidDateInput.type = 'text';
-    // cardValidDateInput.required = true;
+    cardValidDateInput.required = true;
     cardValidDate.append(cardValidDateInput);
 
     const cardCvvData = document.createElement('div');
@@ -124,7 +125,7 @@ export class Form {
     cardCvvDataInput.className = 'card-data__input cvv-data__input';
     cardCvvDataInput.placeholder = 'Code';
     cardCvvDataInput.type = 'text';
-    // cardCvvDataInput.required = true;
+    cardCvvDataInput.required = true;
     cardCvvData.append(cardCvvDataInput);
 
     const submitButton = document.createElement('button');
@@ -132,9 +133,6 @@ export class Form {
     submitButton.textContent = 'Confirm';
     submitButton.type = 'submit';
     form.append(submitButton);
-    submitButton.onclick = function () {
-      // setTimeout(() => form.submit(), 9000);
-    };
 
     this.nameInputValidate();
     this.phoneInputValidate();
@@ -170,6 +168,7 @@ export class Form {
         } else {
           nameInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -188,6 +187,7 @@ export class Form {
         } else {
           phoneInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -205,6 +205,7 @@ export class Form {
         } else {
           adressInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -218,6 +219,7 @@ export class Form {
         } else {
           emailInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -239,6 +241,7 @@ export class Form {
         } else {
           cardNumberInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -269,6 +272,7 @@ export class Form {
         } else {
           cardValidDateInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -288,6 +292,7 @@ export class Form {
         } else {
           cardCodeInput.setCustomValidity('');
         }
+        this.checkInputsValidity();
       });
     }
   }
@@ -391,6 +396,60 @@ export class Form {
     }
   }
 
+  checkInputsValidity() {
+    const nameInput: HTMLInputElement | null = document.querySelector('.person-name__input');
+    const phoneInput: HTMLInputElement | null = document.querySelector('.phone-number__input');
+    const adressInput: HTMLInputElement | null = document.querySelector('.delivery-adress__input');
+    const emailInput: HTMLInputElement | null = document.querySelector('.email__input');
+    const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
+    const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
+    const cardCodeInput: HTMLInputElement | null = document.querySelector('.cvv-data__input');
+    const personDetails: HTMLHeadingElement | null = document.querySelector('.person-details__title');
+    const cardDetails: HTMLHeadingElement | null = document.querySelector('.card-details__title');
+    const submitButton: HTMLButtonElement | null = document.querySelector('.form__submit-button');
+
+    if (
+      nameInput &&
+      phoneInput &&
+      adressInput &&
+      emailInput &&
+      cardNumberInput &&
+      cardValidDateInput &&
+      cardCodeInput &&
+      personDetails &&
+      cardDetails &&
+      submitButton
+    ) {
+      const nameInputIsValid = nameInput.validity.valid;
+      const phoneInputIsValid = phoneInput.validity.valid;
+      const adressInputIsValid = adressInput.validity.valid;
+      const emailInputIsValid = emailInput.validity.valid;
+      const cardNumberInputIsValid = cardNumberInput.validity.valid;
+      const cardValidDateInputIsValid = cardValidDateInput.validity.valid;
+      const cardCodeInputIsValid = cardCodeInput.validity.valid;
+
+      if (
+        nameInputIsValid === true &&
+        phoneInputIsValid === true &&
+        adressInputIsValid === true &&
+        emailInputIsValid === true &&
+        cardNumberInputIsValid === true &&
+        cardValidDateInputIsValid === true &&
+        cardCodeInputIsValid === true
+      ) {
+        personDetails.style.color = '#486c24';
+        cardDetails.style.color = '#486c24';
+        submitButton.style.backgroundColor = '#486c24';
+        submitButton.addEventListener('mouseover', () => {
+          submitButton.style.backgroundColor = '#293e14';
+        });
+        submitButton.addEventListener('mouseout', () => {
+          submitButton.style.backgroundColor = '#486c24';
+        });
+      }
+    }
+  }
+
   submitForm() {
     const form: HTMLFormElement | null = document.querySelector('.form');
     if (form) {
@@ -402,10 +461,11 @@ export class Form {
 
       function handleSubmit(event: Event) {
         if (form) {
-          let submitTimer;
           event.preventDefault();
+          let submitTimer;
           submitTimer = setTimeout(() => {
             form.submit();
+            localStorage.clear();
           }, 3000);
         }
       }

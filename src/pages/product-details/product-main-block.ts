@@ -1,6 +1,7 @@
 import { onlineStoreData } from '../../data/data';
-
+import { IProductData } from '../../interfaces/index';
 import './product.scss';
+
 export class ProductMain {
   create(id: number): void {
     const main: HTMLElement | null = document.querySelector('.main');
@@ -56,6 +57,7 @@ export class ProductMain {
       img.src = `${image}`;
       productPhotos.appendChild(img);
     });
+
     const firstImage = productPhotos.firstChild;
     if (firstImage instanceof HTMLImageElement) firstImage.className = 'block';
     productData.appendChild(productPhotos);
@@ -64,17 +66,18 @@ export class ProductMain {
     button.innerText = 'NEXT';
     productPhotos.appendChild(button);
     let slides = document.querySelectorAll('.product-photos img');
-    let i = 0;
+
+    let indexSlide: number = 0;
 
     button.addEventListener('click', function () {
-      ++i;
-      if (i >= slides.length) {
-        slides[i - 1].classList.remove('block');
-        i = 0;
-        slides[i].classList.add('block');
+      ++indexSlide;
+      if (indexSlide >= slides.length) {
+        slides[indexSlide - 1].classList.remove('block');
+        indexSlide = 0;
+        slides[indexSlide].classList.add('block');
       } else {
-        slides[i - 1].classList.remove('block');
-        slides[i].classList.add('block');
+        slides[indexSlide - 1].classList.remove('block');
+        slides[indexSlide].classList.add('block');
       }
     });
 
@@ -169,23 +172,25 @@ export class ProductMain {
     let productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
     const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
     const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
-    const isProductInCart = productStorage.find((prod: any) => prod.id === item?.id);
+    const isProductInCart = productStorage.find((prod: IProductData) => prod.id === item?.id);
     buttonAddRemove.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
     buttonAddRemove?.addEventListener('click', () => {
-      let product = item
+      let product = item;
       if (headerPrice) {
         if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
-          let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
-          const isProductExist = productStorage.find((prod: any) => prod.id === product?.id);
+          let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+          const isProductExist = productStorage.find((prod: IProductData) => {
+            return prod.id === product?.id;
+          });
           if (isProductExist) {
-            productStorage = productStorage.filter((item: any) => item.id !== product?.id);
+            productStorage = productStorage.filter((item: IProductData) => item.id !== product?.id);
             buttonAddRemove.innerText = 'Add to cart';
           } else {
-            productStorage.push(product);
+            if (product !== undefined) productStorage.push(product);
             buttonAddRemove.innerText = 'Drop from cart';
           }
           localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-          const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
+          const result = productStorage.reduce((acc: number, prod: IProductData) => acc + prod.price, 0);
           localStorage.setItem('result', `${result}`);
           headerPrice.innerText = `Total Price: ${result}€`;
         } else {
@@ -196,7 +201,7 @@ export class ProductMain {
         }
       }
       if (headerCount) {
-        const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+        const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
         localStorage.getItem('product-cart');
         localStorage.setItem('storage-length', `${productStorage.length}`);
         headerCount.innerText = `${productStorage.length}`;
@@ -211,19 +216,20 @@ export class ProductMain {
 
     buttonBuy.addEventListener('click', () => {
       window.location.href = '/cart';
-      let product = item
+
+      let product = item;
       if (headerPrice) {
         if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
-          let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
-          const isProductExist = productStorage.find((prod: any) => prod.id === product?.id);
+          let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+          const isProductExist = productStorage.find((prod: IProductData) => prod.id === product?.id);
           if (isProductExist) {
-            return
+            return;
           } else {
-            productStorage.push(product);
+            if (product !== undefined) productStorage.push(product);
             buttonAddRemove.innerText = 'Drop from cart';
           }
           localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-          const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
+          const result = productStorage.reduce((acc: number, prod: IProductData) => acc + prod.price, 0);
           localStorage.setItem('result', `${result}`);
           headerPrice.innerText = `Total Price: ${result}€`;
         } else {
@@ -234,7 +240,7 @@ export class ProductMain {
         }
       }
       if (headerCount) {
-        const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+        const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
         localStorage.getItem('product-cart');
         localStorage.setItem('storage-length', `${productStorage.length}`);
         headerCount.innerText = `${productStorage.length}`;

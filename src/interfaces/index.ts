@@ -9,6 +9,7 @@ export interface Coords {
   top: number;
   width: number;
 }
+
 export interface IProductData {
   id: number;
   title: string;
@@ -21,4 +22,8 @@ export interface IProductData {
   category: string;
   thumbnail: string;
   images: string[];
+  stockSelect?: number
+}
+export enum FiltersBlockValue {
+  element_missing = -1,
 }

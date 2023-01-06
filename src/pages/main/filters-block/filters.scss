@@ -2,17 +2,21 @@
   width: 25%;
   font-family: 'Montserrat', sans-serif;
 }
+
 .filters-container-buttons {
   display: flex;
   justify-content: space-between;
   transition: 0.2s;
 }
+
 .filters-container-category-list:hover {
   box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
 }
+
 .filters-container-brand-list:hover {
   box-shadow: 0 -2px 4px 0 rgb(35 31 32 / 25%), 0 4px 8px 0 rgb(35 31 32 / 40%);
 }
+
 .filters-container-reset-button {
   margin-top: 15px;
   background-color: #dc092e;
@@ -27,14 +31,17 @@
   cursor: pointer;
   transition: 0.2s;
 }
+
 .filters-container-category-form {
   display: flex;
   gap: 5px;
 }
+
 .filters-container-brand-form {
   display: flex;
   gap: 5px;
 }
+
 .filters-container-category-list {
   height: 10rem;
   overflow: hidden;
@@ -45,11 +52,13 @@
   font-family: 'Roboto', sans-serif;
   font-size: 0.9em;
 }
+
 .filters-container-category-checkbox {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .filters-container-brand-list {
   height: 10rem;
   overflow: hidden;
@@ -60,13 +69,14 @@
   font-family: 'Roboto', sans-serif;
   font-size: 0.9em;
 }
+
 .filters-container-brand-checkbox {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-input[type=checkbox] {
+input[type='checkbox'] {
   position: relative;
   border: 1px solid #000;
   border-radius: 10px;
@@ -77,23 +87,23 @@ input[type=checkbox] {
   opacity: 0.6;
 }
 
-input[type=checkbox]:hover {
+input[type='checkbox']:hover {
   background-color: #77051a;
 }
 
-input[type=checkbox]:checked {
+input[type='checkbox']:checked {
   background-color: #dc092e;
   opacity: 1;
 }
 
-input[type=checkbox]:before {
-  content: "";
+input[type='checkbox']:before {
+  content: '';
   position: absolute;
   right: 50%;
   top: 50%;
   width: 3px;
   height: 7px;
-  border: solid #FFF;
+  border: solid #fff;
   border-width: 0 2px 2px 0;
   margin: -1px -1px 0 -1px;
   transform: rotate(45deg) translate(-50%, -50%);
@@ -104,6 +114,7 @@ input[type=checkbox]:before {
   display: flex;
   flex-direction: column;
 }
+
 .range-slider {
   text-align: center;
   padding: 2%;
@@ -118,12 +129,11 @@ input[type=checkbox]:before {
   margin-bottom: 20px;
 }
 @keyframes pulse {
-  from{
-    box-shadow:
-    0 0 25px #77051a,
-    0 0 50px #dc092e;
+  from {
+    box-shadow: 0 0 25px #77051a, 0 0 50px #dc092e;
   }
 }
+
 input[type='range'] {
   appearance: none;
   border: 1px solid white;
@@ -134,7 +144,6 @@ input[type='range'] {
     animation: pulse 0.5s ease-in-out;
   }
 }
-
 
 input[type='range']::-webkit-slider-runnable-track {
   width: 25%;

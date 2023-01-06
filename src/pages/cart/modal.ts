@@ -142,6 +142,7 @@ export class Form {
     this.cardValidDateInputValidate();
     this.cardCvvValidate();
     this.submitForm();
+    this.closeModal();
   }
 
   showModal() {
@@ -488,5 +489,14 @@ export class Form {
         }
       }
     }
+  }
+
+  closeModal() {
+    const modal = document.querySelector('.modal');
+    modal?.addEventListener('click', (event: Event) => {
+      if (event.target === modal) {
+        modal.remove();
+      }
+    });
   }
 }

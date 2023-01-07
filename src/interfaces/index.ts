@@ -19,6 +19,7 @@ export interface IProductData {
   stock: number;
   brand: string;
   category: string;
+  stockSelect?: number;
   thumbnail: string;
   images: string[];
 }

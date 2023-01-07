@@ -1,5 +1,5 @@
 import { onlineStoreData } from '../../../data/data';
-import { IProductData } from '../../../interfaces/index';
+import { FiltersBlockValue, IProductData } from '../../../interfaces/index';
 import { Filters } from '../filters-block/filters';
 import { CardsBlock } from './cards';
 
@@ -38,9 +38,9 @@ export class Search extends CardsBlock {
             selectedData.push(product);
           }
         });
-        this.filters.updateCategoriesCounts(selectedData)
-        this.filters.updateBrandsCounts(selectedData)
-  
+        this.filters.updateCategoriesCounts(selectedData);
+        this.filters.updateBrandsCounts(selectedData);
+
         this.applySort(selectedData);
         super.notify(selectedData);
         this.setLocalStorage();
@@ -113,20 +113,20 @@ export class Search extends CardsBlock {
         const brand = product.brand;
         const category = product.category;
         if (
-          title.toUpperCase().indexOf(searchValue) > -1 ||
-          description.toUpperCase().indexOf(searchValue) > -1 ||
-          price.toUpperCase().indexOf(searchValue) > -1 ||
-          discount.toUpperCase().indexOf(searchValue) > -1 ||
-          rating.toUpperCase().indexOf(searchValue) > -1 ||
-          stock.toUpperCase().indexOf(searchValue) > -1 ||
-          brand.toUpperCase().indexOf(searchValue) > -1 ||
-          category.toUpperCase().indexOf(searchValue) > -1
+          title.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          description.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          price.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          discount.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          rating.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          stock.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          brand.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          category.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing
         ) {
           selectedData.push(product);
         }
       });
-      this.filters.updateBrandsCounts(selectedData)
-      this.filters.updateCategoriesCounts(selectedData)
+      this.filters.updateBrandsCounts(selectedData);
+      this.filters.updateCategoriesCounts(selectedData);
       this.applySort(selectedData);
       super.notify(selectedData);
     }

@@ -10,11 +10,13 @@
   font-family: 'Montserrat', sans-serif;
   box-shadow: 0 0 25px rgb(0 0 31 / 75%);
 }
+
 .header__brand {
   display: flex;
   cursor: pointer;
   color: #dc092e;
 }
+
 .header__brand__name {
   background: url('../../assets/icon-shop.png');
   background-size: contain;
@@ -53,16 +55,20 @@
   width: 40%;
   padding-bottom: 40%;
 }
+
 .header__price {
   font-weight: 600;
 }
+
 .header__price span {
   font-size: 120%;
   color: #dc092e;
 }
+
 .header__cart__image {
   position: relative;
 }
+
 .header__cart__total {
   position: absolute;
   top: -1px;

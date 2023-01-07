@@ -45,6 +45,8 @@
   font-size: 90%;
 }
 .total-price {
+  display: flex;
+  flex-direction: column;
   width: 90%;
   font-size: 170%;
   text-align: center;
@@ -57,6 +59,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+.add-discount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title-block {
+  font-size: 60%;
+}
+.applied-promocode {
+  font-size: 75%;
+  color: #dc092e;
+  font-weight: 600;
+}
+.rs,
+.epm,
+.drop-rs,
+.drop-epm {
+  font-size: 40%;
+  padding: 3px;
+  background-color: #dc092e;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
 }
 .input-search-promocod {
   width: 70%;

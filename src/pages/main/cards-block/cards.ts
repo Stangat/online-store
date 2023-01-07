@@ -2,6 +2,7 @@ import './styles/cards.scss';
 import './styles/sort-panel.scss';
 import { onlineStoreData as onlineStoreDataMock } from '../../../data/data';
 import { View } from './view';
+import { IProductData } from '../../../interfaces/index';
 
 class CardsBlock {
   viewMode: View;
@@ -234,7 +235,7 @@ class CardsBlock {
 
       const storageProduct = localStorage.getItem('product-cart');
       let productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
-      const isProductInCart = productStorage.find((prod: any) => prod.id === productsDate[i].id);
+      const isProductInCart = productStorage.find((prod: IProductData) => prod.id === productsDate[i].id);
       addToCartButton.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
 
       itemButtons.append(addToCartButton);
@@ -244,32 +245,31 @@ class CardsBlock {
 
       itemButtons.append(detailsButton);
 
-      detailsButton.addEventListener('click', (event) => {
+      detailsButton.addEventListener('click', () => {
         const itemId = productsDate[i].id;
         window.location.href = '/product/' + `${itemId}`;
       });
 
-      addToCartButton?.addEventListener('click', (event) => {
+      addToCartButton?.addEventListener('click', () => {
         const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
         const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
         let product = productsDate[i];
         if (headerPrice) {
           if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
-            let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
-            const isProductExist = productStorage.find((prod: any) => prod.id === product.id);
+            let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+            const isProductExist = productStorage.find((prod: IProductData) => prod.id === product.id);
             if (isProductExist) {
-              productStorage = productStorage.filter((item: any) => item.id !== product.id)
+              productStorage = productStorage.filter((item: IProductData) => item.id !== product.id);
               addToCartButton.innerText = 'Add to cart';
             } else {
               productStorage.push({ ...product, stockSelect: 1 });
               addToCartButton.innerText = 'Drop from cart';
             }
             localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-            const result = productStorage.reduce((acc: any, prod: any) => acc + prod.price, 0);
+            const result = productStorage.reduce((acc: number, prod: IProductData) => acc + prod.price, 0);
             localStorage.setItem('result', `${result}`);
             headerPrice.innerText = `Total Price: ${result}€`;
           } else {
-            console.log('first')
             localStorage.setItem('product-cart', `${JSON.stringify([{ ...product, stockSelect: 1 }])}`);
             localStorage.setItem('result', `${product.price}`);
             headerPrice.innerText = `Total Price: ${product.price}€`;
@@ -277,7 +277,7 @@ class CardsBlock {
           }
         }
         if (headerCount) {
-          const productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
+          const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
           localStorage.getItem('product-cart');
           localStorage.setItem('storage-length', `${productStorage.length}`);
           headerCount.innerText = `${productStorage.length}`;

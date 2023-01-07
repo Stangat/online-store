@@ -1,5 +1,5 @@
 import { onlineStoreData } from '../../../data/data';
-import { IProductData } from '../../../interfaces/index';
+import { FiltersBlockValue, IProductData } from '../../../interfaces/index';
 import { CardsBlock } from '../cards-block/cards';
 import { brands, categories, pricesArray, stocksArray } from './constants';
 import './filters.scss';
@@ -48,14 +48,14 @@ export class Filters {
       (item) => this.stockRange[0] <= item.stock && this.stockRange[1] >= item.stock
     );
     this.applySort(filteredProducts);
-    this.updateCategoriesCounts(filteredProducts)
-    this.updateBrandsCounts(filteredProducts)
+    this.updateCategoriesCounts(filteredProducts);
+    this.updateBrandsCounts(filteredProducts);
 
-    const prices = filteredProducts.map((item: any) => item.price).sort((a, b) => a- b)
-    const stocks = filteredProducts.map((item: any) => item.stock).sort((a, b) => a- b)
+    const prices = filteredProducts.map((item: any) => item.price).sort((a, b) => a - b);
+    const stocks = filteredProducts.map((item: any) => item.stock).sort((a, b) => a - b);
 
-    this.updatePriceRange([prices[0], prices.at(-1)])
-    this.updateStockRange([stocks[0], stocks.at(-1)])
+    this.updatePriceRange([prices[0], prices.at(-1)]);
+    this.updateStockRange([stocks[0], stocks.at(-1)]);
     return filteredProducts;
   }
 
@@ -94,15 +94,16 @@ export class Filters {
         const stock = product.stock.toString();
         const brand = product.brand;
         const category = product.category;
+
         if (
-          title.toUpperCase().indexOf(searchValue) > -1 ||
-          description.toUpperCase().indexOf(searchValue) > -1 ||
-          price.toUpperCase().indexOf(searchValue) > -1 ||
-          discount.toUpperCase().indexOf(searchValue) > -1 ||
-          rating.toUpperCase().indexOf(searchValue) > -1 ||
-          stock.toUpperCase().indexOf(searchValue) > -1 ||
-          brand.toUpperCase().indexOf(searchValue) > -1 ||
-          category.toUpperCase().indexOf(searchValue) > -1
+          title.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          description.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          price.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          discount.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          rating.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          stock.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          brand.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing ||
+          category.toUpperCase().indexOf(searchValue) > FiltersBlockValue.element_missing
         ) {
           selectedData.push(product);
         }
@@ -229,51 +230,49 @@ export class Filters {
   updateCategoriesCounts(filteredProd: any) {
     categories.forEach((category) => {
       const categoryNode = document.querySelectorAll(`[category=${category}].filters-container-category-span`);
-      const countOfProductsInCategory = onlineStoreData.products.filter(prod => prod.category === category).length
-      const curentSelectedProductInCategory = filteredProd.filter((prod: any) => prod.category === category).length
-      if(categoryNode[0]) {
+      const countOfProductsInCategory = onlineStoreData.products.filter((prod) => prod.category === category).length;
+      const curentSelectedProductInCategory = filteredProd.filter(
+        (prod: IProductData) => prod.category === category
+      ).length;
+      if (categoryNode[0]) {
         categoryNode[0].innerHTML = `${curentSelectedProductInCategory}/${countOfProductsInCategory}`;
       }
-    })
+    });
   }
 
-  updateBrandsCounts(filteredProd: any) {
+  updateBrandsCounts(filteredProd: IProductData[]) {
     brands.forEach((brand) => {
       const categoryNode = document.querySelectorAll(`[category="${brand}"].filters-container-category-span`);
-      const countOfProductsInBrand = onlineStoreData.products.filter(prod => prod.brand === brand).length
-      const curentSelectedProductInBrand = filteredProd.filter((prod: any) => prod.brand === brand).length
-      if(categoryNode[0]) {
+      const countOfProductsInBrand = onlineStoreData.products.filter((prod) => prod.brand === brand).length;
+      const curentSelectedProductInBrand = filteredProd.filter((prod: IProductData) => prod.brand === brand).length;
+      if (categoryNode[0]) {
         categoryNode[0].innerHTML = `${curentSelectedProductInBrand}/${countOfProductsInBrand}`;
       }
-    })
+    });
   }
 
   updatePriceRange(value: [number, number]) {
-    //@ts-ignore
-    const inputSliderPriceMin: HTMLInputElement | null = document.getElementById('price-min');
-    //@ts-ignore
-    const inputSliderPriceMax: HTMLInputElement | null = document.getElementById('price-max');
-    const rangeSliderPrice = document.getElementById('rangeSliderPrice')
+    const inputSliderPriceMin = <HTMLInputElement>document.getElementById('price-min');
+    const inputSliderPriceMax = <HTMLInputElement>document.getElementById('price-max');
+    const rangeSliderPrice = document.getElementById('rangeSliderPrice');
     const displayElement = rangeSliderPrice?.getElementsByClassName('rangeValues')[0];
-    if(inputSliderPriceMin && inputSliderPriceMax && displayElement) {
-      inputSliderPriceMin.value = value[0].toString()
-      inputSliderPriceMax.value = value[1].toString()
-      
+    if (inputSliderPriceMin && inputSliderPriceMax && displayElement) {
+      inputSliderPriceMin.value = value[0].toString();
+      inputSliderPriceMax.value = value[1].toString();
+
       displayElement.innerHTML = '€' + value[0].toString() + ' - €' + value[1].toString();
     }
   }
 
   updateStockRange(value: [number, number]) {
-    //@ts-ignore
-    const inputSliderStockMin: HTMLInputElement | null = document.getElementById('stock-min');
-    //@ts-ignore
-    const inputSliderStockMax: HTMLInputElement | null = document.getElementById('stock-max');
-    const rangeSliderStock = document.getElementById('rangeSliderStock')
+    const inputSliderStockMin = <HTMLInputElement>document.getElementById('stock-min');
+    const inputSliderStockMax = <HTMLInputElement>document.getElementById('stock-max');
+    const rangeSliderStock = document.getElementById('rangeSliderStock');
     const displayElement = rangeSliderStock?.getElementsByClassName('rangeValues')[0];
-    if(inputSliderStockMin && inputSliderStockMax && displayElement) {
-      inputSliderStockMin.value = value[0].toString()
-      inputSliderStockMax.value = value[1].toString()
-      displayElement.innerHTML =value[0].toString() + ' - ' + value[1].toString();
+    if (inputSliderStockMin && inputSliderStockMax && displayElement) {
+      inputSliderStockMin.value = value[0].toString();
+      inputSliderStockMax.value = value[1].toString();
+      displayElement.innerHTML = value[0].toString() + ' - ' + value[1].toString();
     }
   }
 
@@ -290,7 +289,6 @@ export class Filters {
     buttonsFilter.className = 'filters-container-buttons';
     blockFilters.appendChild(buttonsFilter);
 
-    const resetFilters: HTMLDivElement | null = document.createElement('div');
     const resetFiltersButton: HTMLButtonElement | null = document.createElement('button');
     resetFiltersButton.className = 'filters-container-reset-button';
     buttonsFilter.appendChild(resetFiltersButton);
@@ -299,7 +297,6 @@ export class Filters {
       window.location.search = '';
     });
 
-    const copyFilters: HTMLDivElement | null = document.createElement('div');
     const copyFiltersButton: HTMLButtonElement | null = document.createElement('button');
     copyFiltersButton.className = 'filters-container-reset-button';
     buttonsFilter.appendChild(copyFiltersButton);
@@ -331,10 +328,8 @@ export class Filters {
     categoryFilters.appendChild(listFilterCategory);
 
     categories.forEach((element) => {
-      
       const containerOneCheckbox = document.createElement('div');
       containerOneCheckbox.className = 'filters-container-category-checkbox';
-      
 
       const formCheckboxCategory = document.createElement('div');
       formCheckboxCategory.className = 'filters-container-category-form';
@@ -349,11 +344,11 @@ export class Filters {
 
       const spanCategory = document.createElement('span');
       spanCategory.className = 'filters-container-category-span';
-      spanCategory.setAttribute("category", element);
-      const countOfProductsInCategory = onlineStoreData.products.filter(prod => prod.category === element).length
-      const curentSelectedProductInCategory = that.products.filter(prod => prod.category === element).length
+      spanCategory.setAttribute('category', element);
+      const countOfProductsInCategory = onlineStoreData.products.filter((prod) => prod.category === element).length;
+      const curentSelectedProductInCategory = that.products.filter((prod) => prod.category === element).length;
       spanCategory.innerText = `${curentSelectedProductInCategory}/${countOfProductsInCategory}`;
-      
+
       formCheckboxCategory.appendChild(checkboxCategory);
       formCheckboxCategory.appendChild(labelCategory);
       containerOneCheckbox.appendChild(formCheckboxCategory);
@@ -390,9 +385,9 @@ export class Filters {
 
       const spanBrand = document.createElement('span');
       spanBrand.className = 'filters-container-category-span';
-      spanBrand.setAttribute("category", element);
-      const countOfProductsInBrand = onlineStoreData.products.filter(prod => prod.brand === element).length
-      const curentSelectedProductInBrand = that.products.filter(prod => prod.brand === element).length
+      spanBrand.setAttribute('category', element);
+      const countOfProductsInBrand = onlineStoreData.products.filter((prod) => prod.brand === element).length;
+      const curentSelectedProductInBrand = that.products.filter((prod) => prod.brand === element).length;
       spanBrand.innerText = `${curentSelectedProductInBrand}/${countOfProductsInBrand}`;
       formCheckboxBrand.appendChild(checkboxBrand);
       formCheckboxBrand.appendChild(labelBrand);
@@ -411,7 +406,7 @@ export class Filters {
     sliderPrice.appendChild(nameSliderPrice);
     const rangeSliderPrice = document.createElement('div');
     rangeSliderPrice.className = 'range-slider price';
-    rangeSliderPrice.id = 'rangeSliderPrice'
+    rangeSliderPrice.id = 'rangeSliderPrice';
     sliderPrice.appendChild(rangeSliderPrice);
     const spanSliderPrice = document.createElement('span');
     spanSliderPrice.className = 'rangeValues';
@@ -419,16 +414,14 @@ export class Filters {
 
     const inputSliderPriceMin: HTMLInputElement | null = document.createElement('input');
     inputSliderPriceMin.type = 'range';
-    inputSliderPriceMin.id = 'price-min'
+    inputSliderPriceMin.id = 'price-min';
     inputSliderPriceMin.min = `${pricesArray[0]}`;
     inputSliderPriceMin.max = `${pricesArray[pricesArray.length - 1]}`;
-    // inputSliderPriceMin.setAttribute('value', `${that.priceRange[0]}`);
     inputSliderPriceMin.value = `${that.priceRange[0]}`;
-    // inputSliderPriceMin.step = '1';
     rangeSliderPrice.appendChild(inputSliderPriceMin);
 
     const inputSliderPriceMax: HTMLInputElement | null = document.createElement('input');
-    inputSliderPriceMax.id = 'price-max'
+    inputSliderPriceMax.id = 'price-max';
     inputSliderPriceMax.setAttribute('value', `${that.priceRange[1]}`);
     inputSliderPriceMax.type = 'range';
     inputSliderPriceMax.max = `${pricesArray[pricesArray.length - 1]}`;
@@ -443,18 +436,11 @@ export class Filters {
         that.getNearest(pricesArray, +slides[1].value),
       ];
 
-      // Neither slider will clip the other, so make sure we determine which is larger
-      /* if (slide1 > slide2) {
-        let tmp = slide2;
-        slide2 = slide1;
-        slide1 = tmp;
-      } */
       let displayElement = rangeSliderPrice.getElementsByClassName('rangeValues')[0];
       displayElement.innerHTML = '€' + that.priceRange[0] + ' - €' + that.priceRange[1];
     }
 
     function price() {
-      // Initialize Sliders
       let sliderSections = document.getElementsByClassName('price');
       for (let x = 0; x < sliderSections.length; x++) {
         let sliders: any = sliderSections[x].getElementsByTagName('input');
@@ -476,7 +462,7 @@ export class Filters {
     sliderStock.appendChild(nameSliderStock);
     const rangeSliderStock = document.createElement('div');
     rangeSliderStock.className = 'range-slider stock';
-    rangeSliderStock.id = 'rangeSliderStock'
+    rangeSliderStock.id = 'rangeSliderStock';
     sliderStock.appendChild(rangeSliderStock);
     const spanSliderStock = document.createElement('span');
     spanSliderStock.className = 'rangeValues';
@@ -484,7 +470,7 @@ export class Filters {
 
     const inputSliderStockMin: HTMLInputElement | null = document.createElement('input');
     inputSliderStockMin.type = 'range';
-    inputSliderStockMin.id = 'stock-min'
+    inputSliderStockMin.id = 'stock-min';
     inputSliderStockMin.min = `${stocksArray[0]}`;
     inputSliderStockMin.max = `${stocksArray[stocksArray.length - 1]}`;
     inputSliderStockMin.setAttribute('value', `${that.stockRange[0]}`);
@@ -492,11 +478,10 @@ export class Filters {
     rangeSliderStock.appendChild(inputSliderStockMin);
     const inputSliderStockMax: HTMLInputElement | null = document.createElement('input');
     inputSliderStockMax.type = 'range';
-    inputSliderStockMax.id = 'stock-max'
+    inputSliderStockMax.id = 'stock-max';
     inputSliderStockMax.max = `${stocksArray[stocksArray.length - 1]}`;
     inputSliderStockMax.min = `${stocksArray[0]}`;
     inputSliderStockMax.value = `${that.stockRange[1]}`;
-    // inputSliderStockMax.step = '1';
     rangeSliderStock.appendChild(inputSliderStockMax);
 
     function getValsStock() {
@@ -506,24 +491,17 @@ export class Filters {
         that.getNearest(stocksArray, +slides[1].value),
       ];
 
-      /* if (slide1 > slide2) {
-        let tmp = slide2;
-        slide2 = slide1;
-        slide1 = tmp;
-      } */
       let displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
       displayElement.innerHTML = that.stockRange[0] + ' - ' + that.stockRange[1];
     }
 
     function stock() {
-      // Initialize Sliders
       let sliderSections = document.getElementsByClassName('stock');
       for (let x = 0; x < sliderSections.length; x++) {
         let sliders: any = sliderSections[x].getElementsByTagName('input');
         for (let y = 0; y < sliders.length; y++) {
           if (sliders[y].type === 'range') {
             sliders[y].oninput = getValsStock;
-            // Manually trigger event first time to display values
             sliders[y].oninput();
           }
         }
@@ -531,9 +509,7 @@ export class Filters {
     }
     getValsStock();
 
-    // window.addEventListener('load', function () {
     price();
     stock();
-    // });
   }
 }

@@ -1,6 +1,20 @@
-import { IProductData } from '../../interfaces/index';
+import { DiscontType, IProductData } from '../../interfaces/index';
 import '././styles/cart.scss';
+
 export class CartMain {
+  private appliedDiscounts: DiscontType[];
+  summaryTotal: number;
+  existDisconts: DiscontType[] = [
+    { id: 1, promoCode: 'rs', discont: 10, description: 'Rolling Scopes School - 10%' },
+    { id: 2, promoCode: 'epm', discont: 10, description: 'EPAM Systems - 10%' },
+  ];
+  constructor() {
+    const storageDiscount = localStorage.getItem('discount');
+    this.appliedDiscounts = (storageDiscount && JSON.parse(storageDiscount)) || [];
+    const storageSummaryTotal = localStorage.getItem('result');
+    this.summaryTotal = (storageSummaryTotal && JSON.parse(storageSummaryTotal)) || 0;
+  }
+
   create(): void {
     const main: HTMLElement | null = document.querySelector('.main');
     const parentDivCart: HTMLDivElement | null = document.createElement('div');
@@ -23,7 +37,6 @@ export class CartMain {
       });
     } else {
       const summaryProducts = localStorage.getItem('storage-length');
-      const summaryTotal = localStorage.getItem('result');
       const productsInCart: HTMLDivElement | null = document.createElement('div');
       productsInCart.className = 'products-in-cart';
       const summary: HTMLDivElement | null = document.createElement('div');
@@ -43,9 +56,20 @@ export class CartMain {
       const totalPrice: HTMLDivElement | null = document.createElement('div');
       totalPrice.className = 'total-price';
       const spanTotalPrice: HTMLSpanElement | null = document.createElement('span');
-      spanTotalPrice.innerText = `Total: € ${summaryTotal}`;
+      spanTotalPrice.className = 'span-total-price';
+      if (this.appliedDiscounts.length) {
+        spanTotalPrice.style.textDecoration = 'line-through';
+      } else {
+        spanTotalPrice.style.textDecoration = 'none';
+      }
+      spanTotalPrice.innerText = `Total: € ${this.summaryTotal}`;
       summary.appendChild(totalPrice);
       totalPrice.appendChild(spanTotalPrice);
+
+      const addBlock = document.createElement('div');
+      addBlock.className = 'applied-promocode';
+      summary.appendChild(addBlock);
+
       const promoCode: HTMLDivElement | null = document.createElement('div');
       promoCode.className = 'promo-code';
       summary.appendChild(promoCode);
@@ -53,8 +77,8 @@ export class CartMain {
       inputSeachPromocod.className = 'input-search-promocod';
       inputSeachPromocod.type = 'search';
       inputSeachPromocod.placeholder = 'Enter promo code';
-
       promoCode.appendChild(inputSeachPromocod);
+
       const promoHint: HTMLSpanElement | null = document.createElement('span');
       promoHint.className = 'promo-hint';
       promoHint.innerText = 'Promo for test: "RS", "EPM"';
@@ -102,7 +126,108 @@ export class CartMain {
       prodItems.className = 'prod-items';
       productsInCart.appendChild(prodItems);
 
-      let itemNumberStart = 0;
+      const updateTotalPrice = () => {
+        const newTotal = document.createElement('span');
+        const discountSum = this.appliedDiscounts.reduce((acc, item) => (acc += item.discont), 0);
+        const discountedPrice = this.summaryTotal - (this.summaryTotal * discountSum) / 100;
+        newTotal.innerText = `Total: ${discountedPrice}`;
+        newTotal.className = 'new-total';
+        document.querySelectorAll('.new-total').forEach((item) => item.remove());
+        if (!this.appliedDiscounts.length) {
+          spanTotalPrice.style.textDecoration = 'none';
+          return;
+        } else {
+          totalPrice.appendChild(newTotal);
+          spanTotalPrice.style.textDecoration = 'line-through';
+        }
+      };
+
+      const createDiscontBlock = (discont: DiscontType): HTMLElement => {
+        const addBlock = document.createElement('div');
+        addBlock.className = 'applied';
+        addBlock.setAttribute('promo-id', discont.id.toString());
+        if (this.appliedDiscounts.length === 1) {
+          const titleBlock = document.createElement('div');
+          titleBlock.innerText = 'Applied promocode:';
+          titleBlock.className = 'title-block';
+          addBlock.appendChild(titleBlock);
+          totalPrice.appendChild(addBlock);
+        }
+        const aplCode = document.createElement('span');
+        aplCode.innerHTML = discont.description;
+        const dropButton = document.createElement('button');
+        dropButton.innerText = 'DROP';
+        dropButton.className = `drop-${discont.promoCode}`;
+        dropButton.addEventListener('click', () => {
+          removeDiscount(discont);
+        });
+        aplCode.appendChild(dropButton);
+        addBlock.appendChild(aplCode);
+        return addBlock;
+      };
+
+      const renderPromo = () => {
+        const promocodesBlock = document.querySelector('.applied-promocode');
+        promocodesBlock!.innerHTML = '';
+        this.appliedDiscounts.forEach((item) => {
+          const discountBlock = createDiscontBlock(item);
+          promocodesBlock?.appendChild(discountBlock);
+        });
+        updateTotalPrice();
+      };
+
+      const addDiscont = (discount: DiscontType) => {
+        const isAppliedDiscontExist = this.appliedDiscounts.find((disc) => disc.id === discount.id);
+        if (isAppliedDiscontExist) {
+          return;
+        } else {
+          this.appliedDiscounts.push(discount);
+          localStorage.setItem('discount', JSON.stringify(this.appliedDiscounts));
+        }
+        const addButton: HTMLButtonElement | null = document.querySelector(`.${discount.promoCode}`);
+        if (addButton) addButton.style.display = 'none';
+        renderPromo();
+      };
+
+      const removeDiscount = (discount: DiscontType) => {
+        this.appliedDiscounts = this.appliedDiscounts.filter((disc) => disc.id !== discount.id);
+        localStorage.setItem('discount', JSON.stringify(this.appliedDiscounts));
+        const addButton: HTMLButtonElement | null = document.querySelector(`.${discount.promoCode}`);
+        if (addButton) addButton.style.display = 'block';
+        renderPromo();
+      };
+
+      const createAddDiscountBlock = (discount: DiscontType) => {
+        const addDiscount = document.createElement('span');
+        addDiscount.className = 'add-discount';
+        addDiscount.innerText = discount.description;
+        const addButton = document.createElement('button');
+        addButton.innerText = 'ADD';
+        addButton.className = discount.promoCode;
+        promoCode.appendChild(addDiscount);
+        addDiscount.appendChild(addButton);
+        addButton?.addEventListener('click', () => {
+          addDiscont(discount);
+        });
+        const isAppliedDiscontExist = this.appliedDiscounts.find((disc) => disc.id === discount.id);
+        if (isAppliedDiscontExist) {
+          addButton.remove();
+        }
+      };
+
+      inputSeachPromocod.addEventListener('input', (event: any) => {
+        const currentInputValue = event.target.value.trim().toLowerCase();
+        const currentDiscont = this.existDisconts.find((disc) => disc.promoCode === currentInputValue);
+        if (currentDiscont) {
+          createAddDiscountBlock(currentDiscont);
+        } else {
+          const addDiscount = document.querySelector('.add-discount');
+          addDiscount?.remove();
+        }
+      });
+
+      renderPromo();
+      let itemNumberStart: number = 0;
       arrayProductsSelect.forEach((product: IProductData) => {
         ++itemNumberStart;
         const productItemBlock: HTMLDivElement | null = document.createElement('div');
@@ -176,7 +301,7 @@ export class CartMain {
         const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
         const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
 
-        buttonPlus.addEventListener('click', (event) => {
+        buttonPlus.addEventListener('click', () => {
           spanStockCount.innerText = `${++countStock}`;
           const updtedStockSelect = arrayProductsSelect.map((item: IProductData) => {
             if (item.id === product.id) {
@@ -189,7 +314,6 @@ export class CartMain {
           localStorage.setItem('product-cart', `${JSON.stringify(updtedStockSelect)}`);
 
           const resultStorage: string | null = localStorage.getItem('result');
-          console.log(resultStorage);
           if (resultStorage !== null) {
             const result = +resultStorage + product.price;
             headerPrice!.innerText = `Total Price: ${result}€`;

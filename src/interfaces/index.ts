@@ -27,3 +27,9 @@ export interface IProductData {
 export enum FiltersBlockValue {
   element_missing = -1,
 }
+export type DiscontType = {
+  id: number;
+  promoCode: string;
+  discont: number;
+  description: string;
+};

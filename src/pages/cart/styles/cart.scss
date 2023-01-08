@@ -5,6 +5,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .main-cart-empty {
   width: 95%;
   display: flex;
@@ -14,6 +15,7 @@
   font-size: 28px;
   font-weight: 600;
 }
+
 .products-in-cart {
   width: 69%;
   border: 1px solid black;
@@ -23,6 +25,7 @@
   margin-bottom: 2%;
   margin-right: 2%;
 }
+
 .summary {
   display: flex;
   flex-direction: column;
@@ -33,6 +36,7 @@
   height: fit-content;
   min-width: 247px;
 }
+
 .summary h2 {
   text-align: center;
   font-size: 130%;
@@ -47,9 +51,11 @@
   text-align: center;
   margin: 4%;
 }
+
 .total-products span {
   font-size: 90%;
 }
+
 .total-price {
   display: flex;
   flex-direction: column;
@@ -58,15 +64,18 @@
   text-align: center;
   margin: 4%;
 }
+
 .total-price span {
   font-size: 90%;
 }
+
 .promo-code {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
+
 .add-discount {
   display: flex;
   flex-direction: column;
@@ -75,11 +84,13 @@
 .title-block {
   font-size: 60%;
 }
+
 .applied-promocode {
   font-size: 75%;
   color: #dc092e;
   font-weight: 600;
 }
+
 .rs,
 .epm,
 .drop-rs,
@@ -95,6 +106,7 @@
   cursor: pointer;
   transition: 0.2s;
 }
+
 .input-search-promocod {
   width: 70%;
   border-radius: 10px;
@@ -103,12 +115,14 @@
   outline: none;
   font-size: 100%;
 }
+
 .promo-hint {
   display: block;
   margin: 3% auto;
   text-align: center;
   color: #e38383;
 }
+
 .button-buy {
   padding: 10px;
   background-color: #dc092e;
@@ -128,15 +142,18 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .title-and-page-control h2 {
   margin: 0;
   font-size: 20px;
 }
+
 .page-control {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .limit-page input {
   width: 2rem;
   text-align: center;
@@ -144,10 +161,12 @@
   border-radius: 10px;
   font-size: 120%;
 }
+
 .page-numbers {
   display: flex;
   margin-left: 1%;
 }
+
 .button-page {
   cursor: pointer;
   border: 1px solid black;
@@ -156,6 +175,7 @@
   font-size: 130%;
   transition: 0.2s;
 }
+
 .page-numbers span {
   font-size: 130%;
   margin: 0 0.2rem;
@@ -171,18 +191,21 @@
   padding: 0.5%;
   border-bottom: 1px solid black;
 }
+
 .cart-item {
   display: flex;
   align-items: center;
   justify-content: space-around;
   height: 8rem;
 }
+
 .item-n {
   width: 3%;
   text-align: center;
   border: 1px solid black;
   border-radius: 10px;
 }
+
 .item-info {
   width: 75%;
   height: 100%;
@@ -190,17 +213,20 @@
   align-items: center;
   cursor: pointer;
 }
+
 .item-info img {
   width: 20%;
   height: 50%;
   border-radius: 0.5rem;
   border: 0.2px solid black;
 }
+
 .item-detail-p {
   width: 80%;
   height: 100%;
   padding: 1%;
 }
+
 .product-title-cart {
   width: 100%;
   display: flex;
@@ -208,40 +234,48 @@
   justify-content: center;
   border-bottom: 1px solid black;
 }
+
 .product-title-cart h3 {
   margin: 0;
   padding-bottom: 1%;
 }
+
 .product-description {
   color: #dc092e;
   font-size: 80%;
   text-align: center;
 }
+
 .product-other {
   padding-top: 1%;
   display: flex;
   align-items: end;
   justify-content: space-around;
 }
+
 .product-other-one-block {
   font-size: 80%;
   font-weight: 600;
 }
+
 .stock-control {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 7%;
 }
+
 .number-control {
   width: 20%;
 }
+
 .incDec-control {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 150%;
 }
+
 .button-stock {
   width: 1.5rem;
   height: 1.5rem;
@@ -254,12 +288,14 @@
   border: 1px solid black;
   transition: 0.2s;
 }
+
 .amount-control {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 7%;
 }
+
 .pulse {
   width: 109px;
   height: 77px;
@@ -278,6 +314,7 @@
   animation: pulse 1.5s infinite;
   transition: 0.2s;
 }
+
 @keyframes pulse {
   0% {
     box-shadow: 0 0 0 0 green;

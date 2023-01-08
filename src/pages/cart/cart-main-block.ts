@@ -372,6 +372,7 @@ export class CartMain {
               }
             }
           } else {
+            console.log(true);
             const updtedStockSelect = arrayProductsSelect.map((item: IProductData) => {
               if (item.id === product.id) {
                 item.stockSelect = +spanStockCount.innerText;
@@ -386,15 +387,7 @@ export class CartMain {
         });
       });
     }
-    this.handlePagination();
-    // this.inputLimitValidate();
-  }
-
-  createCartCatalog() {
-    const productsSelect = localStorage.getItem('product-cart');
-    if (productsSelect) {
-      let arrayProductsSelect: IProductData[] | undefined = JSON.parse(productsSelect);
-    }
+    // this.handlePagination();
   }
 
   clearCartCatalog() {
@@ -412,19 +405,12 @@ export class CartMain {
 
   handleInputLimitValue() {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
-    // const minusButtons = document.querySelectorAll('.button-stock_minus');
-    // const minusButtonsArr = [...minusButtons];
 
     if (inputLimitPage) {
-      inputLimitPage.type = 'number';
+      // inputLimitPage.type = 'number';
       inputLimitPage.min = '1';
       inputLimitPage.max = `${this.getLocalStorage()?.length}`;
       inputLimitPage.value = `${this.getLocalStorage()?.length}`;
-      // minusButtonsArr.forEach((button) => {
-      //   button.addEventListener('click', () => {
-      //     inputLimitPage.value = `${this.getLocalStorage()?.length}`;
-      //   });
-      // });
     }
   }
 
@@ -437,8 +423,6 @@ export class CartMain {
     const productsInCart: HTMLDivElement | null = document.querySelector('.products-in-cart');
     const summary: HTMLDivElement | null = document.querySelector('.summary');
     const parentDivCart: HTMLDivElement | null = document.querySelector('.parent-div-cart');
-    // const emptyCart: HTMLDivElement | null = document.querySelector('.main-cart-empty');
-    // const emptyCartButton: HTMLButtonElement | null = document.querySelector('.main-cart-empty-button');
 
     const emptyCart = document.createElement('div');
     emptyCart.className = 'main-cart-empty';
@@ -460,85 +444,86 @@ export class CartMain {
       const prodItems = document.createElement('div');
       prodItems.className = 'prod-items';
       cartProductsContainer.appendChild(prodItems);
-
+      let itemNumberStart: number = 0;
       for (let i = 0; i < +inputLimitPage.value; i += 1) {
         if (+inputLimitPage.value > cartProducts.length) {
           inputLimitPage.value = cartProducts.length.toString();
         }
-        const productItemBlock = document.createElement('div');
+        ++itemNumberStart;
+        const productItemBlock: HTMLDivElement | null = document.createElement('div');
         productItemBlock.className = 'product-item-block';
         prodItems.appendChild(productItemBlock);
-        const cartItem = document.createElement('div');
+        const cartItem: HTMLDivElement | null = document.createElement('div');
         cartItem.className = 'cart-item';
         productItemBlock.appendChild(cartItem);
-        const itemNumber = document.createElement('div');
+        const itemNumber: HTMLDivElement | null = document.createElement('div');
         itemNumber.className = 'item-n';
-        itemNumber.innerText = `${i + 1}`;
+        itemNumber.innerText = `${itemNumberStart}`;
         cartItem.appendChild(itemNumber);
-        const itemInfo = document.createElement('div');
+        const itemInfo: HTMLDivElement | null = document.createElement('div');
         itemInfo.className = 'item-info';
         cartItem.appendChild(itemInfo);
-        const imgItem = document.createElement('img');
+        const imgItem: HTMLImageElement | null = document.createElement('img');
         imgItem.src = `${cartProducts[i].thumbnail}`;
         itemInfo.appendChild(imgItem);
-        const itemDetailProd = document.createElement('div');
+        const itemDetailProd: HTMLDivElement | null = document.createElement('div');
         itemDetailProd.className = 'item-detail-p';
         itemInfo.appendChild(itemDetailProd);
-        const productTitle = document.createElement('div');
+        const productTitle: HTMLDivElement | null = document.createElement('div');
         productTitle.className = 'product-title-cart';
         itemDetailProd.appendChild(productTitle);
-        const nameProd = document.createElement('h3');
+        const nameProd: HTMLElement | null = document.createElement('h3');
         nameProd.innerText = `${cartProducts[i].title}`;
         productTitle.appendChild(nameProd);
-        const productDescription = document.createElement('div');
+        const productDescription: HTMLDivElement | null = document.createElement('div');
         productDescription.className = 'product-description';
         productDescription.innerText = `${cartProducts[i].description}`;
         itemDetailProd.appendChild(productDescription);
-        const productOther = document.createElement('div');
+        const productOther: HTMLDivElement | null = document.createElement('div');
         productOther.className = 'product-other';
         itemDetailProd.appendChild(productOther);
-        const productRaiting = document.createElement('div');
+        const productRaiting: HTMLDivElement | null = document.createElement('div');
         productRaiting.className = 'product-other-one-block';
         productRaiting.innerText = `Rating: ${cartProducts[i].rating}`;
-        const productDiscount = document.createElement('div');
+        const productDiscount: HTMLDivElement | null = document.createElement('div');
         productDiscount.className = 'product-other-one-block';
         productDiscount.innerText = `Discount: ${cartProducts[i].discountPercentage}`;
         productOther.appendChild(productRaiting);
         productOther.appendChild(productDiscount);
 
-        const numberControl = document.createElement('div');
+        const numberControl: HTMLDivElement | null = document.createElement('div');
         numberControl.className = 'number-control';
         cartItem.appendChild(numberControl);
-        const stockControl = document.createElement('div');
+        const stockControl: HTMLDivElement | null = document.createElement('div');
         stockControl.className = 'stock-control';
         stockControl.innerText = `Stock: ${cartProducts[i].stock}`;
         numberControl.appendChild(stockControl);
-        const incDecControl = document.createElement('div');
+        const incDecControl: HTMLDivElement | null = document.createElement('div');
         incDecControl.className = 'incDec-control';
         numberControl.appendChild(incDecControl);
-        const buttonPlus = document.createElement('button');
+        const buttonPlus: HTMLButtonElement | null = document.createElement('button');
         buttonPlus.className = 'button-stock';
         buttonPlus.innerText = '+';
         incDecControl.appendChild(buttonPlus);
-        const spanStockCount = document.createElement('span');
+        const spanStockCount: HTMLSpanElement | null = document.createElement('span');
         spanStockCount.innerText = `${cartProducts[i].stockSelect}`;
         incDecControl.appendChild(spanStockCount);
-        const buttonMinus = document.createElement('button');
-        buttonMinus.className = 'button-stock button-stock_minus';
+        const buttonMinus: HTMLButtonElement | null = document.createElement('button');
+        buttonMinus.className = 'button-stock';
         buttonMinus.innerText = '-';
         incDecControl.appendChild(buttonMinus);
-        const amountControl = document.createElement('div');
+        const amountControl: HTMLDivElement | null = document.createElement('div');
         amountControl.className = 'amount-control';
         amountControl.innerText = `€ ${cartProducts[i].price}`;
         numberControl.appendChild(amountControl);
 
-        let countStock: any = spanStockCount.innerText;
+        let countStock: number = +spanStockCount.innerText;
         const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
         const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
 
-        buttonPlus.addEventListener('click', (event) => {
+        buttonPlus.addEventListener('click', () => {
           spanStockCount.innerText = `${++countStock}`;
-          const updtedStockSelect = cartProducts.map((item: any) => {
+          const updtedStockSelect = cartProducts.map((item: IProductData) => {
             if (item.id === cartProducts[i].id) {
               item.stockSelect = +spanStockCount.innerText;
               return item;
@@ -546,56 +531,62 @@ export class CartMain {
               return item;
             }
           });
-          console.log(updtedStockSelect);
           localStorage.setItem('product-cart', `${JSON.stringify(updtedStockSelect)}`);
 
-          const resultStorage: any = localStorage.getItem('result');
-          const result = +resultStorage + cartProducts[i].price;
-          headerPrice!.innerText = `Total Price: ${result}€`;
-          const resultStorageLength: any = localStorage.getItem('storage-length');
-          const resultLength = +resultStorageLength + 1;
-          headerCount!.innerText = `${resultLength}`;
-          spanTotalProducts.innerText = `Products: ${resultLength}`;
-          spanTotalPrice.innerText = `Total: € ${result}`;
-          localStorage.setItem('result', `${result}`);
-          localStorage.setItem('storage-length', `${resultLength}`);
-          if (+countStock === cartProducts[i].stock) {
-            buttonPlus.disabled = true;
+          const resultStorage: string | null = localStorage.getItem('result');
+          if (resultStorage !== null) {
+            const result = +resultStorage + cartProducts[i].price;
+            headerPrice!.innerText = `Total Price: ${result}€`;
+            const resultStorageLength: string | null = localStorage.getItem('storage-length');
+            if (resultStorageLength !== null) {
+              const resultLength = +resultStorageLength + 1;
+              headerCount!.innerText = `${resultLength}`;
+              spanTotalProducts.innerText = `Products: ${resultLength}`;
+              spanTotalPrice.innerText = `Total: € ${result}`;
+              localStorage.setItem('result', `${result}`);
+              localStorage.setItem('storage-length', `${resultLength}`);
+              if (+countStock === cartProducts[i].stock) {
+                buttonPlus.disabled = true;
+              }
+            }
           }
         });
 
         buttonMinus.addEventListener('click', () => {
           spanStockCount.innerText = `${--countStock}`;
-          let productStorage = JSON.parse(localStorage.getItem('product-cart') as string);
-          const resultStorage: any = localStorage.getItem('result');
-          const result = +resultStorage - cartProducts[i].price;
-          headerPrice!.innerText = `Total Price: ${result}€`;
-          const resultStorageLength: any = localStorage.getItem('storage-length');
-          const resultLength = +resultStorageLength - 1;
-          headerCount!.innerText = `${resultLength}`;
-          spanTotalProducts.innerText = `Products: ${resultLength}`;
-          spanTotalPrice.innerText = `Total: € ${result}`;
-          localStorage.setItem('result', `${result}`);
-          localStorage.setItem('storage-length', `${resultLength}`);
-          if (+countStock === 0) {
-            productItemBlock.remove();
-
-            const isProductExist = productStorage.find((prod: any) => prod.id === cartProducts[i]?.id);
-            if (isProductExist) {
-              productStorage = productStorage.filter((item: any) => item.id !== cartProducts[i]?.id);
-            }
-            localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-            if (productStorage.length === 0 && emptyCart && emptyCartButton) {
-              productsInCart.remove();
-              summary.remove();
-              parentDivCart.appendChild(emptyCart);
-              parentDivCart.appendChild(emptyCartButton);
-              emptyCartButton.addEventListener('click', () => {
-                window.location.href = '/';
-              });
+          let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+          const resultStorage: string | null = localStorage.getItem('result');
+          if (resultStorage !== null) {
+            const result = +resultStorage - cartProducts[i].price;
+            if (headerPrice) headerPrice.innerText = `Total Price: ${result}€`;
+            const resultStorageLength: string | null = localStorage.getItem('storage-length');
+            if (resultStorageLength !== null) {
+              const resultLength = +resultStorageLength - 1;
+              if (headerCount) headerCount.innerText = `${resultLength}`;
+              spanTotalProducts.innerText = `Products: ${resultLength}`;
+              spanTotalPrice.innerText = `Total: € ${result}`;
+              localStorage.setItem('result', `${result}`);
+              localStorage.setItem('storage-length', `${resultLength}`);
+              if (+countStock === 0) {
+                productItemBlock.remove();
+                const isProductExist = productStorage.find((prod: IProductData) => prod.id === cartProducts[i]?.id);
+                if (isProductExist) {
+                  productStorage = productStorage.filter((item: IProductData) => item.id !== cartProducts[i]?.id);
+                }
+                localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
+                if (productStorage.length === 0) {
+                  productsInCart.remove();
+                  summary.remove();
+                  parentDivCart?.appendChild(emptyCart);
+                  parentDivCart?.appendChild(emptyCartButton);
+                  emptyCartButton.addEventListener('click', () => {
+                    window.location.href = '/';
+                  });
+                }
+              }
             }
           } else {
-            const updtedStockSelect = cartProducts.map((item: any) => {
+            const updtedStockSelect = cartProducts.map((item: IProductData) => {
               if (item.id === cartProducts[i].id) {
                 item.stockSelect = +spanStockCount.innerText;
                 return item;
@@ -615,12 +606,7 @@ export class CartMain {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
     const productItemsContainer = document.querySelector('.prod-items');
     const productItems = productItemsContainer?.childNodes;
-    const localStorageCartProductsArray = this.getLocalStorage();
-    const productItemsArr: ChildNode[] = [];
     if (inputLimitPage && productItems) {
-      productItems.forEach((item) => {
-        productItemsArr.push(item);
-      });
       inputLimitPage.addEventListener('input', () => {
         this.clearCartCatalog();
         this.updateCartCatalog();

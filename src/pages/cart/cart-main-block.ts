@@ -286,7 +286,8 @@ export class CartMain {
         buttonPlus.innerText = '+';
         incDecControl.appendChild(buttonPlus);
         const spanStockCount: HTMLSpanElement | null = document.createElement('span');
-        spanStockCount.innerText = `${product.stockSelect}`;
+        spanStockCount.innerText = `${product.stockSelect || 1}`;
+        console.log(product.stockSelect)
         incDecControl.appendChild(spanStockCount);
         const buttonMinus: HTMLButtonElement | null = document.createElement('button');
         buttonMinus.className = 'button-stock';

@@ -23,7 +23,6 @@ export interface IProductData {
   stockSelect?: number;
   thumbnail: string;
   images: string[];
-  stockSelect?: number
 }
 export enum FiltersBlockValue {
   element_missing = -1,

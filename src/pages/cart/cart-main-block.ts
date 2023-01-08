@@ -15,26 +15,31 @@ export class CartMain {
     this.summaryTotal = (storageSummaryTotal && JSON.parse(storageSummaryTotal)) || 0;
   }
 
-  create(): void {
-    const main: HTMLElement | null = document.querySelector('.main');
-    const parentDivCart: HTMLDivElement | null = document.createElement('div');
-    parentDivCart.className = 'parent-div-cart';
-    main?.appendChild(parentDivCart);
+  createEpmtyCard(): void {
+    const parentDivCart = document.querySelector('.parent-div-cart')
     const emptyCart: HTMLDivElement | null = document.createElement('div');
     emptyCart.className = 'main-cart-empty';
     emptyCart.innerText = 'Cart is epmty. Add products to the cart.';
     const emptyCartButton: HTMLButtonElement | null = document.createElement('button');
     emptyCartButton.className = 'main-cart-empty-button pulse';
     emptyCartButton.innerText = 'Back to goods';
-    const productsSelect = localStorage.getItem('product-cart');
-    let arrayProductsSelect = (productsSelect && JSON.parse(productsSelect)) || [];
-
-    if (arrayProductsSelect?.length === 0) {
-      parentDivCart?.appendChild(emptyCart);
+    parentDivCart?.appendChild(emptyCart);
       parentDivCart?.appendChild(emptyCartButton);
       emptyCartButton.addEventListener('click', () => {
         window.location.href = '/';
       });
+  }
+
+  create(): void {
+    const main: HTMLElement | null = document.querySelector('.main');
+    const parentDivCart: HTMLDivElement | null = document.createElement('div');
+    parentDivCart.className = 'parent-div-cart';
+    main?.appendChild(parentDivCart);
+    const productsSelect: string | null = localStorage.getItem('product-cart');
+    let arrayProductsSelect: IProductData[] = (productsSelect && JSON.parse(productsSelect)) || [];
+
+    if (arrayProductsSelect?.length === 0) {
+      this.createEpmtyCard()
     } else {
       const summaryProducts = localStorage.getItem('storage-length');
       const productsInCart: HTMLDivElement | null = document.createElement('div');
@@ -358,11 +363,7 @@ export class CartMain {
                 if (productStorage.length === 0) {
                   productsInCart.remove();
                   summary.remove();
-                  parentDivCart?.appendChild(emptyCart);
-                  parentDivCart?.appendChild(emptyCartButton);
-                  emptyCartButton.addEventListener('click', () => {
-                    window.location.href = '/';
-                  });
+                  this.createEpmtyCard()
                 }
               }
             }

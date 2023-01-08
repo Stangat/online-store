@@ -1,5 +1,6 @@
 import { onlineStoreData } from '../../data/data';
 import { IProductData } from '../../interfaces/index';
+import { Form } from '../cart/modal';
 import './product.scss';
 
 export class ProductMain {
@@ -216,7 +217,7 @@ export class ProductMain {
 
     buttonBuy.addEventListener('click', () => {
       window.location.href = '/cart';
-
+      localStorage.setItem('prod-red', 'true');
       let product = item;
       if (headerPrice) {
         if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
@@ -229,7 +230,10 @@ export class ProductMain {
             buttonAddRemove.innerText = 'Drop from cart';
           }
           localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-          const result = productStorage.reduce((acc: number, prod: IProductData) => acc + prod.price*(prod.stockSelect || 1), 0);
+          const result = productStorage.reduce(
+            (acc: number, prod: IProductData) => acc + prod.price * (prod.stockSelect || 1),
+            0
+          );
           localStorage.setItem('result', `${result}`);
           headerPrice.innerText = `Total Price: ${result}€`;
         } else {

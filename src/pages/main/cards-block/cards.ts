@@ -249,7 +249,6 @@ class CardsBlock {
         const itemId = productsDate[i].id;
         window.location.href = '/product/' + `${itemId}`;
       });
-
       addToCartButton?.addEventListener('click', () => {
         const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
         const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
@@ -266,7 +265,10 @@ class CardsBlock {
               addToCartButton.innerText = 'Drop from cart';
             }
             localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-            const result = productStorage.reduce((acc: number, prod: IProductData) => acc + prod.price, 0);
+            const result = productStorage.reduce(
+              (acc: number, prod: IProductData) => acc + prod.price * (prod.stockSelect || 1),
+              0
+            );
             localStorage.setItem('result', `${result}`);
             headerPrice.innerText = `Total Price: ${result}€`;
           } else {
@@ -279,8 +281,15 @@ class CardsBlock {
         if (headerCount) {
           const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
           localStorage.getItem('product-cart');
-          localStorage.setItem('storage-length', `${productStorage.length}`);
-          headerCount.innerText = `${productStorage.length}`;
+          function countStock() {
+            let sum = 0;
+            productStorage.forEach(function (prod) {
+              sum += prod.stockSelect || 1;
+            });
+            return sum;
+          }
+          localStorage.setItem('storage-length', `${countStock()}`);
+          headerCount.innerText = `${countStock()}`;
         }
       });
     }

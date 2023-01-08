@@ -117,14 +117,14 @@ export class CartMain {
       pageNumbers.innerText = 'PAGE: ';
       pageControl.appendChild(pageNumbers);
       const buttonPagePrev: HTMLButtonElement | null = document.createElement('button');
-      buttonPagePrev.className = 'button-page';
+      buttonPagePrev.className = 'button-page button-page_left';
       buttonPagePrev.innerText = '<';
       pageNumbers.appendChild(buttonPagePrev);
       const spanPageNumbers: HTMLSpanElement | null = document.createElement('span');
       spanPageNumbers.innerText = '1'; ///ТУТ МЕНЯЕТСЯ СТРАНИЦА
       pageNumbers.appendChild(spanPageNumbers);
       const buttonPageNext: HTMLButtonElement | null = document.createElement('button');
-      buttonPageNext.className = 'button-page';
+      buttonPageNext.className = 'button-page button-page_right';
       buttonPageNext.innerText = '>';
       pageNumbers.appendChild(buttonPageNext);
 
@@ -387,7 +387,7 @@ export class CartMain {
         });
       });
     }
-    // this.handlePagination();
+    this.handlePagination();
   }
 
   clearCartCatalog() {

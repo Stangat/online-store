@@ -8,6 +8,9 @@ class UrlPath {
     const smallViewButton = document.querySelector('.view-mode_small');
     const normalViewButton = document.querySelector('.view-mode_big');
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
+    const rightArrowButton: HTMLButtonElement | null = document.querySelector('.button-page_right');
+    const leftArrowButton: HTMLButtonElement | null = document.querySelector('.button-page_left');
+    const pages: HTMLSpanElement | null = document.querySelector('.page-number');
 
     if (sortOptions) {
       sortOptions.addEventListener('change', (): void => {
@@ -29,9 +32,27 @@ class UrlPath {
         this.urlSearchService.setParam('small', 'false');
       });
     }
-    if (inputLimitPage) {
+    if (inputLimitPage && pages) {
       inputLimitPage.addEventListener('input', (): void => {
         this.urlSearchService.setParam('limit', inputLimitPage.value);
+        const pageNumber = pages.textContent;
+        if (pageNumber) {
+          this.urlSearchService.setParam('page', pageNumber);
+        }
+      });
+    }
+    if (leftArrowButton && rightArrowButton && pages) {
+      leftArrowButton.addEventListener('click', (): void => {
+        const pageNumber = pages.textContent;
+        if (pageNumber) {
+          this.urlSearchService.setParam('page', pageNumber);
+        }
+      });
+      rightArrowButton.addEventListener('click', (): void => {
+        const pageNumber = pages.textContent;
+        if (pageNumber) {
+          this.urlSearchService.setParam('page', pageNumber);
+        }
       });
     }
   }

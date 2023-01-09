@@ -121,16 +121,13 @@ export class CartMain {
       buttonPagePrev.innerText = '<';
       pageNumbers.appendChild(buttonPagePrev);
       const spanPageNumbers: HTMLSpanElement | null = document.createElement('span');
+      spanPageNumbers.className = 'page-number';
       spanPageNumbers.innerText = '1'; ///ТУТ МЕНЯЕТСЯ СТРАНИЦА
       pageNumbers.appendChild(spanPageNumbers);
       const buttonPageNext: HTMLButtonElement | null = document.createElement('button');
       buttonPageNext.className = 'button-page button-page_right';
       buttonPageNext.innerText = '>';
       pageNumbers.appendChild(buttonPageNext);
-
-      const prodItems: HTMLDivElement | null = document.createElement('div');
-      prodItems.className = 'prod-items';
-      productsInCart.appendChild(prodItems);
 
       const updateTotalPrice = () => {
         const newTotal = document.createElement('span');
@@ -233,161 +230,11 @@ export class CartMain {
       });
 
       renderPromo();
-      let itemNumberStart: number = 0;
-      arrayProductsSelect.forEach((product: IProductData) => {
-        ++itemNumberStart;
-        const productItemBlock: HTMLDivElement | null = document.createElement('div');
-        productItemBlock.className = 'product-item-block';
-        prodItems.appendChild(productItemBlock);
-        const cartItem: HTMLDivElement | null = document.createElement('div');
-        cartItem.className = 'cart-item';
-        productItemBlock.appendChild(cartItem);
-        const itemNumber: HTMLDivElement | null = document.createElement('div');
-        itemNumber.className = 'item-n';
-        itemNumber.innerText = `${itemNumberStart}`;
-        cartItem.appendChild(itemNumber);
-        const itemInfo: HTMLDivElement | null = document.createElement('div');
-        itemInfo.className = 'item-info';
-        cartItem.appendChild(itemInfo);
-        const imgItem: HTMLImageElement | null = document.createElement('img');
-        imgItem.src = `${product.thumbnail}`;
-        itemInfo.appendChild(imgItem);
-        const itemDetailProd: HTMLDivElement | null = document.createElement('div');
-        itemDetailProd.className = 'item-detail-p';
-        itemInfo.appendChild(itemDetailProd);
-        const productTitle: HTMLDivElement | null = document.createElement('div');
-        productTitle.className = 'product-title-cart';
-        itemDetailProd.appendChild(productTitle);
-        const nameProd: HTMLElement | null = document.createElement('h3');
-        nameProd.innerText = `${product.title}`;
-        productTitle.appendChild(nameProd);
-        const productDescription: HTMLDivElement | null = document.createElement('div');
-        productDescription.className = 'product-description';
-        productDescription.innerText = `${product.description}`;
-        itemDetailProd.appendChild(productDescription);
-        const productOther: HTMLDivElement | null = document.createElement('div');
-        productOther.className = 'product-other';
-        itemDetailProd.appendChild(productOther);
-        const productRaiting: HTMLDivElement | null = document.createElement('div');
-        productRaiting.className = 'product-other-one-block';
-        productRaiting.innerText = `Rating: ${product.rating}`;
-        const productDiscount: HTMLDivElement | null = document.createElement('div');
-        productDiscount.className = 'product-other-one-block';
-        productDiscount.innerText = `Discount: ${product.discountPercentage}`;
-        productOther.appendChild(productRaiting);
-        productOther.appendChild(productDiscount);
-
-        const numberControl: HTMLDivElement | null = document.createElement('div');
-        numberControl.className = 'number-control';
-        cartItem.appendChild(numberControl);
-        const stockControl: HTMLDivElement | null = document.createElement('div');
-        stockControl.className = 'stock-control';
-        stockControl.innerText = `Stock: ${product.stock}`;
-        numberControl.appendChild(stockControl);
-        const incDecControl: HTMLDivElement | null = document.createElement('div');
-        incDecControl.className = 'incDec-control';
-        numberControl.appendChild(incDecControl);
-        const buttonPlus: HTMLButtonElement | null = document.createElement('button');
-        buttonPlus.className = 'button-stock';
-        buttonPlus.innerText = '+';
-        incDecControl.appendChild(buttonPlus);
-        const spanStockCount: HTMLSpanElement | null = document.createElement('span');
-        spanStockCount.innerText = `${product.stockSelect}`;
-        incDecControl.appendChild(spanStockCount);
-        const buttonMinus: HTMLButtonElement | null = document.createElement('button');
-        buttonMinus.className = 'button-stock';
-        buttonMinus.innerText = '-';
-        incDecControl.appendChild(buttonMinus);
-        const amountControl: HTMLDivElement | null = document.createElement('div');
-        amountControl.className = 'amount-control';
-        amountControl.innerText = `€ ${product.price}`;
-        numberControl.appendChild(amountControl);
-
-        let countStock: number = +spanStockCount.innerText;
-        const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
-        const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
-
-        buttonPlus.addEventListener('click', () => {
-          spanStockCount.innerText = `${++countStock}`;
-          const updtedStockSelect = arrayProductsSelect.map((item: IProductData) => {
-            if (item.id === product.id) {
-              item.stockSelect = +spanStockCount.innerText;
-              return item;
-            } else {
-              return item;
-            }
-          });
-          localStorage.setItem('product-cart', `${JSON.stringify(updtedStockSelect)}`);
-
-          const resultStorage: string | null = localStorage.getItem('result');
-          if (resultStorage !== null) {
-            const result = +resultStorage + product.price;
-            headerPrice!.innerText = `Total Price: ${result}€`;
-            const resultStorageLength: string | null = localStorage.getItem('storage-length');
-            if (resultStorageLength !== null) {
-              const resultLength = +resultStorageLength + 1;
-              headerCount!.innerText = `${resultLength}`;
-              spanTotalProducts.innerText = `Products: ${resultLength}`;
-              spanTotalPrice.innerText = `Total: € ${result}`;
-              localStorage.setItem('result', `${result}`);
-              localStorage.setItem('storage-length', `${resultLength}`);
-              if (+countStock === product.stock) {
-                buttonPlus.disabled = true;
-              }
-            }
-          }
-        });
-
-        buttonMinus.addEventListener('click', () => {
-          spanStockCount.innerText = `${--countStock}`;
-          let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
-          const resultStorage: string | null = localStorage.getItem('result');
-          if (resultStorage !== null) {
-            const result = +resultStorage - product.price;
-            if (headerPrice) headerPrice.innerText = `Total Price: ${result}€`;
-            const resultStorageLength: string | null = localStorage.getItem('storage-length');
-            if (resultStorageLength !== null) {
-              const resultLength = +resultStorageLength - 1;
-              if (headerCount) headerCount.innerText = `${resultLength}`;
-              spanTotalProducts.innerText = `Products: ${resultLength}`;
-              spanTotalPrice.innerText = `Total: € ${result}`;
-              localStorage.setItem('result', `${result}`);
-              localStorage.setItem('storage-length', `${resultLength}`);
-              if (+countStock === 0) {
-                productItemBlock.remove();
-                const isProductExist = productStorage.find((prod: IProductData) => prod.id === product?.id);
-                if (isProductExist) {
-                  productStorage = productStorage.filter((item: IProductData) => item.id !== product?.id);
-                }
-                localStorage.setItem('product-cart', `${JSON.stringify(productStorage)}`);
-                if (productStorage.length === 0) {
-                  productsInCart.remove();
-                  summary.remove();
-                  parentDivCart?.appendChild(emptyCart);
-                  parentDivCart?.appendChild(emptyCartButton);
-                  emptyCartButton.addEventListener('click', () => {
-                    window.location.href = '/';
-                  });
-                }
-              }
-            }
-          } else {
-            console.log(true);
-            const updtedStockSelect = arrayProductsSelect.map((item: IProductData) => {
-              if (item.id === product.id) {
-                item.stockSelect = +spanStockCount.innerText;
-                return item;
-              } else {
-                return item;
-              }
-            });
-            localStorage.setItem('product-cart', `${JSON.stringify(updtedStockSelect)}`);
-          }
-          this.handleInputLimitValue();
-        });
-      });
+      this.updateCartCatalog(0, +inputLimitPage.value);
     }
-    this.handlePagination();
+    this.restoreParameters();
+    this.handleLimit();
+    this.handlePages();
   }
 
   clearCartCatalog() {
@@ -407,14 +254,13 @@ export class CartMain {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
 
     if (inputLimitPage) {
-      // inputLimitPage.type = 'number';
       inputLimitPage.min = '1';
       inputLimitPage.max = `${this.getLocalStorage()?.length}`;
       inputLimitPage.value = `${this.getLocalStorage()?.length}`;
     }
   }
 
-  updateCartCatalog() {
+  updateCartCatalog(start: number, end: number) {
     const cartProductsContainer = document.querySelector('.products-in-cart');
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
     const cartProducts = this.getLocalStorage();
@@ -444,12 +290,10 @@ export class CartMain {
       const prodItems = document.createElement('div');
       prodItems.className = 'prod-items';
       cartProductsContainer.appendChild(prodItems);
-      let itemNumberStart: number = 0;
-      for (let i = 0; i < +inputLimitPage.value; i += 1) {
+      for (let i = start; i < end; i += 1) {
         if (+inputLimitPage.value > cartProducts.length) {
           inputLimitPage.value = cartProducts.length.toString();
         }
-        ++itemNumberStart;
         const productItemBlock: HTMLDivElement | null = document.createElement('div');
         productItemBlock.className = 'product-item-block';
         prodItems.appendChild(productItemBlock);
@@ -458,7 +302,7 @@ export class CartMain {
         productItemBlock.appendChild(cartItem);
         const itemNumber: HTMLDivElement | null = document.createElement('div');
         itemNumber.className = 'item-n';
-        itemNumber.innerText = `${itemNumberStart}`;
+        itemNumber.innerText = `${i + 1}`;
         cartItem.appendChild(itemNumber);
         const itemInfo: HTMLDivElement | null = document.createElement('div');
         itemInfo.className = 'item-info';
@@ -602,15 +446,176 @@ export class CartMain {
     }
   }
 
-  handlePagination() {
+  handleLimit() {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
-    const productItemsContainer = document.querySelector('.prod-items');
-    const productItems = productItemsContainer?.childNodes;
-    if (inputLimitPage && productItems) {
+    const cartProducts = this.getLocalStorage();
+    const pages: HTMLSpanElement | null = document.querySelector('.page-number');
+
+    if (inputLimitPage && cartProducts && pages) {
       inputLimitPage.addEventListener('input', () => {
-        this.clearCartCatalog();
-        this.updateCartCatalog();
+        const params = new URLSearchParams(window.location.search);
+        let pageQueryValue = params.get('page');
+
+        if (!pageQueryValue) {
+          this.clearCartCatalog();
+          this.updateCartCatalog(0, +inputLimitPage.value);
+        }
+
+        if (pageQueryValue) {
+          let start = +inputLimitPage.value;
+          let end = +inputLimitPage.value;
+          console.log(`pageQueryValue ${pageQueryValue}`);
+          if (+pageQueryValue !== 1 && +pageQueryValue < +inputLimitPage.value) {
+            if (end !== cartProducts.length) {
+              start = +inputLimitPage.value;
+            }
+            end = +inputLimitPage.value + +inputLimitPage.value;
+            if (end > cartProducts.length) {
+              end = cartProducts.length;
+            }
+            this.clearCartCatalog();
+            this.updateCartCatalog(start, end);
+            if (start === end) {
+              console.log(`start === end`);
+              this.clearCartCatalog();
+              this.updateCartCatalog(0, +inputLimitPage.value);
+              pages.textContent = '1';
+            }
+          } else if (+pageQueryValue !== 1 && +pageQueryValue >= +inputLimitPage.value) {
+            start = +pageQueryValue;
+            end = +pageQueryValue + +inputLimitPage.value;
+            console.log(start);
+            console.log(end);
+            this.clearCartCatalog();
+            this.updateCartCatalog(start, end);
+          } else {
+            this.clearCartCatalog();
+            this.updateCartCatalog(0, +inputLimitPage.value);
+          }
+        }
       });
+    }
+  }
+
+  handlePages() {
+    const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
+    const rightArrowButton: HTMLButtonElement | null = document.querySelector('.button-page_right');
+    const leftArrowButton: HTMLButtonElement | null = document.querySelector('.button-page_left');
+    const pages: HTMLSpanElement | null = document.querySelector('.page-number');
+
+    if (inputLimitPage && rightArrowButton && leftArrowButton && pages) {
+      let start = 0;
+      let end = +inputLimitPage.value;
+      rightArrowButton.addEventListener('click', () => {
+        const params = new URLSearchParams(window.location.search);
+        const pageQueryValue = params.get('page');
+        const cartProducts = this.getLocalStorage();
+
+        if (cartProducts) {
+          if (end !== cartProducts.length) {
+            start += +inputLimitPage.value;
+            if (pageQueryValue) {
+              let pageNumber = +pageQueryValue;
+              pageNumber += 1;
+              pages.textContent = `${pageNumber}`;
+            }
+          }
+          end += +inputLimitPage.value;
+          if (end >= cartProducts.length) {
+            end = cartProducts.length;
+          }
+          this.clearCartCatalog();
+          this.updateCartCatalog(start, end);
+        }
+      });
+
+      leftArrowButton.addEventListener('click', () => {
+        const params = new URLSearchParams(window.location.search);
+        const pageQueryValue = params.get('page');
+        if (pageQueryValue) {
+          let pageNumber = +pageQueryValue;
+          if (start > 0) {
+            start -= +inputLimitPage.value;
+            end -= +inputLimitPage.value;
+          }
+          if (start === 0) {
+            end = +inputLimitPage.value;
+          }
+          if (pageNumber > 1) {
+            pageNumber -= 1;
+            pages.textContent = `${pageNumber}`;
+          }
+
+          this.clearCartCatalog();
+          this.updateCartCatalog(start, end);
+        }
+      });
+
+      inputLimitPage.addEventListener('input', () => {
+        if (pages.textContent === '1') {
+          console.log(true);
+          start = 0;
+          end = +inputLimitPage.value;
+        } else {
+          start = +inputLimitPage.value;
+          end = +inputLimitPage.value + +inputLimitPage.value;
+        }
+      });
+    }
+  }
+
+  restoreParameters() {
+    const params = new URLSearchParams(window.location.search);
+    const pageQueryValue = params.get('page');
+    const limitQueryValue = params.get('limit');
+    const pages: HTMLSpanElement | null = document.querySelector('.page-number');
+    const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
+    const cartProducts = this.getLocalStorage();
+
+    if (params && pageQueryValue && limitQueryValue && pages && inputLimitPage) {
+      pages.textContent = pageQueryValue;
+      inputLimitPage.value = limitQueryValue;
+
+      if (inputLimitPage && cartProducts) {
+        const params = new URLSearchParams(window.location.search);
+        let pageQueryValue = params.get('page');
+
+        if (!pageQueryValue) {
+          this.clearCartCatalog();
+          this.updateCartCatalog(0, +inputLimitPage.value);
+        }
+
+        if (pageQueryValue) {
+          let start = +inputLimitPage.value;
+          let end = +inputLimitPage.value;
+          console.log(`pageQueryValue ${pageQueryValue}`);
+          if (+pageQueryValue !== 1 && +pageQueryValue < +inputLimitPage.value) {
+            if (end !== cartProducts.length) {
+              start = +inputLimitPage.value;
+            }
+            end = +inputLimitPage.value + +inputLimitPage.value;
+            if (end > cartProducts.length) {
+              end = cartProducts.length;
+            }
+            this.clearCartCatalog();
+            this.updateCartCatalog(start, end);
+            if (start === end) {
+              console.log(`start === end`);
+              this.clearCartCatalog();
+              this.updateCartCatalog(0, +inputLimitPage.value);
+              pages.textContent = '1';
+            }
+          } else if (+pageQueryValue !== 1 && +pageQueryValue >= +inputLimitPage.value) {
+            start = +pageQueryValue;
+            end = +pageQueryValue + +inputLimitPage.value;
+            this.clearCartCatalog();
+            this.updateCartCatalog(start, end);
+          } else {
+            this.clearCartCatalog();
+            this.updateCartCatalog(0, +inputLimitPage.value);
+          }
+        }
+      }
     }
   }
 }

@@ -1,5 +1,6 @@
 import { DiscontType, IProductData } from '../../interfaces/index';
 import '././styles/cart.scss';
+import { Form } from './modal';
 
 export class CartMain {
   private appliedDiscounts: DiscontType[];
@@ -15,26 +16,35 @@ export class CartMain {
     this.summaryTotal = (storageSummaryTotal && JSON.parse(storageSummaryTotal)) || 0;
   }
 
-  create(): void {
-    const main: HTMLElement | null = document.querySelector('.main');
-    const parentDivCart: HTMLDivElement | null = document.createElement('div');
-    parentDivCart.className = 'parent-div-cart';
-    main?.appendChild(parentDivCart);
+  createEpmtyCard(): void {
+    const parentDivCart = document.querySelector('.parent-div-cart');
     const emptyCart: HTMLDivElement | null = document.createElement('div');
     emptyCart.className = 'main-cart-empty';
     emptyCart.innerText = 'Cart is epmty. Add products to the cart.';
     const emptyCartButton: HTMLButtonElement | null = document.createElement('button');
     emptyCartButton.className = 'main-cart-empty-button pulse';
     emptyCartButton.innerText = 'Back to goods';
-    const productsSelect = localStorage.getItem('product-cart');
-    let arrayProductsSelect = (productsSelect && JSON.parse(productsSelect)) || [];
+    parentDivCart?.appendChild(emptyCart);
+    parentDivCart?.appendChild(emptyCartButton);
+    emptyCartButton.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+  }
+
+  create(): void {
+    const main: HTMLElement | null = document.querySelector('.main');
+    const parentDivCart: HTMLDivElement | null = document.createElement('div');
+    if (localStorage.getItem('prod-red')) {
+      new Form().create();
+      localStorage.removeItem('prod-red');
+    }
+    parentDivCart.className = 'parent-div-cart';
+    main?.appendChild(parentDivCart);
+    const productsSelect: string | null = localStorage.getItem('product-cart');
+    let arrayProductsSelect: IProductData[] = (productsSelect && JSON.parse(productsSelect)) || [];
 
     if (arrayProductsSelect?.length === 0) {
-      parentDivCart?.appendChild(emptyCart);
-      parentDivCart?.appendChild(emptyCartButton);
-      emptyCartButton.addEventListener('click', () => {
-        window.location.href = '/';
-      });
+      this.createEpmtyCard();
     } else {
       const summaryProducts = localStorage.getItem('storage-length');
       const productsInCart: HTMLDivElement | null = document.createElement('div');
@@ -286,7 +296,7 @@ export class CartMain {
         buttonPlus.innerText = '+';
         incDecControl.appendChild(buttonPlus);
         const spanStockCount: HTMLSpanElement | null = document.createElement('span');
-        spanStockCount.innerText = `${product.stockSelect}`;
+        spanStockCount.innerText = `${product.stockSelect || 1}`;
         incDecControl.appendChild(spanStockCount);
         const buttonMinus: HTMLButtonElement | null = document.createElement('button');
         buttonMinus.className = 'button-stock';
@@ -357,11 +367,7 @@ export class CartMain {
                 if (productStorage.length === 0) {
                   productsInCart.remove();
                   summary.remove();
-                  parentDivCart?.appendChild(emptyCart);
-                  parentDivCart?.appendChild(emptyCartButton);
-                  emptyCartButton.addEventListener('click', () => {
-                    window.location.href = '/';
-                  });
+                  this.createEpmtyCard();
                 }
               }
             }

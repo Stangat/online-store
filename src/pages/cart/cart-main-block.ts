@@ -181,11 +181,13 @@ export class CartMain {
 
       const renderPromo = () => {
         const promocodesBlock = document.querySelector('.applied-promocode');
-        promocodesBlock!.innerHTML = '';
-        this.appliedDiscounts.forEach((item) => {
-          const discountBlock = createDiscontBlock(item);
-          promocodesBlock?.appendChild(discountBlock);
-        });
+        if (promocodesBlock) {
+          promocodesBlock.innerHTML = '';
+          this.appliedDiscounts.forEach((item) => {
+            const discountBlock = createDiscontBlock(item);
+            promocodesBlock?.appendChild(discountBlock);
+          });
+        }
         updateTotalPrice();
       };
 
@@ -227,15 +229,16 @@ export class CartMain {
           addButton.remove();
         }
       };
-
-      inputSeachPromocod.addEventListener('input', (event: any) => {
-        const currentInputValue = event.target.value.trim().toLowerCase();
-        const currentDiscont = this.existDisconts.find((disc) => disc.promoCode === currentInputValue);
-        if (currentDiscont) {
-          createAddDiscountBlock(currentDiscont);
-        } else {
-          const addDiscount = document.querySelector('.add-discount');
-          addDiscount?.remove();
+      inputSeachPromocod.addEventListener('input', (event: Event) => {
+        if (event.target instanceof HTMLInputElement) {
+          const currentInputValue = event.target.value.trim().toLowerCase();
+          const currentDiscont = this.existDisconts.find((disc) => disc.promoCode === currentInputValue);
+          if (currentDiscont) {
+            createAddDiscountBlock(currentDiscont);
+          } else {
+            const addDiscount = document.querySelector('.add-discount');
+            addDiscount?.remove();
+          }
         }
       });
 
@@ -390,11 +393,11 @@ export class CartMain {
           const resultStorage: string | null = localStorage.getItem('result');
           if (resultStorage !== null) {
             const result = +resultStorage + cartProducts[i].price;
-            headerPrice!.innerText = `Total Price: ${result}€`;
+            if (headerPrice) headerPrice.innerText = `Total Price: ${result}€`;
             const resultStorageLength: string | null = localStorage.getItem('storage-length');
             if (resultStorageLength !== null) {
               const resultLength = +resultStorageLength + 1;
-              headerCount!.innerText = `${resultLength}`;
+              if (headerCount) headerCount.innerText = `${resultLength}`;
               spanTotalProducts.innerText = `Products: ${resultLength}`;
               spanTotalPrice.innerText = `Total: € ${result}`;
               localStorage.setItem('result', `${result}`);

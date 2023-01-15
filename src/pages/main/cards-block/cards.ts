@@ -16,7 +16,7 @@ class CardsBlock {
     this.updateFounded(+products.length);
   }
 
-  productsCount: number = 0;
+  productsCount = 0;
   updateFounded(count: number) {
     const stats = document.querySelector('.stats');
     if (stats) {
@@ -234,7 +234,7 @@ class CardsBlock {
       addToCartButton.className = 'button button_add';
 
       const storageProduct = localStorage.getItem('product-cart');
-      let productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
+      const productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
       const isProductInCart = productStorage.find((prod: IProductData) => prod.id === productsDate[i].id);
       addToCartButton.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
 
@@ -252,7 +252,7 @@ class CardsBlock {
       addToCartButton?.addEventListener('click', () => {
         const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
         const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
-        let product = productsDate[i];
+        const product = productsDate[i];
         if (headerPrice) {
           if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
             let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
@@ -279,21 +279,22 @@ class CardsBlock {
           }
         }
         if (headerCount) {
-          const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
           localStorage.getItem('product-cart');
-          function countStock() {
-            let sum = 0;
-            productStorage.forEach(function (prod) {
-              sum += prod.stockSelect || 1;
-            });
-            return sum;
-          }
-          localStorage.setItem('storage-length', `${countStock()}`);
-          headerCount.innerText = `${countStock()}`;
+          localStorage.setItem('storage-length', `${this.countStock()}`);
+          headerCount.innerText = `${this.countStock()}`;
         }
       });
     }
     this.viewMode.changeViewMode();
+  }
+
+  countStock(): number {
+    const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+    let sum = 0;
+    productStorage.forEach(function (prod) {
+      sum += prod.stockSelect || 1;
+    });
+    return sum;
   }
 
   clearCatalog(): void {

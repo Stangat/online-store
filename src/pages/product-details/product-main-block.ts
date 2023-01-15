@@ -1,6 +1,5 @@
 import { onlineStoreData } from '../../data/data';
 import { IProductData } from '../../interfaces/index';
-import { Form } from '../cart/modal';
 import './product.scss';
 
 export class ProductMain {
@@ -66,9 +65,9 @@ export class ProductMain {
     button.className = 'btnRight';
     button.innerText = 'NEXT';
     productPhotos.appendChild(button);
-    let slides = document.querySelectorAll('.product-photos img');
+    const slides = document.querySelectorAll('.product-photos img');
 
-    let indexSlide: number = 0;
+    let indexSlide = 0;
 
     button.addEventListener('click', function () {
       ++indexSlide;
@@ -170,13 +169,13 @@ export class ProductMain {
     buttonAddRemove.innerText = 'ADD TO CART';
 
     const storageProduct = localStorage.getItem('product-cart');
-    let productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
+    const productStorage = (storageProduct && JSON.parse(storageProduct)) || [];
     const headerPrice: HTMLSpanElement | null = document.querySelector('.header__price span');
     const headerCount: HTMLDivElement | null = document.querySelector('.header__cart__total');
     const isProductInCart = productStorage.find((prod: IProductData) => prod.id === item?.id);
     buttonAddRemove.textContent = isProductInCart ? 'Drop from cart' : 'Add to cart';
     buttonAddRemove?.addEventListener('click', () => {
-      let product = item;
+      const product = item;
       if (headerPrice) {
         if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
           let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
@@ -218,10 +217,10 @@ export class ProductMain {
     buttonBuy.addEventListener('click', () => {
       window.location.href = '/cart';
       localStorage.setItem('prod-red', 'true');
-      let product = item;
+      const product = item;
       if (headerPrice) {
         if (localStorage.getItem('product-cart') && JSON.parse(localStorage.getItem('product-cart') || '')?.length) {
-          let productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+          const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
           const isProductExist = productStorage.find((prod: IProductData) => prod.id === product?.id);
           if (isProductExist) {
             return;
@@ -244,20 +243,21 @@ export class ProductMain {
         }
       }
       if (headerCount) {
-        const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
         localStorage.getItem('product-cart');
-        function countStock() {
-          let sum = 0;
-          productStorage.forEach(function (prod) {
-            sum += prod.stockSelect || 1;
-          });
-          return sum;
-        }
-        localStorage.setItem('storage-length', `${countStock()}`);
-        headerCount.innerText = `${countStock()}`;
+        localStorage.setItem('storage-length', `${this.countStock()}`);
+        headerCount.innerText = `${this.countStock}`;
       }
     });
 
     addBlock.appendChild(buttonBuy);
+  }
+
+  countStock() {
+    const productStorage: IProductData[] = JSON.parse(localStorage.getItem('product-cart') || '[]');
+    let sum = 0;
+    productStorage.forEach(function (prod) {
+      sum += prod.stockSelect || 1;
+    });
+    return sum;
   }
 }

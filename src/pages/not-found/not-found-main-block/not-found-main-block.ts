@@ -1,6 +1,6 @@
 import '../../../assets/404.png';
 export class NotFoundMainBlock {
-  create():void {
+  create(): void {
     const main: HTMLElement | null = document.querySelector('main');
     main?.classList.add('main__notfound');
 

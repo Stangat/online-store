@@ -14,7 +14,7 @@ export class Cart implements IComponent {
       new Header().create();
       new Main().create();
       new CartMain().create();
-      new UrlPath(new UrlSearch).setQuery();
+      new UrlPath(new UrlSearch()).setQuery();
       new Form().showModal();
       new Footer().create();
     }

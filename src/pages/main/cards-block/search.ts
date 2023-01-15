@@ -1,4 +1,3 @@
-import { onlineStoreData } from '../../../data/data';
 import { FiltersBlockValue, IProductData } from '../../../interfaces/index';
 import { Filters } from '../filters-block/filters';
 import { CardsBlock } from './cards';
@@ -12,6 +11,7 @@ export class Search extends CardsBlock {
   }
   findItems(): void {
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
+    const NON_EXISTENT_VALUE = -1;
     if (searchInput) {
       searchInput.addEventListener('keyup', () => {
         const selectedData: IProductData[] = [];
@@ -26,14 +26,14 @@ export class Search extends CardsBlock {
           const brand = product.brand;
           const category = product.category;
           if (
-            title.toUpperCase().indexOf(searchValue) > -1 ||
-            description.toUpperCase().indexOf(searchValue) > -1 ||
-            price.toUpperCase().indexOf(searchValue) > -1 ||
-            discount.toUpperCase().indexOf(searchValue) > -1 ||
-            rating.toUpperCase().indexOf(searchValue) > -1 ||
-            stock.toUpperCase().indexOf(searchValue) > -1 ||
-            brand.toUpperCase().indexOf(searchValue) > -1 ||
-            category.toUpperCase().indexOf(searchValue) > -1
+            title.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            description.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            price.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            discount.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            rating.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            stock.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            brand.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE ||
+            category.toUpperCase().indexOf(searchValue) > NON_EXISTENT_VALUE
           ) {
             selectedData.push(product);
           }
@@ -75,7 +75,7 @@ export class Search extends CardsBlock {
   setLocalStorage(): void {
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
     if (searchInput) {
-      let value = searchInput.value;
+      const value = searchInput.value;
       localStorage.setItem('input', value);
     }
   }
@@ -83,7 +83,7 @@ export class Search extends CardsBlock {
   getLocalStorage(): void {
     const searchInput: HTMLInputElement | null = document.querySelector('.search-bar__input');
     if (searchInput) {
-      let value = localStorage.getItem('input');
+      const value = localStorage.getItem('input');
       if (value) {
         searchInput.value = value;
       }

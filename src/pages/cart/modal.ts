@@ -1,7 +1,7 @@
 import '././styles/modal.scss';
 
 export class Form {
-  create() {
+  create(): void {
     const main = document.querySelector('.main');
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -145,7 +145,7 @@ export class Form {
     this.closeModal();
   }
 
-  showModal() {
+  showModal(): void {
     const buttonBuy: HTMLButtonElement | null = document.querySelector('.button-buy');
 
     if (buttonBuy) {
@@ -155,7 +155,7 @@ export class Form {
     }
   }
 
-  nameInputValidate() {
+  nameInputValidate(): void {
     const nameInput: HTMLInputElement | null = document.querySelector('.person-name__input');
     if (nameInput) {
       nameInput.addEventListener('input', () => {
@@ -174,7 +174,7 @@ export class Form {
     }
   }
 
-  phoneInputValidate() {
+  phoneInputValidate(): void {
     const phoneInput: HTMLInputElement | null = document.querySelector('.phone-number__input');
     if (phoneInput) {
       phoneInput.addEventListener('input', () => {
@@ -193,7 +193,7 @@ export class Form {
     }
   }
 
-  adressInputValidate() {
+  adressInputValidate(): void {
     const adressInput: HTMLInputElement | null = document.querySelector('.delivery-adress__input');
     if (adressInput) {
       adressInput.addEventListener('input', () => {
@@ -211,7 +211,7 @@ export class Form {
     }
   }
 
-  emailInputvalidate() {
+  emailInputvalidate(): void {
     const emailInput: HTMLInputElement | null = document.querySelector('.email__input');
     if (emailInput) {
       emailInput.addEventListener('input', () => {
@@ -225,7 +225,7 @@ export class Form {
     }
   }
 
-  cardNumberInputValidate() {
+  cardNumberInputValidate(): void {
     const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
     if (cardNumberInput) {
       cardNumberInput.addEventListener('input', () => {
@@ -233,7 +233,7 @@ export class Form {
         this.removeRedundantDigit();
         this.addSpaces();
         this.changePaySystem();
-        let cardNumberValue = cardNumberInput.value;
+        const cardNumberValue = cardNumberInput.value;
         const validCardNumber = /^[0-9\s]{19}$/;
         if (cardNumberValue === '') {
           cardNumberInput.setCustomValidity('Card number is required');
@@ -247,7 +247,7 @@ export class Form {
     }
   }
 
-  cardValidDateInputValidate() {
+  cardValidDateInputValidate(): void {
     const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
     if (cardValidDateInput) {
       cardValidDateInput.addEventListener('input', () => {
@@ -278,7 +278,7 @@ export class Form {
     }
   }
 
-  cardCvvValidate() {
+  cardCvvValidate(): void {
     const cardCodeInput: HTMLInputElement | null = document.querySelector('.cvv-data__input');
     if (cardCodeInput) {
       cardCodeInput.addEventListener('input', () => {
@@ -298,7 +298,7 @@ export class Form {
     }
   }
 
-  removeNonLetters() {
+  removeNonLetters(): void {
     const nameInput: HTMLInputElement | null = document.querySelector('.person-name__input');
 
     if (nameInput) {
@@ -306,7 +306,7 @@ export class Form {
     }
   }
 
-  removeNonDigit() {
+  removeNonDigit(): void {
     const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
     const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
     const phoneInput: HTMLInputElement | null = document.querySelector('.phone-number__input');
@@ -331,7 +331,7 @@ export class Form {
     }
   }
 
-  removeRedundantDigit() {
+  removeRedundantDigit(): void {
     const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
     const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
     const cardCodeInput: HTMLInputElement | null = document.querySelector('.cvv-data__input');
@@ -352,7 +352,7 @@ export class Form {
     }
   }
 
-  addSpaces() {
+  addSpaces(): void {
     const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
     const NUMBER_OF_DIGITS = 4;
     if (cardNumberInput) {
@@ -365,7 +365,7 @@ export class Form {
     }
   }
 
-  changePaySystem() {
+  changePaySystem(): void {
     const paySystem: HTMLImageElement | null = document.querySelector('.pay-system');
     const cardNumberInput: HTMLInputElement | null = document.querySelector('.card-number__input');
     if (cardNumberInput && paySystem) {
@@ -382,7 +382,7 @@ export class Form {
     }
   }
 
-  addSlash() {
+  addSlash(): void {
     const cardValidDateInput: HTMLInputElement | null = document.querySelector('.valid-date__input');
     const NUMBER_OF_DIGITS = 2;
     if (cardValidDateInput) {
@@ -397,7 +397,7 @@ export class Form {
     }
   }
 
-  checkInputsValidity() {
+  checkInputsValidity(): void {
     const nameInput: HTMLInputElement | null = document.querySelector('.person-name__input');
     const phoneInput: HTMLInputElement | null = document.querySelector('.phone-number__input');
     const adressInput: HTMLInputElement | null = document.querySelector('.delivery-adress__input');
@@ -451,52 +451,52 @@ export class Form {
     }
   }
 
-  submitForm() {
+  submitForm(): void {
     const form: HTMLFormElement | null = document.querySelector('.form');
     if (form) {
-      form.addEventListener('submit', handleSubmit);
+      form.addEventListener('submit', this.handleSubmit);
       form.addEventListener('submit', () => {
-        hideModal();
-        showMessage();
+        this.hideModal();
+        this.showMessage();
       });
-
-      function handleSubmit(event: Event) {
-        if (form) {
-          event.preventDefault();
-          let submitTimer;
-          submitTimer = setTimeout(() => {
-            form.submit();
-            localStorage.clear();
-          }, 3000);
-        }
-      }
-
-      function hideModal() {
-        const modal = document.querySelector('.modal');
-        modal?.classList.add('hidden');
-      }
-
-      function showMessage() {
-        const main = document.querySelector('.main');
-        if (main) {
-          const overlay = document.createElement('div');
-          overlay.className = 'overlay';
-          main.append(overlay);
-          const message = document.createElement('p');
-          message.className = 'message';
-          message.textContent = 'Thank you for your purchase, you will be back to main page in 3 seconds';
-          overlay?.append(message);
-        }
-      }
     }
   }
 
-  closeModal() {
+  closeModal(): void {
     const modal = document.querySelector('.modal');
     modal?.addEventListener('click', (event: Event) => {
       if (event.target === modal) {
         modal.remove();
       }
     });
+  }
+
+  handleSubmit(event: Event): void {
+    const form: HTMLFormElement | null = document.querySelector('.form');
+    if (form) {
+      event.preventDefault();
+      setTimeout(() => {
+        form.submit();
+        localStorage.clear();
+      }, 3000);
+    }
+  }
+
+  hideModal(): void {
+    const modal = document.querySelector('.modal');
+    modal?.classList.add('hidden');
+  }
+
+  showMessage(): void {
+    const main = document.querySelector('.main');
+    if (main) {
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      main.append(overlay);
+      const message = document.createElement('p');
+      message.className = 'message';
+      message.textContent = 'Thank you for your purchase, you will be back to main page in 3 seconds';
+      overlay?.append(message);
+    }
   }
 }

@@ -41,7 +41,7 @@ export class CartMain {
     parentDivCart.className = 'parent-div-cart';
     main?.appendChild(parentDivCart);
     const productsSelect: string | null = localStorage.getItem('product-cart');
-    let arrayProductsSelect: IProductData[] = (productsSelect && JSON.parse(productsSelect)) || [];
+    const arrayProductsSelect: IProductData[] = (productsSelect && JSON.parse(productsSelect)) || [];
 
     if (arrayProductsSelect?.length === 0) {
       this.createEpmtyCard();
@@ -247,7 +247,7 @@ export class CartMain {
     this.handlePages();
   }
 
-  clearCartCatalog() {
+  clearCartCatalog(): void {
     const productItemsContainer = document.querySelector('.prod-items');
     productItemsContainer?.remove();
   }
@@ -260,7 +260,7 @@ export class CartMain {
     }
   }
 
-  handleInputLimitValue() {
+  handleInputLimitValue(): void {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
 
     if (inputLimitPage) {
@@ -270,7 +270,7 @@ export class CartMain {
     }
   }
 
-  updateCartCatalog(start: number, end: number) {
+  updateCartCatalog(start: number, end: number): void {
     const cartProductsContainer = document.querySelector('.products-in-cart');
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
     const cartProducts = this.getLocalStorage();
@@ -452,26 +452,27 @@ export class CartMain {
     }
   }
 
-  handleLimit() {
+  handleLimit(): void {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
     const cartProducts = this.getLocalStorage();
     const pages: HTMLSpanElement | null = document.querySelector('.page-number');
+    const indexOfFirstItem = 0;
+    const firstPage = 1;
 
     if (inputLimitPage && cartProducts && pages) {
       inputLimitPage.addEventListener('input', () => {
         const params = new URLSearchParams(window.location.search);
-        let pageQueryValue = params.get('page');
+        const pageQueryValue = params.get('page');
 
         if (!pageQueryValue) {
           this.clearCartCatalog();
-          this.updateCartCatalog(0, +inputLimitPage.value);
+          this.updateCartCatalog(indexOfFirstItem, +inputLimitPage.value);
         }
 
         if (pageQueryValue) {
           let start = +inputLimitPage.value;
           let end = +inputLimitPage.value;
-          console.log(`pageQueryValue ${pageQueryValue}`);
-          if (+pageQueryValue !== 1 && +pageQueryValue < +inputLimitPage.value) {
+          if (+pageQueryValue !== firstPage && +pageQueryValue < +inputLimitPage.value) {
             if (end !== cartProducts.length) {
               start = +inputLimitPage.value;
             }
@@ -482,35 +483,33 @@ export class CartMain {
             this.clearCartCatalog();
             this.updateCartCatalog(start, end);
             if (start === end) {
-              console.log(`start === end`);
               this.clearCartCatalog();
               this.updateCartCatalog(0, +inputLimitPage.value);
               pages.textContent = '1';
             }
-          } else if (+pageQueryValue !== 1 && +pageQueryValue >= +inputLimitPage.value) {
+          } else if (+pageQueryValue !== firstPage && +pageQueryValue >= +inputLimitPage.value) {
             start = +pageQueryValue;
             end = +pageQueryValue + +inputLimitPage.value;
-            console.log(start);
-            console.log(end);
             this.clearCartCatalog();
             this.updateCartCatalog(start, end);
           } else {
             this.clearCartCatalog();
-            this.updateCartCatalog(0, +inputLimitPage.value);
+            this.updateCartCatalog(indexOfFirstItem, +inputLimitPage.value);
           }
         }
       });
     }
   }
 
-  handlePages() {
+  handlePages(): void {
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
     const rightArrowButton: HTMLButtonElement | null = document.querySelector('.button-page_right');
     const leftArrowButton: HTMLButtonElement | null = document.querySelector('.button-page_left');
     const pages: HTMLSpanElement | null = document.querySelector('.page-number');
+    const indexOfFirstItem = 0;
 
     if (inputLimitPage && rightArrowButton && leftArrowButton && pages) {
-      let start = 0;
+      let start = indexOfFirstItem;
       let end = +inputLimitPage.value;
       rightArrowButton.addEventListener('click', () => {
         const params = new URLSearchParams(window.location.search);
@@ -540,14 +539,16 @@ export class CartMain {
         const pageQueryValue = params.get('page');
         if (pageQueryValue) {
           let pageNumber = +pageQueryValue;
-          if (start > 0) {
+          if (start > indexOfFirstItem) {
             start -= +inputLimitPage.value;
             end -= +inputLimitPage.value;
           }
-          if (start === 0) {
+          if (start === indexOfFirstItem) {
             end = +inputLimitPage.value;
           }
-          if (pageNumber > 1) {
+
+          const firstPage = 1;
+          if (pageNumber > firstPage) {
             pageNumber -= 1;
             pages.textContent = `${pageNumber}`;
           }
@@ -559,8 +560,7 @@ export class CartMain {
 
       inputLimitPage.addEventListener('input', () => {
         if (pages.textContent === '1') {
-          console.log(true);
-          start = 0;
+          start = indexOfFirstItem;
           end = +inputLimitPage.value;
         } else {
           start = +inputLimitPage.value;
@@ -570,13 +570,15 @@ export class CartMain {
     }
   }
 
-  restoreParameters() {
+  restoreParameters(): void {
     const params = new URLSearchParams(window.location.search);
     const pageQueryValue = params.get('page');
     const limitQueryValue = params.get('limit');
     const pages: HTMLSpanElement | null = document.querySelector('.page-number');
     const inputLimitPage: HTMLInputElement | null = document.querySelector('.limit-page__input');
     const cartProducts = this.getLocalStorage();
+    const indexOfFirstItem = 0;
+    const firstPage = 1;
 
     if (params && pageQueryValue && limitQueryValue && pages && inputLimitPage) {
       pages.textContent = pageQueryValue;
@@ -584,18 +586,17 @@ export class CartMain {
 
       if (inputLimitPage && cartProducts) {
         const params = new URLSearchParams(window.location.search);
-        let pageQueryValue = params.get('page');
+        const pageQueryValue = params.get('page');
 
         if (!pageQueryValue) {
           this.clearCartCatalog();
-          this.updateCartCatalog(0, +inputLimitPage.value);
+          this.updateCartCatalog(indexOfFirstItem, +inputLimitPage.value);
         }
 
         if (pageQueryValue) {
           let start = +inputLimitPage.value;
           let end = +inputLimitPage.value;
-          console.log(`pageQueryValue ${pageQueryValue}`);
-          if (+pageQueryValue !== 1 && +pageQueryValue < +inputLimitPage.value) {
+          if (+pageQueryValue !== firstPage && +pageQueryValue < +inputLimitPage.value) {
             if (end !== cartProducts.length) {
               start = +inputLimitPage.value;
             }
@@ -606,9 +607,8 @@ export class CartMain {
             this.clearCartCatalog();
             this.updateCartCatalog(start, end);
             if (start === end) {
-              console.log(`start === end`);
               this.clearCartCatalog();
-              this.updateCartCatalog(0, +inputLimitPage.value);
+              this.updateCartCatalog(indexOfFirstItem, +inputLimitPage.value);
               pages.textContent = '1';
             }
           } else if (+pageQueryValue !== 1 && +pageQueryValue >= +inputLimitPage.value) {
@@ -618,7 +618,7 @@ export class CartMain {
             this.updateCartCatalog(start, end);
           } else {
             this.clearCartCatalog();
-            this.updateCartCatalog(0, +inputLimitPage.value);
+            this.updateCartCatalog(indexOfFirstItem, +inputLimitPage.value);
           }
         }
       }

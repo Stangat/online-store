@@ -429,21 +429,21 @@ export class Filters {
     inputSliderPriceMax.value = `${that.priceRange[1]}`;
     rangeSliderPrice.appendChild(inputSliderPriceMax);
     function getValsPrice() {
-      let slides = rangeSliderPrice.getElementsByTagName('input');
+      const slides = rangeSliderPrice.getElementsByTagName('input');
 
       that.priceRange = [
         that.getNearest(pricesArray, +slides[0].value),
         that.getNearest(pricesArray, +slides[1].value),
       ];
 
-      let displayElement = rangeSliderPrice.getElementsByClassName('rangeValues')[0];
+      const displayElement = rangeSliderPrice.getElementsByClassName('rangeValues')[0];
       displayElement.innerHTML = '€' + that.priceRange[0] + ' - €' + that.priceRange[1];
     }
 
     function price() {
-      let sliderSections = document.getElementsByClassName('price');
+      const sliderSections = document.getElementsByClassName('price');
       for (let x = 0; x < sliderSections.length; x++) {
-        let sliders: any = sliderSections[x].getElementsByTagName('input');
+        const sliders: any = sliderSections[x].getElementsByTagName('input');
         for (let y = 0; y < sliders.length; y++) {
           if (sliders[y].type === 'range') {
             sliders[y].oninput = getValsPrice;
@@ -485,20 +485,20 @@ export class Filters {
     rangeSliderStock.appendChild(inputSliderStockMax);
 
     function getValsStock() {
-      let slides = rangeSliderStock.getElementsByTagName('input');
+      const slides = rangeSliderStock.getElementsByTagName('input');
       that.stockRange = [
         that.getNearest(stocksArray, +slides[0].value),
         that.getNearest(stocksArray, +slides[1].value),
       ];
 
-      let displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
+      const displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
       displayElement.innerHTML = that.stockRange[0] + ' - ' + that.stockRange[1];
     }
 
     function stock() {
-      let sliderSections = document.getElementsByClassName('stock');
+      const sliderSections = document.getElementsByClassName('stock');
       for (let x = 0; x < sliderSections.length; x++) {
-        let sliders: any = sliderSections[x].getElementsByTagName('input');
+        const sliders: any = sliderSections[x].getElementsByTagName('input');
         for (let y = 0; y < sliders.length; y++) {
           if (sliders[y].type === 'range') {
             sliders[y].oninput = getValsStock;

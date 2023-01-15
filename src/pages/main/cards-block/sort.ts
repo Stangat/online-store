@@ -1,10 +1,8 @@
-import { onlineStoreData } from '../../../data/data';
-import { IProductData } from '../../../interfaces/index';
 import { Filters } from '../filters-block/filters';
 import { CardsBlock } from './cards';
 import { Search } from './search';
 
-class CardsSort extends CardsBlock {
+export class CardsSort extends CardsBlock {
   filters: Filters;
   searchInput: HTMLInputElement | null;
   sortOptions: HTMLSelectElement | null;
@@ -33,25 +31,34 @@ class CardsSort extends CardsBlock {
   }
 
   handleSelectedAttribute(): void {
+    enum sortNumber {
+      ByPriceAsc = 1,
+      ByPriceDesc,
+      byRatingAsc,
+      byRatingDesc,
+      byDiscountAsc,
+      byDiscountDesc,
+    }
+
     if (this.sortOptions) {
       switch (true) {
         case window.location.search.includes('sort=price-ASC'):
-          this.sortOptions.options[1].setAttribute('selected', '');
+          this.sortOptions.options[sortNumber.ByPriceAsc].setAttribute('selected', '');
           break;
         case window.location.search.includes('sort=price-DESC'):
-          this.sortOptions.options[2].setAttribute('selected', '');
+          this.sortOptions.options[sortNumber.ByPriceDesc].setAttribute('selected', '');
           break;
         case window.location.search.includes('sort=rating-ASC'):
-          this.sortOptions.options[3].setAttribute('selected', '');
+          this.sortOptions.options[sortNumber.byRatingAsc].setAttribute('selected', '');
           break;
         case window.location.search.includes('sort=rating-DESC'):
-          this.sortOptions.options[4].setAttribute('selected', '');
+          this.sortOptions.options[sortNumber.byRatingDesc].setAttribute('selected', '');
           break;
         case window.location.search.includes('sort=discount-ASC'):
-          this.sortOptions.options[5].setAttribute('selected', '');
+          this.sortOptions.options[sortNumber.byDiscountAsc].setAttribute('selected', '');
           break;
         case window.location.search.includes('sort=discount-DESC'):
-          this.sortOptions.options[6].setAttribute('selected', '');
+          this.sortOptions.options[sortNumber.byDiscountDesc].setAttribute('selected', '');
           break;
       }
     }
@@ -117,5 +124,3 @@ class CardsSort extends CardsBlock {
     }
   }
 }
-
-export { CardsSort };

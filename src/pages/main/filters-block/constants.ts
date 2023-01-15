@@ -1,4 +1,4 @@
-import { onlineStoreData } from "../../../data/data";
+import { onlineStoreData } from '../../../data/data';
 
 export const categories = new Set(onlineStoreData.products.map((product) => product.category));
 export const brands = new Set(onlineStoreData.products.map((product) => product.brand));

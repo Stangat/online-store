@@ -18,8 +18,7 @@ switch (true) {
     main.execute();
     break;
   case path.startsWith('/product/'):
-    const productId = path.split('/')[2];
-    product.execute(+productId);
+    product.execute(+path.split('/')[2]);
     break;
   default:
     notFound.execute();

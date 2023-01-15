@@ -27,6 +27,13 @@
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+      "@typescript-eslint/no-this-alias": [
+        "error",
+        {
+          "allowDestructuring": false, 
+          "allowedNames": ["self"]
+        }
+      ]
   }
 }

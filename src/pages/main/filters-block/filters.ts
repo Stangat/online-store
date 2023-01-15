@@ -11,7 +11,7 @@ export class Filters {
   constructor(
     private readonly urlSearchService: UrlSearch,
     private readonly cardBlock: CardsBlock,
-    private readonly subscribers: Array<{ notify: (prod: any) => void }> = []
+    private readonly subscribers: Array<{ notify: (prod: Array<IProductData>) => void }> = []
   ) {
     this.selectedFilters = this.urlSearchService.getAll('category')[0]?.split('&') || [];
     this.selectedFiltersBrand = this.urlSearchService.getAll('brand')[0]?.split('&') || [];
@@ -29,7 +29,7 @@ export class Filters {
   private _selectedFiltersBrand: Array<string> = [];
   private _priceRange: [number, number] = [0, 0];
   private _stockRange: [number, number] = [0, 0];
-  products: any[] = [];
+  products: IProductData[] = [];
 
   filterProducts(): typeof onlineStoreData.products {
     let filteredProducts: typeof onlineStoreData.products = [];
@@ -51,11 +51,11 @@ export class Filters {
     this.updateCategoriesCounts(filteredProducts);
     this.updateBrandsCounts(filteredProducts);
 
-    const prices = filteredProducts.map((item: any) => item.price).sort((a, b) => a - b);
-    const stocks = filteredProducts.map((item: any) => item.stock).sort((a, b) => a - b);
+    const prices = filteredProducts.map((item: IProductData) => item.price).sort((a, b) => a - b);
+    const stocks = filteredProducts.map((item: IProductData) => item.stock).sort((a, b) => a - b);
 
-    this.updatePriceRange([prices[0], prices.at(-1)]);
-    this.updateStockRange([stocks[0], stocks.at(-1)]);
+    this.updatePriceRange([prices[0], prices[prices.length - 1]]);
+    this.updateStockRange([stocks[0], stocks[stocks.length - 1]]);
     return filteredProducts;
   }
 
@@ -212,10 +212,8 @@ export class Filters {
       this.selectedFiltersBrand = this.selectedFiltersBrand.filter((item) => item != brand);
     }
     const checkboxItems = Array.from(document.querySelectorAll('.item'));
-    const containerItem = document.querySelector('.products-container');
 
     checkboxItems.forEach((item) => {
-      const height = containerItem?.clientHeight;
       if (item instanceof HTMLElement)
         if (this.selectedFiltersBrand.includes(item.attributes[4].value)) {
           item.style.display = 'block';
@@ -227,7 +225,7 @@ export class Filters {
     });
   }
 
-  updateCategoriesCounts(filteredProd: any) {
+  updateCategoriesCounts(filteredProd: Array<IProductData>) {
     categories.forEach((category) => {
       const categoryNode = document.querySelectorAll(`[category=${category}].filters-container-category-span`);
       const countOfProductsInCategory = onlineStoreData.products.filter((prod) => prod.category === category).length;
@@ -277,7 +275,7 @@ export class Filters {
   }
 
   create(): void {
-    const that = this;
+    const self = this;
     const main: HTMLElement | null = document.querySelector('.main');
     this.products = this.filterProducts();
     this.subscribers.forEach((item) => item.notify(this.products));
@@ -293,7 +291,7 @@ export class Filters {
     resetFiltersButton.className = 'filters-container-reset-button';
     buttonsFilter.appendChild(resetFiltersButton);
     resetFiltersButton.innerHTML = 'Reset Filters';
-    resetFiltersButton.addEventListener('click', (event) => {
+    resetFiltersButton.addEventListener('click', () => {
       window.location.search = '';
     });
 
@@ -346,7 +344,7 @@ export class Filters {
       spanCategory.className = 'filters-container-category-span';
       spanCategory.setAttribute('category', element);
       const countOfProductsInCategory = onlineStoreData.products.filter((prod) => prod.category === element).length;
-      const curentSelectedProductInCategory = that.products.filter((prod) => prod.category === element).length;
+      const curentSelectedProductInCategory = self.products.filter((prod) => prod.category === element).length;
       spanCategory.innerText = `${curentSelectedProductInCategory}/${countOfProductsInCategory}`;
 
       formCheckboxCategory.appendChild(checkboxCategory);
@@ -387,7 +385,7 @@ export class Filters {
       spanBrand.className = 'filters-container-category-span';
       spanBrand.setAttribute('category', element);
       const countOfProductsInBrand = onlineStoreData.products.filter((prod) => prod.brand === element).length;
-      const curentSelectedProductInBrand = that.products.filter((prod) => prod.brand === element).length;
+      const curentSelectedProductInBrand = self.products.filter((prod) => prod.brand === element).length;
       spanBrand.innerText = `${curentSelectedProductInBrand}/${countOfProductsInBrand}`;
       formCheckboxBrand.appendChild(checkboxBrand);
       formCheckboxBrand.appendChild(labelBrand);
@@ -417,37 +415,36 @@ export class Filters {
     inputSliderPriceMin.id = 'price-min';
     inputSliderPriceMin.min = `${pricesArray[0]}`;
     inputSliderPriceMin.max = `${pricesArray[pricesArray.length - 1]}`;
-    inputSliderPriceMin.value = `${that.priceRange[0]}`;
+    inputSliderPriceMin.value = `${self.priceRange[0]}`;
     rangeSliderPrice.appendChild(inputSliderPriceMin);
 
     const inputSliderPriceMax: HTMLInputElement | null = document.createElement('input');
     inputSliderPriceMax.id = 'price-max';
-    inputSliderPriceMax.setAttribute('value', `${that.priceRange[1]}`);
+    inputSliderPriceMax.setAttribute('value', `${self.priceRange[1]}`);
     inputSliderPriceMax.type = 'range';
     inputSliderPriceMax.max = `${pricesArray[pricesArray.length - 1]}`;
     inputSliderPriceMax.min = `${pricesArray[0]}`;
-    inputSliderPriceMax.value = `${that.priceRange[1]}`;
+    inputSliderPriceMax.value = `${self.priceRange[1]}`;
     rangeSliderPrice.appendChild(inputSliderPriceMax);
     function getValsPrice() {
       const slides = rangeSliderPrice.getElementsByTagName('input');
 
-      that.priceRange = [
-        that.getNearest(pricesArray, +slides[0].value),
-        that.getNearest(pricesArray, +slides[1].value),
+      self.priceRange = [
+        self.getNearest(pricesArray, +slides[0].value),
+        self.getNearest(pricesArray, +slides[1].value),
       ];
 
       const displayElement = rangeSliderPrice.getElementsByClassName('rangeValues')[0];
-      displayElement.innerHTML = '€' + that.priceRange[0] + ' - €' + that.priceRange[1];
+      displayElement.innerHTML = '€' + self.priceRange[0] + ' - €' + self.priceRange[1];
     }
 
     function price() {
-      const sliderSections = document.getElementsByClassName('price');
+      const sliderSections: HTMLCollection = document.getElementsByClassName('price');
       for (let x = 0; x < sliderSections.length; x++) {
-        const sliders: any = sliderSections[x].getElementsByTagName('input');
+        const sliders: HTMLCollectionOf<HTMLInputElement> = sliderSections[x].getElementsByTagName('input');
         for (let y = 0; y < sliders.length; y++) {
           if (sliders[y].type === 'range') {
             sliders[y].oninput = getValsPrice;
-            sliders[y].oninput();
           }
         }
       }
@@ -473,7 +470,7 @@ export class Filters {
     inputSliderStockMin.id = 'stock-min';
     inputSliderStockMin.min = `${stocksArray[0]}`;
     inputSliderStockMin.max = `${stocksArray[stocksArray.length - 1]}`;
-    inputSliderStockMin.setAttribute('value', `${that.stockRange[0]}`);
+    inputSliderStockMin.setAttribute('value', `${self.stockRange[0]}`);
     inputSliderStockMin.step = '1';
     rangeSliderStock.appendChild(inputSliderStockMin);
     const inputSliderStockMax: HTMLInputElement | null = document.createElement('input');
@@ -481,28 +478,27 @@ export class Filters {
     inputSliderStockMax.id = 'stock-max';
     inputSliderStockMax.max = `${stocksArray[stocksArray.length - 1]}`;
     inputSliderStockMax.min = `${stocksArray[0]}`;
-    inputSliderStockMax.value = `${that.stockRange[1]}`;
+    inputSliderStockMax.value = `${self.stockRange[1]}`;
     rangeSliderStock.appendChild(inputSliderStockMax);
 
     function getValsStock() {
       const slides = rangeSliderStock.getElementsByTagName('input');
-      that.stockRange = [
-        that.getNearest(stocksArray, +slides[0].value),
-        that.getNearest(stocksArray, +slides[1].value),
+      self.stockRange = [
+        self.getNearest(stocksArray, +slides[0].value),
+        self.getNearest(stocksArray, +slides[1].value),
       ];
 
       const displayElement = rangeSliderStock.getElementsByClassName('rangeValues')[0];
-      displayElement.innerHTML = that.stockRange[0] + ' - ' + that.stockRange[1];
+      displayElement.innerHTML = self.stockRange[0] + ' - ' + self.stockRange[1];
     }
 
     function stock() {
       const sliderSections = document.getElementsByClassName('stock');
       for (let x = 0; x < sliderSections.length; x++) {
-        const sliders: any = sliderSections[x].getElementsByTagName('input');
+        const sliders: HTMLCollectionOf<HTMLInputElement> = sliderSections[x].getElementsByTagName('input');
         for (let y = 0; y < sliders.length; y++) {
           if (sliders[y].type === 'range') {
             sliders[y].oninput = getValsStock;
-            sliders[y].oninput();
           }
         }
       }

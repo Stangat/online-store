@@ -1,0 +1,42 @@
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+@media screen and (max-width: 630px) {
+  .main {
+    flex-wrap: wrap;
+  }
+  .filters-container {
+    width: 100%;
+  }
+  input[type='range'] {
+    width: 90%;
+  }
+  .sort-panel {
+    padding-top: 15px;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .selector {
+    width: 100%;
+  }
+  .search-bar {
+    width: 100%;
+  }
+  .products {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .products-container {
+    justify-content: center;
+  }
+
+  .main {
+    gap: 10px;
+  }
+}

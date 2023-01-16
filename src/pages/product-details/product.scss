@@ -1,0 +1,139 @@
+.main {
+  width: 100%;
+  display: flex;
+}
+
+.product-details {
+  width: 80%;
+  height: fit-content;
+  margin: 0 auto;
+}
+
+.link-paths {
+  margin: 7% auto;
+  display: flex;
+  font-size: 80%;
+  justify-content: space-evenly;
+  width: 100%;
+  color: #dc092e;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.product-detail {
+  width: 100%;
+  border: 2px solid black;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1%;
+}
+
+.product-title {
+  font-size: 130%;
+  padding: 1%;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #dc092e;
+}
+
+.product-data {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.product-photos img {
+  display: none;
+  &:hover {
+    transition: 1s;
+    transform: scale(1.1);
+  }
+}
+
+.product-photos .block {
+  display: block;
+  object-fit: cover;
+  max-height: 27vh;
+  min-width: 225px;
+  width: 90%;
+  border-radius: 0.5rem;
+}
+
+.product-photos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+  padding: 2%;
+}
+
+.product-photos button {
+  margin-top: 15px;
+  background-color: #dc092e;
+  padding-left: 2%;
+  padding-right: 2%;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+.product-info {
+  width: 40%;
+}
+
+.product-detail-item {
+  margin: 1% auto;
+  border: 1px solid black;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.product-item-title {
+  text-align: center;
+  padding: 1%;
+  margin: 1%;
+}
+
+.product-item-text {
+  padding: 1%;
+  margin: 1%;
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.add-block {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.cart-button {
+  width: 90%;
+  font-size: 200%;
+}
+
+.add-block button {
+  margin-top: 17px;
+  background-color: #dc092e;
+  padding: 10%;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  cursor: pointer;
+}

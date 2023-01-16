@@ -1,0 +1,51 @@
+@import './constants';
+
+.selector {
+  width: 25%;
+  padding: 8px;
+  border: 1px solid $inputBorderColor;
+  border-radius: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.sort-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0 25px 0;
+}
+
+.search-bar {
+  width: 40%;
+}
+
+.search-bar__input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid $inputBorderColor;
+  border-radius: 10px;
+  &:focus {
+    outline: 1px solid gray;
+  }
+}
+
+.stats {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.view-mode_small,
+.view-mode_big {
+  font-size: 32px;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    opacity: 0.7;
+  }
+  &:active {
+    transform: translateY(1px);
+  }
+}
